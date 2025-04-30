@@ -1,0 +1,130 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DocumentsService = void 0;
+const common_1 = require("@nestjs/common");
+const prisma_service_1 = require("../../providers/prisma/prisma.service");
+const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exception");
+const cloudinary_service_1 = require("../../providers/cloudinary/cloudinary.service");
+const uuid_1 = require("../../common/utils/uuid");
+const client_1 = require("@prisma/client");
+let DocumentsService = class DocumentsService {
+    constructor(db, cloudinary) {
+        this.db = db;
+        this.cloudinary = cloudinary;
+    }
+    async create(createDocumentDto, file) {
+        try {
+            const url = await this.cloudinary.uploadFileToCloudinary(file);
+            const newDocument = await this.db.document.create({
+                data: {
+                    id: (0, uuid_1.generateUUIDV7)(),
+                    ...createDocumentDto,
+                    url,
+                },
+            });
+            if (newDocument) {
+                return newDocument;
+            }
+        }
+        catch (e) {
+            if (e.code) {
+                throw new prisma_exception_1.PrismaException(e);
+            }
+            throw new common_1.InternalServerErrorException('Hubo un error al crear el documento');
+        }
+    }
+    async getAll({ page, page_size, status, query }) {
+        const pages = page || 1;
+        const skip = (pages - 1) * page_size;
+        return await this.db.document.findMany({
+            where: {
+                AND: [
+                    query
+                        ? { name: { contains: query, mode: client_1.Prisma.QueryMode.insensitive } }
+                        : {},
+                    status !== null && status !== undefined ? { is_active: status } : {},
+                ],
+                is_archived: false,
+            },
+            take: page_size,
+            skip: skip,
+        });
+    }
+    async getAllByTopic(topicId) {
+        return await this.db.document.findMany({
+            where: {
+                topic_id: topicId,
+                is_archived: false,
+            },
+        });
+    }
+    async getOne(id) {
+        return await this.db.document.findFirst({
+            where: {
+                id,
+                is_archived: false,
+            },
+        });
+    }
+    async update(id, updateDocumentDto) {
+        try {
+            const updatedDocument = await this.db.document.update({
+                where: {
+                    id,
+                    is_archived: false,
+                },
+                data: {
+                    ...updateDocumentDto,
+                },
+            });
+            if (updatedDocument) {
+                return updatedDocument;
+            }
+        }
+        catch (e) {
+            if (e.code) {
+                throw new prisma_exception_1.PrismaException(e);
+            }
+            throw new common_1.InternalServerErrorException('Hubo un error al actualizar el documento');
+        }
+    }
+    async remove(id) {
+        try {
+            const archivedDocument = await this.db.document.update({
+                where: {
+                    id,
+                    is_archived: false,
+                },
+                data: {
+                    is_active: false,
+                    is_archived: true,
+                },
+            });
+            if (archivedDocument) {
+                return archivedDocument;
+            }
+        }
+        catch (e) {
+            if (e.code) {
+                throw new prisma_exception_1.PrismaException(e);
+            }
+            throw new common_1.InternalServerErrorException('Hubo un error al archivar el documento');
+        }
+    }
+};
+exports.DocumentsService = DocumentsService;
+exports.DocumentsService = DocumentsService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        cloudinary_service_1.CloudinaryService])
+], DocumentsService);
+//# sourceMappingURL=documents.service.js.map

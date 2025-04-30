@@ -1,0 +1,148 @@
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { PrismaService } from 'src/providers/prisma/prisma.service';
+import { Prisma, Role } from '@prisma/client';
+import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
+import { PrismaException } from '@providers/prisma/exceptions/prisma.exception';
+import * as bcrypt from 'bcryptjs';
+import { generateUUIDV7 } from '@common/utils/uuid';
+import { ReniecService } from '@providers/reniec/reniec.service';
+import { IReniecResponse } from '@providers/reniec/interfaces/reniec-response.interface';
+
+@Injectable()
+export class UsersService {
+  constructor(
+    private readonly db: PrismaService,
+    private reniecService: ReniecService,
+  ) {}
+  async create(createUserDto: CreateUserDto) {
+    const { password, ...rest } = createUserDto;
+
+    const { nombres, apellidoMaterno, apellidoPaterno }: IReniecResponse =
+      await this.reniecService.getInfoDNI(createUserDto.dni);
+    try {
+      const newAdmin = await this.db.user.create({
+        data: {
+          id: generateUUIDV7(),
+          name: nombres,
+          last_name: apellidoPaterno + ' ' + apellidoMaterno,
+          password: await bcrypt.hash(password, 10),
+          role: Role.ADMIN,
+          ...rest,
+        },
+      });
+
+      return newAdmin;
+    } catch (e) {
+      if (e.code) {
+        throw new PrismaException(e);
+      }
+      throw new InternalServerErrorException(
+        'Hubo un error al crear el usuario',
+      );
+    }
+  }
+
+  async findAll({
+    query,
+    page,
+    page_size,
+    status,
+  }: SearchStatusQueryParamsDto) {
+    const pages = page || 1;
+    const skip = (pages - 1) * page_size;
+    return await this.db.user.findMany({
+      omit: {
+        password: true,
+      },
+      where: {
+        AND: [
+          query
+            ? { name: { contains: query, mode: Prisma.QueryMode.insensitive } }
+            : {},
+          status !== null && status !== undefined ? { is_active: status } : {},
+        ],
+        is_archived: false,
+      },
+      skip: skip,
+      take: page_size,
+    });
+  }
+
+  async getOne(id: string) {
+    return await this.db.user.findFirst({
+      omit: {
+        password: true,
+        is_archived: true,
+      },
+      where: {
+        id,
+        is_archived: false,
+      },
+    });
+  }
+
+  async getOneByEmail(email: string) {
+    return await this.db.user.findFirst({
+      omit: {
+        is_archived: true,
+      },
+      where: {
+        email,
+        is_archived: false,
+      },
+    });
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      const updatedUser = await this.db.user.update({
+        where: {
+          id,
+          is_archived: false,
+        },
+        data: {
+          ...updateUserDto,
+        },
+      });
+
+      return updatedUser;
+    } catch (e) {
+      if (e.code) {
+        throw new PrismaException(e);
+      }
+      throw new InternalServerErrorException(
+        'Hubo un error al actualizar el usuario',
+      );
+    }
+  }
+
+  async remove(id: string) {
+    try {
+      const archivedUser = await this.db.user.update({
+        where: {
+          id,
+          is_archived: false,
+        },
+        data: {
+          is_active: false,
+          is_archived: true,
+        },
+      });
+
+      return archivedUser;
+    } catch (e) {
+      if (e.code) {
+        throw new PrismaException(e);
+      }
+      throw new InternalServerErrorException(
+        'Hubo un error al archivar el usuario',
+      );
+    }
+  }
+
+  async verifyDni(dni: string) {
+    return await this.reniecService.getInfoDNI(dni);
+  }
+}

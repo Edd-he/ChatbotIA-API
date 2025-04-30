@@ -1,0 +1,46 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.OnRunExecuteHandler = void 0;
+const conversations_service_1 = require("../../conversations/conversations.service");
+const runs_service_1 = require("../../runs/runs.service");
+const common_1 = require("@nestjs/common");
+const event_emitter_1 = require("@nestjs/event-emitter");
+const run_events_interfaces_1 = require("./run-events.interfaces");
+let OnRunExecuteHandler = class OnRunExecuteHandler {
+    constructor(events, runsService, conversationsService) {
+        this.events = events;
+        this.runsService = runsService;
+        this.conversationsService = conversationsService;
+    }
+    async handleCreated(payload) {
+        const conversation = await this.conversationsService.getOne(payload.conversation_id);
+        if (!conversation) {
+            await this.conversationsService.create({ id: payload.conversation_id });
+        }
+        await this.runsService.create(payload);
+        await this.conversationsService.updateTotalTokens(payload.conversation_id, payload.tokens);
+    }
+};
+exports.OnRunExecuteHandler = OnRunExecuteHandler;
+__decorate([
+    (0, event_emitter_1.OnEvent)(run_events_interfaces_1.RunEvents.ON_RUN_EXECUTED_EVENT),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], OnRunExecuteHandler.prototype, "handleCreated", null);
+exports.OnRunExecuteHandler = OnRunExecuteHandler = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
+        runs_service_1.RunsService,
+        conversations_service_1.ConversationsService])
+], OnRunExecuteHandler);
+//# sourceMappingURL=on-run-execute.js.map
