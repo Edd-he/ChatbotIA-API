@@ -11,9 +11,9 @@ export declare class DocumentsInTopicController {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }>;
     getAllDocumentsByTopic(topicId: string): Promise<{
         is_active: boolean;
@@ -23,8 +23,8 @@ export declare class DocumentsInTopicController {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }[]>;
 }

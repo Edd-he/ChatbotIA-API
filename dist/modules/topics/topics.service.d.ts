@@ -32,9 +32,9 @@ export declare class TopicsService {
             updated_at: Date;
             name: string;
             is_archived: boolean;
-            url: string;
-            tags: string[];
             topic_id: string;
+            tags: string[];
+            url: string;
         }[];
     } & {
         is_active: boolean;

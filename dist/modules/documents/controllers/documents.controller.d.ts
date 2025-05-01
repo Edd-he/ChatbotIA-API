@@ -12,9 +12,9 @@ export declare class DocumentsController {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }[]>;
     getOneDocument(documentId: string): Promise<{
         is_active: boolean;
@@ -24,9 +24,9 @@ export declare class DocumentsController {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }>;
     updateDocument(id: string, updateDocumentDto: UpdateDocumentDto): Promise<{
         is_active: boolean;
@@ -36,9 +36,9 @@ export declare class DocumentsController {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }>;
     removeDocument(documentId: string): Promise<{
         is_active: boolean;
@@ -48,8 +48,8 @@ export declare class DocumentsController {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }>;
 }

@@ -15,9 +15,9 @@ export declare class DocumentsService {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }>;
     getAll({ page, page_size, status, query }: SearchStatusQueryParamsDto): Promise<{
         is_active: boolean;
@@ -27,9 +27,9 @@ export declare class DocumentsService {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }[]>;
     getAllByTopic(topicId: string): Promise<{
         is_active: boolean;
@@ -39,9 +39,9 @@ export declare class DocumentsService {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }[]>;
     getOne(id: string): Promise<{
         is_active: boolean;
@@ -51,9 +51,9 @@ export declare class DocumentsService {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }>;
     update(id: string, updateDocumentDto: UpdateDocumentDto): Promise<{
         is_active: boolean;
@@ -63,9 +63,9 @@ export declare class DocumentsService {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }>;
     remove(id: string): Promise<{
         is_active: boolean;
@@ -75,8 +75,8 @@ export declare class DocumentsService {
         updated_at: Date;
         name: string;
         is_archived: boolean;
-        url: string;
-        tags: string[];
         topic_id: string;
+        tags: string[];
+        url: string;
     }>;
 }
