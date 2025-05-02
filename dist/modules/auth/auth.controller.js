@@ -39,7 +39,7 @@ let AuthController = class AuthController {
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Post)('/signIn'),
+    (0, common_1.Post)('/sign-in'),
     (0, swagger_1.ApiOperation)({
         summary: 'Inicia sesión y devuelve un token de acceso e información del usuario',
     }),

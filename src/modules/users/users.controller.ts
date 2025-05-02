@@ -13,17 +13,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ValidateUUID } from '@common/pipes/validate-uuid.pipe';
 import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
-import { ApiBearerAuth } from '@nestjs/swagger';
 import { UserSession } from '@auth/decorators/user-session.decorator';
 import { IUserSession } from '@auth/interfaces/user-session.interface';
-import { Auth } from '@auth/decorators/auth.decorator';
 import { PublicAccess } from '@auth/decorators/public.decorator';
 import { ValidateDNI } from './pipes/validate-dni.pipe';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { LoggerEvents } from '@modules/events/logger/logger-events.interfaces';
 import { ApiOperation } from '@nestjs/swagger';
-@ApiBearerAuth()
-@Auth(['ADMIN', 'SUPER_ADMIN'])
+
 @Controller('users')
 export class UsersController {
   constructor(

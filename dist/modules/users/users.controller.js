@@ -20,14 +20,12 @@ const create_user_dto_1 = require("./dto/create-user.dto");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const validate_uuid_pipe_1 = require("../../common/pipes/validate-uuid.pipe");
 const search_status_query_params_1 = require("../../common/query-params/search-status-query-params");
-const swagger_1 = require("@nestjs/swagger");
 const user_session_decorator_1 = require("../auth/decorators/user-session.decorator");
-const auth_decorator_1 = require("../auth/decorators/auth.decorator");
 const public_decorator_1 = require("../auth/decorators/public.decorator");
 const validate_dni_pipe_1 = require("./pipes/validate-dni.pipe");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const logger_events_interfaces_1 = require("../events/logger/logger-events.interfaces");
-const swagger_2 = require("@nestjs/swagger");
+const swagger_1 = require("@nestjs/swagger");
 let UsersController = class UsersController {
     constructor(usersService, eventEmitter) {
         this.usersService = usersService;
@@ -70,7 +68,7 @@ let UsersController = class UsersController {
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Post)('create-user'),
-    (0, swagger_2.ApiOperation)({
+    (0, swagger_1.ApiOperation)({
         summary: 'Crea un usuario del sistema',
     }),
     openapi.ApiResponse({ status: 201 }),
@@ -82,7 +80,7 @@ __decorate([
 ], UsersController.prototype, "createUser", null);
 __decorate([
     (0, common_1.Get)('get-all-users'),
-    (0, swagger_2.ApiOperation)({
+    (0, swagger_1.ApiOperation)({
         summary: 'Obtiene todos los usuarios',
     }),
     openapi.ApiResponse({ status: 200 }),
@@ -94,7 +92,7 @@ __decorate([
 __decorate([
     (0, public_decorator_1.PublicAccess)(),
     (0, common_1.Get)(':userDni/verify-DNI'),
-    (0, swagger_2.ApiOperation)({
+    (0, swagger_1.ApiOperation)({
         summary: 'Verifica el dni de un usuario',
     }),
     openapi.ApiResponse({ status: 200, type: Object }),
@@ -105,7 +103,7 @@ __decorate([
 ], UsersController.prototype, "verifyDni", null);
 __decorate([
     (0, common_1.Get)(':userId/get-user'),
-    (0, swagger_2.ApiOperation)({
+    (0, swagger_1.ApiOperation)({
         summary: 'Obtiene un usuario',
     }),
     openapi.ApiResponse({ status: 200 }),
@@ -116,7 +114,7 @@ __decorate([
 ], UsersController.prototype, "getOneUser", null);
 __decorate([
     (0, common_1.Patch)(':userId/update-user'),
-    (0, swagger_2.ApiOperation)({
+    (0, swagger_1.ApiOperation)({
         summary: 'Actualiza la información de un usuario',
     }),
     openapi.ApiResponse({ status: 200 }),
@@ -129,7 +127,7 @@ __decorate([
 ], UsersController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Delete)(':userId/remove-user'),
-    (0, swagger_2.ApiOperation)({
+    (0, swagger_1.ApiOperation)({
         summary: 'Archiva un usuario',
     }),
     openapi.ApiResponse({ status: 200 }),
@@ -140,8 +138,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "removeUser", null);
 exports.UsersController = UsersController = __decorate([
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, auth_decorator_1.Auth)(['ADMIN', 'SUPER_ADMIN']),
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService,
         event_emitter_1.EventEmitter2])

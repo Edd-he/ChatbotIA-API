@@ -19,7 +19,7 @@ import { RefreshTokenGuard } from './guards/refresh.guard';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('/signIn')
+  @Post('/sign-in')
   @ApiOperation({
     summary:
       'Inicia sesión y devuelve un token de acceso e información del usuario',
