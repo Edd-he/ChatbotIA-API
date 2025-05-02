@@ -3,6 +3,8 @@ import { RunsService } from '@modules/runs/runs.service';
 import { Injectable } from '@nestjs/common';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import { RunExecutedEvent, RunEvents } from './run-events.interfaces';
+import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service';
+import { GeminiModels } from '@providers/gemini-ai/interfaces/gemini-ai-models.enum';
 
 @Injectable()
 export class OnRunExecuteHandler {
@@ -10,6 +12,7 @@ export class OnRunExecuteHandler {
     private readonly events: EventEmitter2,
     private readonly runsService: RunsService,
     private readonly conversationsService: ConversationsService,
+    private readonly ai: GeminiAIService,
   ) {}
 
   @OnEvent(RunEvents.ON_RUN_EXECUTED_EVENT)
@@ -19,7 +22,11 @@ export class OnRunExecuteHandler {
     );
 
     if (!conversation) {
-      await this.conversationsService.create({ id: payload.conversation_id });
+      const title = await this.generateTittle(payload.input);
+      await this.conversationsService.create({
+        id: payload.conversation_id,
+        title,
+      });
     }
     await this.runsService.create(payload);
 
@@ -27,5 +34,18 @@ export class OnRunExecuteHandler {
       payload.conversation_id,
       payload.tokens,
     );
+  }
+
+  private async generateTittle(input: string) {
+    const response = await this.ai.getResponse(
+      GeminiModels.GEMINI_1_5_FLASH,
+      `- generarás un título basado en el primer mensaje con el que el usuario inicia una conversación
+      - asegúrate de que no tenga más de 90 caracteres
+      - el título debe ser un resumen del mensaje del usuario
+      - no uses comillas ni dos puntos`,
+      [input],
+    );
+
+    return response;
   }
 }

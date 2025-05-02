@@ -10,7 +10,7 @@ class PrismaException extends common_1.BadRequestException {
                 message = `Ya existe un registro con el campo único: ${error.meta?.target?.join(', ')}`;
                 break;
             case 'P2025':
-                message = `El registro que intentas actualizar/eliminar no existe.`;
+                message = `El registro que intentas actualizar/archivar no existe.`;
                 break;
             default:
                 message = `Error de base de datos: código ${error.code}`;

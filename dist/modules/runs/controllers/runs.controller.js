@@ -18,6 +18,7 @@ const common_1 = require("@nestjs/common");
 const runs_service_1 = require("../runs.service");
 const validate_uuid_pipe_1 = require("../../../common/pipes/validate-uuid.pipe");
 const rangeDate_query_params_1 = require("../../../common/query-params/rangeDate-query-params");
+const swagger_1 = require("@nestjs/swagger");
 let RunsController = class RunsController {
     constructor(runsService) {
         this.runsService = runsService;
@@ -32,6 +33,7 @@ let RunsController = class RunsController {
 exports.RunsController = RunsController;
 __decorate([
     (0, common_1.Get)('runs/get-all-runs'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obiene todas las ejecuciones' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -40,6 +42,7 @@ __decorate([
 ], RunsController.prototype, "getAllruns", null);
 __decorate([
     (0, common_1.Get)(':runId/get-run'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obiene una sola ejecucion' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('runId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),

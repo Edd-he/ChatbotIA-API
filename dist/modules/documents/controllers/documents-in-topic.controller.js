@@ -18,9 +18,9 @@ const file_interceptor_decorator_1 = require("../../../common/decorators/file-in
 const upload_files_decorator_1 = require("../../../common/decorators/upload-files.decorator");
 const validate_uuid_pipe_1 = require("../../../common/pipes/validate-uuid.pipe");
 const common_1 = require("@nestjs/common");
-const create_document_dto_1 = require("../dto/create-document.dto");
 const documents_service_1 = require("../documents.service");
 const swagger_1 = require("@nestjs/swagger");
+const create_document_dto_1 = require("../dto/create-document.dto");
 let DocumentsInTopicController = class DocumentsInTopicController {
     constructor(documentsService) {
         this.documentsService = documentsService;
@@ -37,6 +37,37 @@ exports.DocumentsInTopicController = DocumentsInTopicController;
 __decorate([
     (0, file_interceptor_decorator_1.UseFileInterceptor)(),
     (0, common_1.Post)('create-document'),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({
+        schema: {
+            type: 'object',
+            properties: {
+                file: {
+                    type: 'string',
+                    format: 'binary',
+                },
+                name: {
+                    type: 'string',
+                    minLength: 3,
+                    maxLength: 100,
+                },
+                description: {
+                    type: 'string',
+                },
+                tags: {
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                    },
+                },
+                is_active: {
+                    type: 'boolean',
+                },
+            },
+            required: ['name', 'description', 'tags', 'file'],
+        },
+    }),
+    (0, swagger_1.ApiOperation)({ summary: 'Crea un documento de cierto tópico' }),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Param)('topicId', validate_uuid_pipe_1.ValidateUUID)),
     __param(1, (0, common_1.Body)()),
@@ -47,6 +78,7 @@ __decorate([
 ], DocumentsInTopicController.prototype, "createDocument", null);
 __decorate([
     (0, common_1.Get)('get-documents-by-topic'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtiene todos los documentos de cierto Tópico' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('topicId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),

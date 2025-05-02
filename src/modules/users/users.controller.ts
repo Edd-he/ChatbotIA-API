@@ -21,7 +21,7 @@ import { PublicAccess } from '@auth/decorators/public.decorator';
 import { ValidateDNI } from './pipes/validate-dni.pipe';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { LoggerEvents } from '@modules/events/logger/logger-events.interfaces';
-
+import { ApiOperation } from '@nestjs/swagger';
 @ApiBearerAuth()
 @Auth(['ADMIN', 'SUPER_ADMIN'])
 @Controller('users')
@@ -32,6 +32,9 @@ export class UsersController {
   ) {}
 
   @Post('create-user')
+  @ApiOperation({
+    summary: 'Crea un usuario del sistema',
+  })
   async createUser(
     @UserSession() session: IUserSession,
     @Body() createUserDto: CreateUserDto,
@@ -45,22 +48,34 @@ export class UsersController {
   }
 
   @Get('get-all-users')
+  @ApiOperation({
+    summary: 'Obtiene todos los usuarios',
+  })
   async getAllUsers(@Query() query: SearchStatusQueryParamsDto) {
     return this.usersService.findAll(query);
   }
 
   @PublicAccess()
   @Get(':userDni/verify-DNI')
+  @ApiOperation({
+    summary: 'Verifica el dni de un usuario',
+  })
   async verifyDni(@Param('userDni', ValidateDNI) dni: string) {
     return this.usersService.verifyDni(dni);
   }
 
   @Get(':userId/get-user')
+  @ApiOperation({
+    summary: 'Obtiene un usuario',
+  })
   async getOneUser(@Param('userId', ValidateUUID) userId: string) {
     return this.usersService.getOne(userId);
   }
 
   @Patch(':userId/update-user')
+  @ApiOperation({
+    summary: 'Actualiza la información de un usuario',
+  })
   async updateUser(
     @Param('userId', ValidateUUID) userId: string,
     @UserSession() session: IUserSession,
@@ -75,6 +90,9 @@ export class UsersController {
   }
 
   @Delete(':userId/remove-user')
+  @ApiOperation({
+    summary: 'Archiva un usuario',
+  })
   async removeUser(
     @Param('userId', ValidateUUID) userId: string,
     @UserSession() session: IUserSession,

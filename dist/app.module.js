@@ -18,7 +18,7 @@ const cloudinary_module_1 = require("./providers/cloudinary/cloudinary.module");
 const gemini_ai_module_1 = require("./providers/gemini-ai/gemini-ai.module");
 const topics_module_1 = require("./modules/topics/topics.module");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const gemini_runner_module_1 = require("./modules/gemini-chat-runner/gemini-runner.module");
+const gemini_chat_runner_module_1 = require("./modules/gemini-chat-runner/gemini-chat-runner.module");
 const conversations_module_1 = require("./modules/conversations/conversations.module");
 const reniec_module_1 = require("./providers/reniec/reniec.module");
 const documents_module_1 = require("./modules/documents/documents.module");
@@ -43,7 +43,7 @@ exports.AppModule = AppModule = __decorate([
                 wildcard: true,
             }),
             topics_module_1.TopicsModule,
-            gemini_runner_module_1.GeminiChatRunnerModule,
+            gemini_chat_runner_module_1.GeminiChatRunnerModule,
             conversations_module_1.ConversationsModule,
             documents_module_1.DocumentsModule,
             runs_module_1.RunsModule,

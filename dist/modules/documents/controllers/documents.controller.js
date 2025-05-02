@@ -40,6 +40,7 @@ let DocumentsController = class DocumentsController {
 exports.DocumentsController = DocumentsController;
 __decorate([
     (0, common_1.Get)('get-all-documents'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtiene todos los documentos subidos' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -48,6 +49,7 @@ __decorate([
 ], DocumentsController.prototype, "getAllDocuments", null);
 __decorate([
     (0, common_1.Get)(':documentId/get-document'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtiene un solo documento' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('documentId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),
@@ -56,6 +58,7 @@ __decorate([
 ], DocumentsController.prototype, "getOneDocument", null);
 __decorate([
     (0, common_1.Patch)(':documentId/update-document'),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualiza información de un documento' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('id', validate_uuid_pipe_1.ValidateUUID)),
     __param(1, (0, common_1.Body)()),
@@ -65,6 +68,7 @@ __decorate([
 ], DocumentsController.prototype, "updateDocument", null);
 __decorate([
     (0, common_1.Delete)(':documentId/remove-document'),
+    (0, swagger_1.ApiOperation)({ summary: 'Elimina un documento' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('documentId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),

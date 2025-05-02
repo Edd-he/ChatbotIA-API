@@ -6,17 +6,17 @@ export declare class ConversationsService {
     constructor(db: PrismaService);
     create(createConversationDto: CreateConversationDto): Promise<{
         title: string | null;
-        status: import(".prisma/client").$Enums.ConversationStatus;
         id: string;
         created_at: Date;
+        status: import(".prisma/client").$Enums.ConversationStatus;
         completed_at: Date | null;
         total_tokens: number;
     }>;
     getAll({ page, page_size, start_date, end_date, }: RangeDateQueryParams): Promise<{
         title: string | null;
-        status: import(".prisma/client").$Enums.ConversationStatus;
         id: string;
         created_at: Date;
+        status: import(".prisma/client").$Enums.ConversationStatus;
         completed_at: Date | null;
         total_tokens: number;
     }[]>;
@@ -35,17 +35,17 @@ export declare class ConversationsService {
         }[];
     } & {
         title: string | null;
-        status: import(".prisma/client").$Enums.ConversationStatus;
         id: string;
         created_at: Date;
+        status: import(".prisma/client").$Enums.ConversationStatus;
         completed_at: Date | null;
         total_tokens: number;
     }>;
     getOne(conversationId: string): Promise<{
         title: string | null;
-        status: import(".prisma/client").$Enums.ConversationStatus;
         id: string;
         created_at: Date;
+        status: import(".prisma/client").$Enums.ConversationStatus;
         completed_at: Date | null;
         total_tokens: number;
     }>;

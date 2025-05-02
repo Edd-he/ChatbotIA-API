@@ -14,7 +14,7 @@ const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class RequestChatDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { conversation_id: { required: true, type: () => String, format: "uuid" }, query: { required: true, type: () => String, minLength: 2, maxLength: 1000 } };
+        return { conversation_id: { required: true, type: () => String, format: "uuid" }, message: { required: true, type: () => String, minLength: 2, maxLength: 1000 } };
     }
 }
 exports.RequestChatDto = RequestChatDto;
@@ -30,5 +30,5 @@ __decorate([
     }),
     (0, class_validator_1.IsString)({ message: 'El mensaje debe ser un texto' }),
     __metadata("design:type", String)
-], RequestChatDto.prototype, "query", void 0);
+], RequestChatDto.prototype, "message", void 0);
 //# sourceMappingURL=request-chat.dto.js.map

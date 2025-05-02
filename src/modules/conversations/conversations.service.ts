@@ -16,6 +16,7 @@ export class ConversationsService {
       });
       if (newConversation) return newConversation;
     } catch (e) {
+      console.log(e);
       if (e.code) {
         throw new PrismaException(e);
       }

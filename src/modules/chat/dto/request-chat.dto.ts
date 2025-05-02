@@ -9,5 +9,5 @@ export class RequestChatDto {
     message: 'El mensaje debe tener entre 2 y 1000 caracteres',
   })
   @IsString({ message: 'El mensaje debe ser un texto' })
-  query: string;
+  message: string;
 }

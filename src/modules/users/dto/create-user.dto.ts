@@ -8,21 +8,21 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
-  @IsString()
+  @IsString({ message: 'El DNI debe ser una cadena de texto' })
   @Length(8, 8, { message: 'El DNI debe tener exactamente 8 caracteres.' })
   dni: string;
 
-  @IsEmail({}, { message: 'El correo electrónico no es válido.' })
+  @IsEmail({}, { message: 'El correo electrónico debe ser uno válido' })
   email: string;
 
-  @IsString()
+  @IsString({ message: 'El DNI debe ser una cadena de texto' })
   @Length(8, 20, {
     message: 'La contraseña debe tener entre 8 y 20 caracteres.',
   })
   password: string;
 
   @Type(() => Boolean)
-  @IsBoolean({ message: 'El estado is_active debe ser un valor booleano.' })
+  @IsBoolean({ message: 'El estado "is_active" debe ser un valor booleano.' })
   @IsOptional()
-  is_active: boolean;
+  is_active?: boolean;
 }

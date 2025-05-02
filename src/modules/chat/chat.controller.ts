@@ -2,24 +2,28 @@ import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { RequestChatDto } from './dto/request-chat.dto';
 import { Response, Request } from 'express';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
-  @Post('/send-query')
-  sendQueryGemini(
+  @Post('/send')
+  @ApiOperation({
+    summary: 'Envía un mensaje y devuelve una respuesta en tiempo real',
+  })
+  send(
     @Res() res: Response,
     @Req() req: Request,
     @Body() body: RequestChatDto,
   ) {
-    const { query, conversation_id } = body;
+    const { message, conversation_id } = body;
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    const response = this.chatService.doStreamGemini({
+    const response = this.chatService.doStream({
       conversation_id,
-      query,
+      message,
     });
 
     const subscription = response.subscribe({
@@ -30,12 +34,7 @@ export class ChatController {
         res.end();
       },
       error: (e) => {
-        const errorPayload = JSON.stringify({
-          error: true,
-          message: e || 'Error desconocido',
-        });
-
-        res.write(`${errorPayload}`);
+        res.write(`${JSON.stringify(e)}`);
         res.end();
       },
     });

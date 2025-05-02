@@ -40,6 +40,9 @@ let AuthController = class AuthController {
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('/signIn'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Inicia sesión y devuelve un token de acceso e información del usuario',
+    }),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -50,6 +53,9 @@ __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     (0, auth_decorator_1.Auth)(['ADMIN', 'SUPER_ADMIN']),
     (0, common_1.Get)('/profile'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Obtiene información del usuario mediante el token de acceso',
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, user_session_decorator_1.UserSession)()),
     __metadata("design:type", Function),
@@ -59,6 +65,9 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(refresh_guard_1.RefreshTokenGuard),
     (0, common_1.Post)('/refresh-token'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Actualiza el token de acceso',
+    }),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),

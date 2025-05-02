@@ -15,22 +15,40 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class CreateTopicDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { name: { required: true, type: () => String }, description: { required: true, type: () => String }, is_active: { required: true, type: () => Boolean } };
+        return { name: { required: true, type: () => String, minLength: 5, maxLength: 100 }, description: { required: false, type: () => String }, is_active: { required: false, type: () => Boolean }, is_archived: { required: false, type: () => Boolean } };
     }
 }
 exports.CreateTopicDto = CreateTopicDto;
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsString)({
+        message: 'El campo "name" debe ser una cadena de texto.',
+    }),
+    (0, class_validator_1.Length)(5, 100, {
+        message: 'El nombre debe tener entre 5 a 100 carácteres.',
+    }),
     __metadata("design:type", String)
 ], CreateTopicDto.prototype, "name", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)({
+        message: 'La descripción debe ser una cadena de texto.',
+    }),
     __metadata("design:type", String)
 ], CreateTopicDto.prototype, "description", void 0);
 __decorate([
-    (0, class_transformer_1.Type)(() => Boolean),
-    (0, class_validator_1.IsBoolean)({ message: 'El estado is_active debe ser un valor booleano.' }),
     (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Type)(() => Boolean),
+    (0, class_validator_1.IsBoolean)({
+        message: 'El campo "is_active" debe ser un valor booleano (true o false).',
+    }),
     __metadata("design:type", Boolean)
 ], CreateTopicDto.prototype, "is_active", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_transformer_1.Type)(() => Boolean),
+    (0, class_validator_1.IsBoolean)({
+        message: 'El campo "is_archived" debe ser un valor booleano (true o false).',
+    }),
+    __metadata("design:type", Boolean)
+], CreateTopicDto.prototype, "is_archived", void 0);
 //# sourceMappingURL=create-topic.dto.js.map

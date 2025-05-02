@@ -1,15 +1,33 @@
 import { Type } from 'class-transformer';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateTopicDto {
-  @IsString()
+  @IsString({
+    message: 'El campo "name" debe ser una cadena de texto.',
+  })
+  @Length(5, 100, {
+    message: 'El nombre debe tener entre 5 a 100 carácteres.',
+  })
   name: string;
 
-  @IsString()
-  description: string;
-
-  @Type(() => Boolean)
-  @IsBoolean({ message: 'El estado is_active debe ser un valor booleano.' })
   @IsOptional()
-  is_active: boolean;
+  @IsString({
+    message: 'La descripción debe ser una cadena de texto.',
+  })
+  description?: string;
+
+  @IsOptional()
+  @Type(() => Boolean)
+  @IsBoolean({
+    message: 'El campo "is_active" debe ser un valor booleano (true o false).',
+  })
+  is_active?: boolean;
+
+  @IsOptional()
+  @Type(() => Boolean)
+  @IsBoolean({
+    message:
+      'El campo "is_archived" debe ser un valor booleano (true o false).',
+  })
+  is_archived?: boolean;
 }

@@ -4,5 +4,5 @@ import { Response, Request } from 'express';
 export declare class ChatController {
     private readonly chatService;
     constructor(chatService: ChatService);
-    sendQueryGemini(res: Response, req: Request, body: RequestChatDto): void;
+    send(res: Response, req: Request, body: RequestChatDto): void;
 }

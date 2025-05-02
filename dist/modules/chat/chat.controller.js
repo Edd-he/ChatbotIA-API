@@ -17,18 +17,19 @@ const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const chat_service_1 = require("./chat.service");
 const request_chat_dto_1 = require("./dto/request-chat.dto");
+const swagger_1 = require("@nestjs/swagger");
 let ChatController = class ChatController {
     constructor(chatService) {
         this.chatService = chatService;
     }
-    sendQueryGemini(res, req, body) {
-        const { query, conversation_id } = body;
+    send(res, req, body) {
+        const { message, conversation_id } = body;
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
-        const response = this.chatService.doStreamGemini({
+        const response = this.chatService.doStream({
             conversation_id,
-            query,
+            message,
         });
         const subscription = response.subscribe({
             next: (chunk) => {
@@ -38,11 +39,7 @@ let ChatController = class ChatController {
                 res.end();
             },
             error: (e) => {
-                const errorPayload = JSON.stringify({
-                    error: true,
-                    message: e || 'Error desconocido',
-                });
-                res.write(`${errorPayload}`);
+                res.write(`${JSON.stringify(e)}`);
                 res.end();
             },
         });
@@ -53,7 +50,10 @@ let ChatController = class ChatController {
 };
 exports.ChatController = ChatController;
 __decorate([
-    (0, common_1.Post)('/send-query'),
+    (0, common_1.Post)('/send'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Envía un mensaje y devuelve una respuesta en tiempo real',
+    }),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Res)()),
     __param(1, (0, common_1.Req)()),
@@ -61,7 +61,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object, request_chat_dto_1.RequestChatDto]),
     __metadata("design:returntype", void 0)
-], ChatController.prototype, "sendQueryGemini", null);
+], ChatController.prototype, "send", null);
 exports.ChatController = ChatController = __decorate([
     (0, common_1.Controller)('chat'),
     __metadata("design:paramtypes", [chat_service_1.ChatService])

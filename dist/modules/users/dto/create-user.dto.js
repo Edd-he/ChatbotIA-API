@@ -15,21 +15,21 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class CreateUserDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { dni: { required: true, type: () => String, minLength: 8, maxLength: 8 }, email: { required: true, type: () => String, format: "email" }, password: { required: true, type: () => String, minLength: 8, maxLength: 20 }, is_active: { required: true, type: () => Boolean } };
+        return { dni: { required: true, type: () => String, minLength: 8, maxLength: 8 }, email: { required: true, type: () => String, format: "email" }, password: { required: true, type: () => String, minLength: 8, maxLength: 20 }, is_active: { required: false, type: () => Boolean } };
     }
 }
 exports.CreateUserDto = CreateUserDto;
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsString)({ message: 'El DNI debe ser una cadena de texto' }),
     (0, class_validator_1.Length)(8, 8, { message: 'El DNI debe tener exactamente 8 caracteres.' }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "dni", void 0);
 __decorate([
-    (0, class_validator_1.IsEmail)({}, { message: 'El correo electrónico no es válido.' }),
+    (0, class_validator_1.IsEmail)({}, { message: 'El correo electrónico debe ser uno válido' }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "email", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsString)({ message: 'El DNI debe ser una cadena de texto' }),
     (0, class_validator_1.Length)(8, 20, {
         message: 'La contraseña debe tener entre 8 y 20 caracteres.',
     }),
@@ -37,7 +37,7 @@ __decorate([
 ], CreateUserDto.prototype, "password", void 0);
 __decorate([
     (0, class_transformer_1.Type)(() => Boolean),
-    (0, class_validator_1.IsBoolean)({ message: 'El estado is_active debe ser un valor booleano.' }),
+    (0, class_validator_1.IsBoolean)({ message: 'El estado "is_active" debe ser un valor booleano.' }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Boolean)
 ], CreateUserDto.prototype, "is_active", void 0);

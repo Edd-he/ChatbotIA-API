@@ -44,6 +44,7 @@ let TopicsController = class TopicsController {
 exports.TopicsController = TopicsController;
 __decorate([
     (0, common_1.Post)('create-topic'),
+    (0, swagger_1.ApiOperation)({ summary: 'Crea un tópico' }),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -52,6 +53,7 @@ __decorate([
 ], TopicsController.prototype, "createTopic", null);
 __decorate([
     (0, common_1.Get)('get-all-topics'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtiene todos los Tópicos' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -60,6 +62,7 @@ __decorate([
 ], TopicsController.prototype, "getAllTopics", null);
 __decorate([
     (0, common_1.Get)(':topicId/get-topic'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtiene un solo tópico' }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('topicId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),
@@ -68,6 +71,7 @@ __decorate([
 ], TopicsController.prototype, "getTopic", null);
 __decorate([
     (0, common_1.Patch)(':topicId/update-topic'),
+    (0, swagger_1.ApiOperation)({ summary: 'Actualiza la información de un tópico' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('topicId', validate_uuid_pipe_1.ValidateUUID)),
     __param(1, (0, common_1.Body)()),
@@ -77,6 +81,7 @@ __decorate([
 ], TopicsController.prototype, "updateTopic", null);
 __decorate([
     (0, common_1.Delete)(':topicId/remove-topic'),
+    (0, swagger_1.ApiOperation)({ summary: 'Archiva un tópico' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('topicId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),

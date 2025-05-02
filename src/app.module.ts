@@ -10,7 +10,7 @@ import { CloudinaryModule } from './providers/cloudinary/cloudinary.module';
 import { GeminiAIModule } from './providers/gemini-ai/gemini-ai.module';
 import { TopicsModule } from './modules/topics/topics.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { GeminiChatRunnerModule } from './modules/gemini-chat-runner/gemini-runner.module';
+import { GeminiChatRunnerModule } from './modules/gemini-chat-runner/gemini-chat-runner.module';
 import { ConversationsModule } from './modules/conversations/conversations.module';
 import { ReniecModule } from '@providers/reniec/reniec.module';
 import { DocumentsModule } from './modules/documents/documents.module';

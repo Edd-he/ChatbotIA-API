@@ -28,6 +28,7 @@ let ConversationsService = class ConversationsService {
                 return newConversation;
         }
         catch (e) {
+            console.log(e);
             if (e.code) {
                 throw new prisma_exception_1.PrismaException(e);
             }

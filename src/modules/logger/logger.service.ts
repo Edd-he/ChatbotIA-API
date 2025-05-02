@@ -18,7 +18,6 @@ export class LoggerService {
   }
 
   async createEntityLog(user: IUserSession, entity: Entity, entity_id: string) {
-    console.log(user);
     try {
       await this.db.log.create({
         data: {

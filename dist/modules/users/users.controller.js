@@ -27,6 +27,7 @@ const public_decorator_1 = require("../auth/decorators/public.decorator");
 const validate_dni_pipe_1 = require("./pipes/validate-dni.pipe");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const logger_events_interfaces_1 = require("../events/logger/logger-events.interfaces");
+const swagger_2 = require("@nestjs/swagger");
 let UsersController = class UsersController {
     constructor(usersService, eventEmitter) {
         this.usersService = usersService;
@@ -69,6 +70,9 @@ let UsersController = class UsersController {
 exports.UsersController = UsersController;
 __decorate([
     (0, common_1.Post)('create-user'),
+    (0, swagger_2.ApiOperation)({
+        summary: 'Crea un usuario del sistema',
+    }),
     openapi.ApiResponse({ status: 201 }),
     __param(0, (0, user_session_decorator_1.UserSession)()),
     __param(1, (0, common_1.Body)()),
@@ -78,6 +82,9 @@ __decorate([
 ], UsersController.prototype, "createUser", null);
 __decorate([
     (0, common_1.Get)('get-all-users'),
+    (0, swagger_2.ApiOperation)({
+        summary: 'Obtiene todos los usuarios',
+    }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -87,6 +94,9 @@ __decorate([
 __decorate([
     (0, public_decorator_1.PublicAccess)(),
     (0, common_1.Get)(':userDni/verify-DNI'),
+    (0, swagger_2.ApiOperation)({
+        summary: 'Verifica el dni de un usuario',
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('userDni', validate_dni_pipe_1.ValidateDNI)),
     __metadata("design:type", Function),
@@ -95,6 +105,9 @@ __decorate([
 ], UsersController.prototype, "verifyDni", null);
 __decorate([
     (0, common_1.Get)(':userId/get-user'),
+    (0, swagger_2.ApiOperation)({
+        summary: 'Obtiene un usuario',
+    }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('userId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),
@@ -103,6 +116,9 @@ __decorate([
 ], UsersController.prototype, "getOneUser", null);
 __decorate([
     (0, common_1.Patch)(':userId/update-user'),
+    (0, swagger_2.ApiOperation)({
+        summary: 'Actualiza la información de un usuario',
+    }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('userId', validate_uuid_pipe_1.ValidateUUID)),
     __param(1, (0, user_session_decorator_1.UserSession)()),
@@ -113,6 +129,9 @@ __decorate([
 ], UsersController.prototype, "updateUser", null);
 __decorate([
     (0, common_1.Delete)(':userId/remove-user'),
+    (0, swagger_2.ApiOperation)({
+        summary: 'Archiva un usuario',
+    }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('userId', validate_uuid_pipe_1.ValidateUUID)),
     __param(1, (0, user_session_decorator_1.UserSession)()),

@@ -115,5 +115,5 @@ enum Entity {
 
 enum ConversationStatus {
   ACTIVE
-  COMPLETED
+  CLOSED
 }

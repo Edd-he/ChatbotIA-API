@@ -5,9 +5,9 @@ export declare class ConversationsController {
     constructor(conversationsService: ConversationsService);
     getAllConversations(query: RangeDateQueryParams): Promise<{
         title: string | null;
-        status: import(".prisma/client").$Enums.ConversationStatus;
         id: string;
         created_at: Date;
+        status: import(".prisma/client").$Enums.ConversationStatus;
         completed_at: Date | null;
         total_tokens: number;
     }[]>;
@@ -26,9 +26,9 @@ export declare class ConversationsController {
         }[];
     } & {
         title: string | null;
-        status: import(".prisma/client").$Enums.ConversationStatus;
         id: string;
         created_at: Date;
+        status: import(".prisma/client").$Enums.ConversationStatus;
         completed_at: Date | null;
         total_tokens: number;
     }>;

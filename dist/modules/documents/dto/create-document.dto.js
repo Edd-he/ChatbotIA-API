@@ -15,30 +15,35 @@ const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class CreateDocumentDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { topic_id: { required: true, type: () => String, format: "uuid" }, name: { required: true, type: () => String }, description: { required: true, type: () => String }, tags: { required: true, type: () => [String] }, is_active: { required: true, type: () => Boolean } };
+        return { topic_id: { required: true, type: () => String, format: "uuid" }, name: { required: true, type: () => String, minLength: 3, maxLength: 100 }, description: { required: true, type: () => String }, tags: { required: true, type: () => [String] }, is_active: { required: true, type: () => Boolean } };
     }
 }
 exports.CreateDocumentDto = CreateDocumentDto;
 __decorate([
-    (0, class_validator_1.IsUUID)(7),
+    (0, class_validator_1.IsUUID)(7, {
+        message: 'El ID de la conversacion debe ser un UUID version 7 ',
+    }),
     __metadata("design:type", String)
 ], CreateDocumentDto.prototype, "topic_id", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.Length)(3, 100, {
+        message: 'El nombre del documento debe tener de 3 a 100 caracteres',
+    }),
+    (0, class_validator_1.IsString)({ message: 'el nombre del documento debe ser una cadena de texto' }),
     __metadata("design:type", String)
 ], CreateDocumentDto.prototype, "name", void 0);
 __decorate([
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsString)({ message: 'el nombre del documento debe ser una cadena de texto' }),
     __metadata("design:type", String)
 ], CreateDocumentDto.prototype, "description", void 0);
 __decorate([
-    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsArray)({ message: 'Los tags deben  ser un array de strings' }),
     (0, class_validator_1.IsString)({ each: true }),
     __metadata("design:type", Array)
 ], CreateDocumentDto.prototype, "tags", void 0);
 __decorate([
     (0, class_transformer_1.Type)(() => Boolean),
-    (0, class_validator_1.IsBoolean)({ message: 'El estado is_active debe ser un valor booleano.' }),
+    (0, class_validator_1.IsBoolean)({ message: 'El estado "is_active" debe ser un valor booleano.' }),
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Boolean)
 ], CreateDocumentDto.prototype, "is_active", void 0);

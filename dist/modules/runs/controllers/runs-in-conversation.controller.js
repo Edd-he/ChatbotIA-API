@@ -17,6 +17,7 @@ const openapi = require("@nestjs/swagger");
 const validate_uuid_pipe_1 = require("../../../common/pipes/validate-uuid.pipe");
 const common_1 = require("@nestjs/common");
 const runs_service_1 = require("../runs.service");
+const swagger_1 = require("@nestjs/swagger");
 let RunsInConversationController = class RunsInConversationController {
     constructor(runsService) {
         this.runsService = runsService;
@@ -28,6 +29,7 @@ let RunsInConversationController = class RunsInConversationController {
 exports.RunsInConversationController = RunsInConversationController;
 __decorate([
     (0, common_1.Get)(':conversationId/runs/get-runs-by-conversation'),
+    (0, swagger_1.ApiOperation)({ summary: 'Obiene todas las ejecuciones de una conversacion' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Param)('conversationId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),

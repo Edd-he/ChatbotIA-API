@@ -14,7 +14,7 @@ const openapi = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class CreateConversationDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String, format: "uuid" }, tittle: { required: false, type: () => String, minLength: 2, maxLength: 100 } };
+        return { id: { required: true, type: () => String, format: "uuid" }, title: { required: false, type: () => String, minLength: 2, maxLength: 100 } };
     }
 }
 exports.CreateConversationDto = CreateConversationDto;
@@ -29,5 +29,5 @@ __decorate([
     (0, class_validator_1.Length)(2, 100, { message: 'El titulo no debe superar los 100 carácteres' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
-], CreateConversationDto.prototype, "tittle", void 0);
+], CreateConversationDto.prototype, "title", void 0);
 //# sourceMappingURL=create-conversation.dto.js.map

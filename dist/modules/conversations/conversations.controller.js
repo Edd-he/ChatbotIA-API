@@ -33,6 +33,9 @@ let ConversationsController = class ConversationsController {
 exports.ConversationsController = ConversationsController;
 __decorate([
     (0, common_1.Get)('get-all-conversations'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Obtiene todas las conversaciones generadas en el sistema',
+    }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -41,6 +44,9 @@ __decorate([
 ], ConversationsController.prototype, "getAllConversations", null);
 __decorate([
     (0, common_1.Get)(':conversationId/get-conversation'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Obtiene una conversación junto a sus ejecuciones generadas',
+    }),
     openapi.ApiResponse({ status: 200, type: Object }),
     __param(0, (0, common_1.Param)('conversationId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),

@@ -15,42 +15,50 @@ const gemini_ai_service_1 = require("../../providers/gemini-ai/gemini-ai.service
 const rxjs_1 = require("rxjs");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const gemini_ai_run_entity_1 = require("../../providers/gemini-ai/entities/gemini-ai-run.entity");
-const run_events_interfaces_1 = require("../events/run-events/run-events.interfaces");
 const gemini_ai_models_enum_1 = require("../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
 const instructions_const_1 = require("./constants/instructions.const");
+const runs_service_1 = require("../runs/runs.service");
+const run_events_interfaces_1 = require("../events/run-events/run-events.interfaces");
 let GeminiChatRunnerService = class GeminiChatRunnerService {
-    constructor(gemini, eventEmitter) {
+    constructor(gemini, eventEmitter, runService) {
         this.gemini = gemini;
         this.eventEmitter = eventEmitter;
+        this.runService = runService;
     }
-    streamResponse(conversation_id, query) {
+    streamChatResponse(conversation_id, message) {
         return new rxjs_1.Observable((subscriber) => {
-            const dataStream = this.gemini.streamQuery(query, gemini_ai_models_enum_1.GeminiModel.GEMINI_2_0_FLASH, instructions_const_1.ASSISTANT_INSTRUCTION);
-            let previousChunk = null;
-            let lastChunk = null;
-            dataStream.subscribe({
-                next: (data) => {
-                    if (previousChunk !== null) {
-                        subscriber.next(previousChunk);
-                    }
-                    previousChunk = data;
-                    lastChunk = data;
-                },
-                error: async (e) => {
-                    const { metadata, error } = JSON.parse(e);
-                    this.emitOnRunExecutedvent(metadata, conversation_id);
-                    subscriber.error(error.message);
-                    subscriber.complete();
-                },
-                complete: async () => {
-                    const metadata = JSON.parse(lastChunk);
-                    this.emitOnRunExecutedvent(metadata, conversation_id);
-                    subscriber.complete();
-                },
+            this.runService
+                .getAllByConversation(conversation_id)
+                .then((result) => {
+                const historial = this.mapRunsToHistory(result);
+                const stream = this.gemini.streamChatMessage(historial, message, gemini_ai_models_enum_1.GeminiModels.GEMINI_2_0_FLASH, instructions_const_1.ASSISTANT_INSTRUCTION);
+                let previousChunk = null;
+                let lastChunk = null;
+                stream.subscribe({
+                    next: (data) => {
+                        if (previousChunk !== null)
+                            subscriber.next(previousChunk);
+                        previousChunk = data;
+                        lastChunk = data;
+                    },
+                    error: async (e) => {
+                        const { metadata, error } = JSON.parse(e);
+                        this.handleRunExecutedEvent(metadata, conversation_id);
+                        subscriber.error(error);
+                    },
+                    complete: async () => {
+                        const metadata = JSON.parse(lastChunk);
+                        this.handleRunExecutedEvent(metadata, conversation_id);
+                        subscriber.complete();
+                    },
+                });
+            })
+                .catch((e) => {
+                subscriber.error(e);
             });
         });
     }
-    emitOnRunExecutedvent(GeminiRunMetaDataRaw, conversation_id) {
+    handleRunExecutedEvent(GeminiRunMetaDataRaw, conversation_id) {
         const metadata = Object.assign(new gemini_ai_run_entity_1.GeminiRunData(), GeminiRunMetaDataRaw);
         const dto = metadata.toCreateDto(conversation_id);
         const runExecutedEvent = {
@@ -58,11 +66,25 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
         };
         this.eventEmitter.emit(run_events_interfaces_1.RunEvents.ON_RUN_EXECUTED_EVENT, runExecutedEvent);
     }
+    mapRunsToHistory(runs) {
+        const historial = runs.flatMap((run) => [
+            {
+                role: 'user',
+                parts: [{ text: run.input }],
+            },
+            {
+                role: 'model',
+                parts: [{ text: run.output }],
+            },
+        ]);
+        return historial;
+    }
 };
 exports.GeminiChatRunnerService = GeminiChatRunnerService;
 exports.GeminiChatRunnerService = GeminiChatRunnerService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [gemini_ai_service_1.GeminiAIService,
-        event_emitter_1.EventEmitter2])
+        event_emitter_1.EventEmitter2,
+        runs_service_1.RunsService])
 ], GeminiChatRunnerService);
-//# sourceMappingURL=gemini-runner.service.js.map
+//# sourceMappingURL=gemini-chat-runner.service.js.map

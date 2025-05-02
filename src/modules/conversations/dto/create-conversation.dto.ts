@@ -9,5 +9,5 @@ export class CreateConversationDto {
   @IsOptional()
   @Length(2, 100, { message: 'El titulo no debe superar los 100 carácteres' })
   @IsString()
-  tittle?: string;
+  title?: string;
 }

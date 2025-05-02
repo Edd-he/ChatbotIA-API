@@ -15,19 +15,33 @@ const runs_service_1 = require("../../runs/runs.service");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const run_events_interfaces_1 = require("./run-events.interfaces");
+const gemini_ai_service_1 = require("../../../providers/gemini-ai/gemini-ai.service");
+const gemini_ai_models_enum_1 = require("../../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
 let OnRunExecuteHandler = class OnRunExecuteHandler {
-    constructor(events, runsService, conversationsService) {
+    constructor(events, runsService, conversationsService, ai) {
         this.events = events;
         this.runsService = runsService;
         this.conversationsService = conversationsService;
+        this.ai = ai;
     }
     async handleCreated(payload) {
         const conversation = await this.conversationsService.getOne(payload.conversation_id);
         if (!conversation) {
-            await this.conversationsService.create({ id: payload.conversation_id });
+            const title = await this.generateTittle(payload.input);
+            await this.conversationsService.create({
+                id: payload.conversation_id,
+                title,
+            });
         }
         await this.runsService.create(payload);
         await this.conversationsService.updateTotalTokens(payload.conversation_id, payload.tokens);
+    }
+    async generateTittle(input) {
+        const response = await this.ai.getResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH, `- generarás un título basado en el primer mensaje con el que el usuario inicia una conversación
+      - asegúrate de que no tenga más de 90 caracteres
+      - el título debe ser un resumen del mensaje del usuario
+      - no uses comillas ni dos puntos`, [input]);
+        return response;
     }
 };
 exports.OnRunExecuteHandler = OnRunExecuteHandler;
@@ -41,6 +55,7 @@ exports.OnRunExecuteHandler = OnRunExecuteHandler = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
         runs_service_1.RunsService,
-        conversations_service_1.ConversationsService])
+        conversations_service_1.ConversationsService,
+        gemini_ai_service_1.GeminiAIService])
 ], OnRunExecuteHandler);
 //# sourceMappingURL=on-run-execute.js.map

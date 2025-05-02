@@ -26,7 +26,6 @@ let LoggerService = class LoggerService {
         });
     }
     async createEntityLog(user, entity, entity_id) {
-        console.log(user);
         try {
             await this.db.log.create({
                 data: {

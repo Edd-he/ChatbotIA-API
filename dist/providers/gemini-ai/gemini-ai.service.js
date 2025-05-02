@@ -18,16 +18,27 @@ let GeminiAIService = class GeminiAIService {
     constructor(genAI) {
         this.genAI = genAI;
     }
-    streamQuery(query, geminiModel, contextInstructions) {
-        const model = this.genAI.getGenerativeModel({
+    generateModel(geminiModel, context) {
+        return this.genAI.getGenerativeModel({
             model: geminiModel,
-            systemInstruction: contextInstructions,
-            generationConfig: {
-                temperature: 1,
-            },
+            systemInstruction: context,
+            generationConfig: { temperature: 1 },
         });
+    }
+    handleStreamError(observer, run, message, statusCode) {
+        run.setError(message);
+        observer.error(JSON.stringify({
+            error: {
+                ok: false,
+                message,
+                statusCode,
+            },
+            metadata: run.finish(),
+        }));
+    }
+    stream(query, geminiModel, contextInstructions) {
+        const model = this.generateModel(geminiModel, contextInstructions);
         return new rxjs_1.Observable((observer) => {
-            let errorDetails = null;
             const run = new gemini_ai_run_entity_1.GeminiRunData();
             run.setInput(query);
             run.setModel(model.model);
@@ -40,36 +51,54 @@ let GeminiAIService = class GeminiAIService {
                         run.addChunk(text);
                         observer.next(text);
                     }
-                    run.setTokens((await result.response).usageMetadata.totalTokenCount);
+                    const response = await result.response;
+                    run.setTokens(response.usageMetadata.totalTokenCount);
                     observer.next(JSON.stringify(run.finish()));
                     observer.complete();
                 }
                 catch (e) {
-                    errorDetails = `Error en el flujo del stream: ${e.message}`;
-                    run.setError(errorDetails);
-                    observer.error(JSON.stringify({
-                        error: {
-                            message: errorDetails,
-                            statusCode: common_1.HttpStatus.INTERNAL_SERVER_ERROR,
-                        },
-                        metadata: run.finish(),
-                    }));
-                    observer.complete();
+                    this.handleStreamError(observer, run, `Error en el flujo del stream: ${e.message}`, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             })
                 .catch((e) => {
-                errorDetails = `Error en la llamada al modelo de Google: ${e.statusText}`;
-                run.setError(errorDetails);
-                observer.error(JSON.stringify({
-                    error: {
-                        message: errorDetails,
-                        statusCode: common_1.HttpStatus.SERVICE_UNAVAILABLE,
-                    },
-                    metadata: run.finish(),
-                }));
-                observer.complete();
+                this.handleStreamError(observer, run, `Error en la llamada al modelo de Google: ${e.statusText || e.message}`, common_1.HttpStatus.SERVICE_UNAVAILABLE);
             });
         });
+    }
+    streamChatMessage(history, message, geminiModel, contextInstructions) {
+        const model = this.generateModel(geminiModel, contextInstructions);
+        const chat = model.startChat({ history });
+        return new rxjs_1.Observable((observer) => {
+            const run = new gemini_ai_run_entity_1.GeminiRunData();
+            run.setInput(message);
+            run.setModel(model.model);
+            chat
+                .sendMessageStream([message])
+                .then(async (result) => {
+                try {
+                    for await (const chunk of result.stream) {
+                        const text = chunk.text();
+                        run.addChunk(text);
+                        observer.next(text);
+                    }
+                    const response = await result.response;
+                    run.setTokens(response.usageMetadata.totalTokenCount);
+                    observer.next(JSON.stringify(run.finish()));
+                    observer.complete();
+                }
+                catch (e) {
+                    this.handleStreamError(observer, run, `Error en el flujo del stream: ${e.message}`, common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            })
+                .catch((e) => {
+                this.handleStreamError(observer, run, `Error en la llamada al modelo de Google: ${e.statusText || e.message}`, common_1.HttpStatus.SERVICE_UNAVAILABLE);
+            });
+        });
+    }
+    async getResponse(GeminiModel, context, query) {
+        const model = this.generateModel(GeminiModel, context);
+        const { response } = await model.generateContent(query);
+        return response.text();
     }
 };
 exports.GeminiAIService = GeminiAIService;
