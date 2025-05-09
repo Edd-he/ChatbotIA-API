@@ -7,7 +7,7 @@ import { ApiOperation } from '@nestjs/swagger';
 export class RunsController {
   constructor(private readonly runsService: RunsService) {}
 
-  @Get('runs/get-all-runs')
+  @Get('/get-all-runs')
   @ApiOperation({ summary: 'Obiene todas las ejecuciones' })
   getAllruns(@Query() query: RangeDateQueryParams) {
     return this.runsService.getAll(query);

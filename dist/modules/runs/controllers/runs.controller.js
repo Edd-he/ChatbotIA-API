@@ -32,7 +32,7 @@ let RunsController = class RunsController {
 };
 exports.RunsController = RunsController;
 __decorate([
-    (0, common_1.Get)('runs/get-all-runs'),
+    (0, common_1.Get)('/get-all-runs'),
     (0, swagger_1.ApiOperation)({ summary: 'Obiene todas las ejecuciones' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Query)()),
