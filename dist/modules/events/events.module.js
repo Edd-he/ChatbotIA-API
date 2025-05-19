@@ -11,6 +11,8 @@ const common_1 = require("@nestjs/common");
 const conversations_module_1 = require("../conversations/conversations.module");
 const runs_module_1 = require("../runs/runs.module");
 const logger_module_1 = require("../logger/logger.module");
+const topics_module_1 = require("../topics/topics.module");
+const documents_module_1 = require("../documents/documents.module");
 const on_run_execute_1 = require("./run-events/on-run-execute");
 const entity_archived_log_handler_1 = require("./logger/entity-archived-log.handler");
 const entity_created_log_handler_1 = require("./logger/entity-created-log.handler");
@@ -28,7 +30,13 @@ exports.EventsModule = EventsModule = __decorate([
             entity_created_log_handler_1.EntityCreatedLogHandler,
             entity_updated_log_handler_1.EntityUpdatedLogHandler,
         ],
-        imports: [conversations_module_1.ConversationsModule, runs_module_1.RunsModule, logger_module_1.LoggerModule],
+        imports: [
+            conversations_module_1.ConversationsModule,
+            runs_module_1.RunsModule,
+            logger_module_1.LoggerModule,
+            documents_module_1.DocumentsModule,
+            topics_module_1.TopicsModule,
+        ],
     })
 ], EventsModule);
 //# sourceMappingURL=events.module.js.map

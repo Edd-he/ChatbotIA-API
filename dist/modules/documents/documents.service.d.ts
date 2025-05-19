@@ -16,12 +16,12 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: Prisma.Decimal;
-        is_archived: boolean;
     }>;
     getAll({ page, page_size, status, query }: SearchStatusQueryParamsDto): Promise<{
         description: string;
@@ -29,12 +29,12 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: Prisma.Decimal;
-        is_archived: boolean;
     }[]>;
     getAllByTopic(topicId: string): Promise<{
         description: string;
@@ -42,12 +42,12 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: Prisma.Decimal;
-        is_archived: boolean;
     }[]>;
     getOne(id: string): Promise<{
         description: string;
@@ -55,12 +55,12 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: Prisma.Decimal;
-        is_archived: boolean;
     }>;
     update(id: string, updateDocumentDto: UpdateDocumentDto): Promise<{
         description: string;
@@ -68,12 +68,12 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: Prisma.Decimal;
-        is_archived: boolean;
     }>;
     remove(id: string): Promise<{
         description: string;
@@ -81,11 +81,11 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: Prisma.Decimal;
-        is_archived: boolean;
     }>;
 }

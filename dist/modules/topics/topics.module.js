@@ -15,6 +15,7 @@ let TopicsModule = class TopicsModule {
 exports.TopicsModule = TopicsModule;
 exports.TopicsModule = TopicsModule = __decorate([
     (0, common_1.Module)({
+        exports: [topics_service_1.TopicsService],
         controllers: [topics_controller_1.TopicsController],
         providers: [topics_service_1.TopicsService],
     })

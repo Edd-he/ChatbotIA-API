@@ -11,8 +11,8 @@ export declare class TopicsController {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
@@ -22,8 +22,8 @@ export declare class TopicsController {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }[]>;
@@ -34,12 +34,12 @@ export declare class TopicsController {
             created_at: Date;
             name: string;
             tags: string[];
-            topic_id: string;
             is_active: boolean;
+            is_archived: boolean;
             updated_at: Date;
             url: string;
+            topic_id: string;
             size: import("@prisma/client/runtime/library").Decimal;
-            is_archived: boolean;
         }[];
     } & {
         description: string | null;
@@ -47,8 +47,8 @@ export declare class TopicsController {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
@@ -58,8 +58,8 @@ export declare class TopicsController {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
@@ -69,8 +69,8 @@ export declare class TopicsController {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;

@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common'
 import { ConversationsModule } from '@modules/conversations/conversations.module'
 import { RunsModule } from '@modules/runs/runs.module'
 import { LoggerModule } from '@modules/logger/logger.module'
+import { TopicsModule } from '@modules/topics/topics.module'
+import { DocumentsModule } from '@modules/documents/documents.module'
 
 import { OnRunExecuteHandler } from './run-events/on-run-execute'
 import { EntityArchivedLogHandler } from './logger/entity-archived-log.handler'
@@ -17,6 +19,12 @@ import { OnDocumentCreatedHandler } from './document-events/on-document-created'
     EntityCreatedLogHandler,
     EntityUpdatedLogHandler,
   ],
-  imports: [ConversationsModule, RunsModule, LoggerModule],
+  imports: [
+    ConversationsModule,
+    RunsModule,
+    LoggerModule,
+    DocumentsModule,
+    TopicsModule,
+  ],
 })
 export class EventsModule {}

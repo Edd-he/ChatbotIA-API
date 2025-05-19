@@ -12,8 +12,8 @@ export declare class TopicsService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;
@@ -23,8 +23,8 @@ export declare class TopicsService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }[]>;
@@ -35,12 +35,12 @@ export declare class TopicsService {
             created_at: Date;
             name: string;
             tags: string[];
-            topic_id: string;
             is_active: boolean;
+            is_archived: boolean;
             updated_at: Date;
             url: string;
+            topic_id: string;
             size: Prisma.Decimal;
-            is_archived: boolean;
         }[];
     } & {
         description: string | null;
@@ -48,8 +48,8 @@ export declare class TopicsService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;
@@ -59,8 +59,8 @@ export declare class TopicsService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;
@@ -70,8 +70,8 @@ export declare class TopicsService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;
@@ -81,8 +81,8 @@ export declare class TopicsService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;

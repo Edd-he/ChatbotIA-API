@@ -16,6 +16,7 @@ let DocumentsModule = class DocumentsModule {
 exports.DocumentsModule = DocumentsModule;
 exports.DocumentsModule = DocumentsModule = __decorate([
     (0, common_1.Module)({
+        exports: [documents_service_1.DocumentsService],
         controllers: [documents_controller_1.DocumentsController, documents_in_topic_controller_1.DocumentsInTopicController],
         providers: [documents_service_1.DocumentsService],
     })

@@ -10,12 +10,12 @@ export declare class DocumentsController {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: import("@prisma/client/runtime/library").Decimal;
-        is_archived: boolean;
     }[]>;
     getOneDocument(documentId: string): Promise<{
         description: string;
@@ -23,12 +23,12 @@ export declare class DocumentsController {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: import("@prisma/client/runtime/library").Decimal;
-        is_archived: boolean;
     }>;
     updateDocument(id: string, updateDocumentDto: UpdateDocumentDto): Promise<{
         description: string;
@@ -36,12 +36,12 @@ export declare class DocumentsController {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: import("@prisma/client/runtime/library").Decimal;
-        is_archived: boolean;
     }>;
     removeDocument(documentId: string): Promise<{
         description: string;
@@ -49,11 +49,11 @@ export declare class DocumentsController {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: import("@prisma/client/runtime/library").Decimal;
-        is_archived: boolean;
     }>;
 }

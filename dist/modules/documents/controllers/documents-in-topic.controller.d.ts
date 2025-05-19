@@ -9,12 +9,12 @@ export declare class DocumentsInTopicController {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: import("@prisma/client/runtime/library").Decimal;
-        is_archived: boolean;
     }>;
     getAllDocumentsByTopic(topicId: string): Promise<{
         description: string;
@@ -22,11 +22,11 @@ export declare class DocumentsInTopicController {
         created_at: Date;
         name: string;
         tags: string[];
-        topic_id: string;
         is_active: boolean;
+        is_archived: boolean;
         updated_at: Date;
         url: string;
+        topic_id: string;
         size: import("@prisma/client/runtime/library").Decimal;
-        is_archived: boolean;
     }[]>;
 }

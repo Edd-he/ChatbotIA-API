@@ -13,8 +13,8 @@ export declare class UsersService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         dni: string;
         email: string;
         password: string;
@@ -26,8 +26,8 @@ export declare class UsersService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         dni: string;
         email: string;
         last_name: string;
@@ -61,8 +61,8 @@ export declare class UsersService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         dni: string;
         email: string;
         password: string;
@@ -74,8 +74,8 @@ export declare class UsersService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
         is_archived: boolean;
+        updated_at: Date;
         dni: string;
         email: string;
         password: string;
