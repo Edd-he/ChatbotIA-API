@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const chat_service_1 = require("./chat.service");
 const request_chat_dto_1 = require("./dto/request-chat.dto");
-const swagger_1 = require("@nestjs/swagger");
 let ChatController = class ChatController {
     constructor(chatService) {
         this.chatService = chatService;

@@ -1,8 +1,8 @@
-import { IUserSession } from '@modules/auth/interfaces/user-session.interface';
+import { IUserSession } from '@modules/auth/interfaces/user-session.interface'
 
 export interface EntityOperationEvent {
-  session: IUserSession;
-  entityId: string;
+  session: IUserSession
+  entityId: string
 }
 
 export enum LoggerEvents {

@@ -7,13 +7,14 @@ import {
   Param,
   Delete,
   Query,
-} from '@nestjs/common';
-import { TopicsService } from './topics.service';
-import { CreateTopicDto } from './dto/create-topic.dto';
-import { UpdateTopicDto } from './dto/update-topic.dto';
-import { ValidateUUID } from '@common/pipes/validate-uuid.pipe';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
+} from '@nestjs/common'
+import { ValidateUUID } from '@common/pipes/validate-uuid.pipe'
+import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params'
+
+import { TopicsService } from './topics.service'
+import { CreateTopicDto } from './dto/create-topic.dto'
+import { UpdateTopicDto } from './dto/update-topic.dto'
 
 @ApiTags('Topics')
 @Controller('topics')
@@ -23,19 +24,19 @@ export class TopicsController {
   @Post('create-topic')
   @ApiOperation({ summary: 'Crea un tópico' })
   createTopic(@Body() createTopicDto: CreateTopicDto) {
-    return this.topicsService.create(createTopicDto);
+    return this.topicsService.create(createTopicDto)
   }
 
   @Get('get-all-topics')
   @ApiOperation({ summary: 'Obtiene todos los Tópicos' })
   getAllTopics(@Query() query: SearchStatusQueryParamsDto) {
-    return this.topicsService.getAll(query);
+    return this.topicsService.getAll(query)
   }
 
   @Get(':topicId/get-topic')
   @ApiOperation({ summary: 'Obtiene un solo tópico' })
   getTopic(@Param('topicId', ValidateUUID) topicId: string) {
-    return this.topicsService.getOneWithDocuments(topicId);
+    return this.topicsService.getOneWithDocuments(topicId)
   }
 
   @Patch(':topicId/update-topic')
@@ -44,12 +45,12 @@ export class TopicsController {
     @Param('topicId', ValidateUUID) topicId: string,
     @Body() updateTopicDto: UpdateTopicDto,
   ) {
-    return this.topicsService.update(topicId, updateTopicDto);
+    return this.topicsService.update(topicId, updateTopicDto)
   }
 
   @Delete(':topicId/remove-topic')
   @ApiOperation({ summary: 'Archiva un tópico' })
   removeTopic(@Param('topicId', ValidateUUID) topicId: string) {
-    return this.topicsService.remove(topicId);
+    return this.topicsService.remove(topicId)
   }
 }

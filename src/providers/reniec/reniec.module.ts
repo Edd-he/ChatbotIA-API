@@ -1,6 +1,7 @@
-import { Global, Module } from '@nestjs/common';
-import { HttpModule } from '@nestjs/axios';
-import { ReniecService } from './reniec.service';
+import { Global, Module } from '@nestjs/common'
+import { HttpModule } from '@nestjs/axios'
+
+import { ReniecService } from './reniec.service'
 
 @Global()
 @Module({

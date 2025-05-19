@@ -10,11 +10,12 @@ exports.EventsModule = void 0;
 const common_1 = require("@nestjs/common");
 const conversations_module_1 = require("../conversations/conversations.module");
 const runs_module_1 = require("../runs/runs.module");
-const on_run_execute_1 = require("./run-events/on-run-execute");
 const logger_module_1 = require("../logger/logger.module");
+const on_run_execute_1 = require("./run-events/on-run-execute");
 const entity_archived_log_handler_1 = require("./logger/entity-archived-log.handler");
 const entity_created_log_handler_1 = require("./logger/entity-created-log.handler");
 const entity_updated_log_handler_1 = require("./logger/entity-updated-log.handler");
+const on_document_created_1 = require("./document-events/on-document-created");
 let EventsModule = class EventsModule {
 };
 exports.EventsModule = EventsModule;
@@ -22,6 +23,7 @@ exports.EventsModule = EventsModule = __decorate([
     (0, common_1.Module)({
         providers: [
             on_run_execute_1.OnRunExecuteHandler,
+            on_document_created_1.OnDocumentCreatedHandler,
             entity_archived_log_handler_1.EntityArchivedLogHandler,
             entity_created_log_handler_1.EntityCreatedLogHandler,
             entity_updated_log_handler_1.EntityUpdatedLogHandler,

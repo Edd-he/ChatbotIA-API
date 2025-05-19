@@ -13,11 +13,11 @@ exports.StackAIService = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
 const rxjs_1 = require("rxjs");
+const FormData = require("form-data");
 const stack_ai_base_url_1 = require("./constants/stack-ai-base-url");
 const flow_id_reference_1 = require("./constants/flow-id-reference");
 const organization_id_reference_1 = require("./constants/organization-id-reference");
 const api_keys_1 = require("./constants/api-keys");
-const FormData = require("form-data");
 let StackAIService = class StackAIService {
     constructor(httpService) {
         this.httpService = httpService;

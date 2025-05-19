@@ -1,9 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { UsersService } from '@modules/users/users.service';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
-import { SignInDto } from './dto/signIn.dto';
-import { IUserSession } from '@auth/interfaces/user-session.interface';
+import { Injectable, UnauthorizedException } from '@nestjs/common'
+import { UsersService } from '@modules/users/users.service'
+import { JwtService } from '@nestjs/jwt'
+import * as bcrypt from 'bcryptjs'
+import { IUserSession } from '@auth/interfaces/user-session.interface'
+
+import { SignInDto } from './dto/signIn.dto'
 
 @Injectable()
 export class AuthService {
@@ -15,21 +16,21 @@ export class AuthService {
   async register() {}
 
   async signIn({ email, password }: SignInDto) {
-    const user = await this.userService.getOneByEmail(email);
+    const user = await this.userService.getOneByEmail(email)
     if (!user) {
-      throw new UnauthorizedException('El usuario no existe');
+      throw new UnauthorizedException('El usuario no existe')
     }
 
-    const match = await bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(password, user.password)
 
-    if (!match) throw new UnauthorizedException('La contraseña es incorrecta');
+    if (!match) throw new UnauthorizedException('La contraseña es incorrecta')
 
     const payload: IUserSession = {
       id: user.id,
       username: user.name + ' ' + user.last_name,
       email: user.email,
       role: user.role,
-    };
+    }
 
     return {
       user: payload,
@@ -43,7 +44,7 @@ export class AuthService {
           expiresIn: '7d',
         }),
       },
-    };
+    }
   }
 
   async signOut() {}
@@ -54,7 +55,7 @@ export class AuthService {
       username: user.username,
       email: user.email,
       role: user.role,
-    };
+    }
     return {
       access: await this.jwtService.signAsync(payload, {
         secret: process.env.JWT_SECRET,
@@ -64,6 +65,6 @@ export class AuthService {
         secret: process.env.JWT_REFRESH_SECRET,
         expiresIn: '7d',
       }),
-    };
+    }
   }
 }

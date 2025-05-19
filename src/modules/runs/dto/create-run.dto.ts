@@ -6,24 +6,24 @@ import {
   IsString,
   IsUUID,
   Min,
-} from 'class-validator';
+} from 'class-validator'
 
 export class CreateRunDto {
   @IsUUID(7, {
     message: 'El ID de la conversación debe ser un UUID válido de versión 7.',
   })
-  conversation_id: string;
+  conversation_id: string
 
   @IsBoolean({
     message:
       'El campo "is_run_successful" debe ser un valor booleano (true o false).',
   })
-  is_run_successful: boolean;
+  is_run_successful: boolean
 
   @IsString({
     message: 'El campo "model_llm" debe ser una cadena de texto.',
   })
-  model_llm: string;
+  model_llm: string
 
   @IsNumber(
     { maxDecimalPlaces: 6 },
@@ -34,7 +34,7 @@ export class CreateRunDto {
   @Min(0, {
     message: 'La latencia no puede ser negativa.',
   })
-  latency: number;
+  latency: number
 
   @IsInt({
     message: 'El campo "tokens" debe ser un número entero.',
@@ -42,22 +42,22 @@ export class CreateRunDto {
   @Min(0, {
     message: 'La cantidad de tokens no puede ser negativa.',
   })
-  tokens: number;
+  tokens: number
 
   @IsString({
     message: 'El campo "input" debe ser una cadena de texto.',
   })
-  input: string;
+  input: string
 
   @IsString({
     message: 'El campo "output" debe ser una cadena de texto.',
   })
-  output: string;
+  output: string
 
   @IsOptional()
   @IsString({
     message:
       'El campo "error", si se proporciona, debe ser una cadena de texto.',
   })
-  error?: string;
+  error?: string
 }

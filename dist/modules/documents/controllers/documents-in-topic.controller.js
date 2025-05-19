@@ -18,8 +18,8 @@ const file_interceptor_decorator_1 = require("../../../common/decorators/file-in
 const upload_files_decorator_1 = require("../../../common/decorators/upload-files.decorator");
 const validate_uuid_pipe_1 = require("../../../common/pipes/validate-uuid.pipe");
 const common_1 = require("@nestjs/common");
-const documents_service_1 = require("../documents.service");
 const swagger_1 = require("@nestjs/swagger");
+const documents_service_1 = require("../documents.service");
 const create_document_dto_1 = require("../dto/create-document.dto");
 let DocumentsInTopicController = class DocumentsInTopicController {
     constructor(documentsService) {

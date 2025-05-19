@@ -1,11 +1,13 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CreateTopicDto } from './dto/create-topic.dto';
-import { UpdateTopicDto } from './dto/update-topic.dto';
-import { PrismaService } from '@providers/prisma/prisma.service';
-import { PrismaException } from '@providers/prisma/exceptions/prisma.exception';
-import { generateUUIDV7 } from '@common/utils/uuid';
-import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
-import { Prisma } from '@prisma/client';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { PrismaService } from '@providers/prisma/prisma.service'
+import { PrismaException } from '@providers/prisma/exceptions/prisma.exception'
+import { generateUUIDV7 } from '@common/utils/uuid'
+import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params'
+import { Prisma } from '@prisma/client'
+
+import { UpdateTopicDto } from './dto/update-topic.dto'
+import { CreateTopicDto } from './dto/create-topic.dto'
 
 @Injectable()
 export class TopicsService {
@@ -17,23 +19,23 @@ export class TopicsService {
           id: generateUUIDV7(),
           ...createTopicDto,
         },
-      });
+      })
       if (newTopic) {
-        return newTopic;
+        return newTopic
       }
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Hubo un error al crear el nuevo Topico',
-      );
+      )
     }
   }
 
   async getAll({ page, page_size, status, query }: SearchStatusQueryParamsDto) {
-    const pages = page || 1;
-    const skip = (pages - 1) * page_size;
+    const pages = page || 1
+    const skip = (pages - 1) * page_size
     return await this.db.topic.findMany({
       where: {
         AND: [
@@ -46,7 +48,7 @@ export class TopicsService {
       },
       take: page_size,
       skip: skip,
-    });
+    })
   }
 
   async getOneWithDocuments(id: string) {
@@ -58,7 +60,7 @@ export class TopicsService {
       include: {
         documents: true,
       },
-    });
+    })
   }
 
   async update(id: string, updateTopicDto: UpdateTopicDto) {
@@ -71,17 +73,57 @@ export class TopicsService {
         data: {
           ...updateTopicDto,
         },
-      });
+      })
       if (updatedTopic) {
-        return updatedTopic;
+        return updatedTopic
       }
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Hubo un error al actualizar el topico',
-      );
+      )
+    }
+  }
+  async updateSizeAndCount(id: string, size: Prisma.Decimal) {
+    try {
+      const newSize = size.toNumber()
+
+      const data: any = {}
+
+      if (newSize < 0) {
+        data.total_size = {
+          decrement: Math.abs(newSize),
+        }
+        data.documents_count = {
+          decrement: 1,
+        }
+      } else {
+        data.total_size = {
+          increment: newSize,
+        }
+        data.documents_count = {
+          increment: 1,
+        }
+      }
+
+      const updatedTopic = await this.db.topic.update({
+        where: {
+          id,
+          is_archived: false,
+        },
+        data,
+      })
+
+      return updatedTopic
+    } catch (e) {
+      if (e.code) {
+        throw new PrismaException(e)
+      }
+      throw new InternalServerErrorException(
+        'Hubo un error al actualizar el tópico',
+      )
     }
   }
 
@@ -96,17 +138,17 @@ export class TopicsService {
           is_active: false,
           is_archived: true,
         },
-      });
+      })
       if (archivedTopic) {
-        return archivedTopic;
+        return archivedTopic
       }
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Hubo un error al archivar el topico',
-      );
+      )
     }
   }
 }

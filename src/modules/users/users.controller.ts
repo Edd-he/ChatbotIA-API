@@ -7,19 +7,20 @@ import {
   Param,
   Delete,
   Query,
-} from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ValidateUUID } from '@common/pipes/validate-uuid.pipe';
-import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
-import { UserSession } from '@auth/decorators/user-session.decorator';
-import { IUserSession } from '@auth/interfaces/user-session.interface';
-import { PublicAccess } from '@auth/decorators/public.decorator';
-import { ValidateDNI } from './pipes/validate-dni.pipe';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { LoggerEvents } from '@modules/events/logger/logger-events.interfaces';
-import { ApiOperation } from '@nestjs/swagger';
+} from '@nestjs/common'
+import { ValidateUUID } from '@common/pipes/validate-uuid.pipe'
+import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params'
+import { UserSession } from '@auth/decorators/user-session.decorator'
+import { IUserSession } from '@auth/interfaces/user-session.interface'
+import { PublicAccess } from '@auth/decorators/public.decorator'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { LoggerEvents } from '@modules/events/logger/logger-events.interfaces'
+import { ApiOperation } from '@nestjs/swagger'
+
+import { ValidateDNI } from './pipes/validate-dni.pipe'
+import { UpdateUserDto } from './dto/update-user.dto'
+import { CreateUserDto } from './dto/create-user.dto'
+import { UsersService } from './users.service'
 
 @Controller('users')
 export class UsersController {
@@ -36,12 +37,12 @@ export class UsersController {
     @UserSession() session: IUserSession,
     @Body() createUserDto: CreateUserDto,
   ) {
-    const admin = await this.usersService.create(createUserDto);
+    const admin = await this.usersService.create(createUserDto)
     this.eventEmitter.emit(LoggerEvents.USER_CREATED_EVENT, {
       session,
       entityId: admin.id,
-    });
-    return admin;
+    })
+    return admin
   }
 
   @Get('get-all-users')
@@ -49,7 +50,7 @@ export class UsersController {
     summary: 'Obtiene todos los usuarios',
   })
   async getAllUsers(@Query() query: SearchStatusQueryParamsDto) {
-    return this.usersService.findAll(query);
+    return this.usersService.findAll(query)
   }
 
   @PublicAccess()
@@ -58,7 +59,7 @@ export class UsersController {
     summary: 'Verifica el dni de un usuario',
   })
   async verifyDni(@Param('userDni', ValidateDNI) dni: string) {
-    return this.usersService.verifyDni(dni);
+    return this.usersService.verifyDni(dni)
   }
 
   @Get(':userId/get-user')
@@ -66,7 +67,7 @@ export class UsersController {
     summary: 'Obtiene un usuario',
   })
   async getOneUser(@Param('userId', ValidateUUID) userId: string) {
-    return this.usersService.getOne(userId);
+    return this.usersService.getOne(userId)
   }
 
   @Patch(':userId/update-user')
@@ -78,12 +79,12 @@ export class UsersController {
     @UserSession() session: IUserSession,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    const admin = await this.usersService.update(userId, updateUserDto);
+    const admin = await this.usersService.update(userId, updateUserDto)
     this.eventEmitter.emit(LoggerEvents.USER_UPDATED_EVENT, {
       session,
       entityId: admin.id,
-    });
-    return admin;
+    })
+    return admin
   }
 
   @Delete(':userId/remove-user')
@@ -94,11 +95,11 @@ export class UsersController {
     @Param('userId', ValidateUUID) userId: string,
     @UserSession() session: IUserSession,
   ) {
-    const admin = await this.usersService.remove(userId);
+    const admin = await this.usersService.remove(userId)
     this.eventEmitter.emit(LoggerEvents.USER_ARCHIVED_EVENT, {
       session,
       entityId: admin.id,
-    });
-    return admin;
+    })
+    return admin
   }
 }

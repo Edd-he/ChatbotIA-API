@@ -16,9 +16,9 @@ const rxjs_1 = require("rxjs");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const gemini_ai_run_entity_1 = require("../../providers/gemini-ai/entities/gemini-ai-run.entity");
 const gemini_ai_models_enum_1 = require("../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
-const instructions_const_1 = require("./constants/instructions.const");
 const runs_service_1 = require("../runs/runs.service");
 const run_events_interfaces_1 = require("../events/run-events/run-events.interfaces");
+const instructions_const_1 = require("./constants/instructions.const");
 let GeminiChatRunnerService = class GeminiChatRunnerService {
     constructor(gemini, eventEmitter, runService) {
         this.gemini = gemini;
@@ -64,7 +64,7 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
         const runExecutedEvent = {
             ...dto,
         };
-        this.eventEmitter.emit(run_events_interfaces_1.RunEvents.ON_RUN_EXECUTED_EVENT, runExecutedEvent);
+        this.eventEmitter.emit(run_events_interfaces_1.RUN_EVENTS.ON_RUN_EXECUTED_EVENT, runExecutedEvent);
     }
     mapRunsToHistory(runs) {
         const historial = runs.flatMap((run) => [

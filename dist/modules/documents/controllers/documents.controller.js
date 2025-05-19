@@ -15,11 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DocumentsController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
-const documents_service_1 = require("../documents.service");
 const validate_uuid_pipe_1 = require("../../../common/pipes/validate-uuid.pipe");
 const search_status_query_params_1 = require("../../../common/query-params/search-status-query-params");
-const update_document_dto_1 = require("../dto/update-document.dto");
 const swagger_1 = require("@nestjs/swagger");
+const update_document_dto_1 = require("../dto/update-document.dto");
+const documents_service_1 = require("../documents.service");
 let DocumentsController = class DocumentsController {
     constructor(documentsService) {
         this.documentsService = documentsService;

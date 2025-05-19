@@ -1,5 +1,5 @@
-import { LoggerService } from './logger.service';
 import { PaginatedParamsDto } from '@common/query-params/paginated-params';
+import { LoggerService } from './logger.service';
 export declare class LoggerController {
     private readonly logger;
     constructor(logger: LoggerService);

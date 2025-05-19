@@ -14,9 +14,9 @@ const conversations_service_1 = require("../../conversations/conversations.servi
 const runs_service_1 = require("../../runs/runs.service");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const run_events_interfaces_1 = require("./run-events.interfaces");
 const gemini_ai_service_1 = require("../../../providers/gemini-ai/gemini-ai.service");
 const gemini_ai_models_enum_1 = require("../../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
+const run_events_interfaces_1 = require("./run-events.interfaces");
 let OnRunExecuteHandler = class OnRunExecuteHandler {
     constructor(events, runsService, conversationsService, ai) {
         this.events = events;
@@ -34,7 +34,7 @@ let OnRunExecuteHandler = class OnRunExecuteHandler {
             });
         }
         await this.runsService.create(payload);
-        await this.conversationsService.updateTotalTokens(payload.conversation_id, payload.tokens);
+        await this.conversationsService.update(payload.conversation_id, payload.tokens);
     }
     async generateTittle(input) {
         const response = await this.ai.getResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH, `- generarás un título basado en el primer mensaje con el que el usuario inicia una conversación
@@ -46,7 +46,7 @@ let OnRunExecuteHandler = class OnRunExecuteHandler {
 };
 exports.OnRunExecuteHandler = OnRunExecuteHandler;
 __decorate([
-    (0, event_emitter_1.OnEvent)(run_events_interfaces_1.RunEvents.ON_RUN_EXECUTED_EVENT),
+    (0, event_emitter_1.OnEvent)(run_events_interfaces_1.RUN_EVENTS.ON_RUN_EXECUTED_EVENT),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

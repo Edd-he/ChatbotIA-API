@@ -6,14 +6,15 @@ import {
   Post,
   Request,
   UseGuards,
-} from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { SignInDto } from './dto/signIn.dto';
-import { UserSession } from './decorators/user-session.decorator';
-import { IUserSession } from './interfaces/user-session.interface';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import { Auth } from './decorators/auth.decorator';
-import { RefreshTokenGuard } from './guards/refresh.guard';
+} from '@nestjs/common'
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
+
+import { AuthService } from './auth.service'
+import { SignInDto } from './dto/signIn.dto'
+import { UserSession } from './decorators/user-session.decorator'
+import { IUserSession } from './interfaces/user-session.interface'
+import { Auth } from './decorators/auth.decorator'
+import { RefreshTokenGuard } from './guards/refresh.guard'
 
 @Controller('auth')
 export class AuthController {
@@ -25,7 +26,7 @@ export class AuthController {
       'Inicia sesión y devuelve un token de acceso e información del usuario',
   })
   async signIn(@Body() signInDto: SignInDto) {
-    return await this.authService.signIn(signInDto);
+    return await this.authService.signIn(signInDto)
   }
 
   @ApiBearerAuth()
@@ -35,8 +36,8 @@ export class AuthController {
     summary: 'Obtiene información del usuario mediante el token de acceso',
   })
   getProfile(@UserSession() user: IUserSession) {
-    if (!user) throw new BadRequestException('No se ha encontrado el usuario');
-    return user;
+    if (!user) throw new BadRequestException('No se ha encontrado el usuario')
+    return user
   }
   @UseGuards(RefreshTokenGuard)
   @Post('/refresh-token')
@@ -44,6 +45,6 @@ export class AuthController {
     summary: 'Actualiza el token de acceso',
   })
   refreshToken(@Request() req) {
-    return this.authService.refresh(req.user);
+    return this.authService.refresh(req.user)
   }
 }

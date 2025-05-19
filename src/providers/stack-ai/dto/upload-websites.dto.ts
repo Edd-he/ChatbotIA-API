@@ -1,6 +1,6 @@
-import { IsUrl } from 'class-validator';
+import { IsUrl } from 'class-validator'
 
 export class UploadWebsitesDto {
   @IsUrl({}, { each: true })
-  urls: string[];
+  urls: string[]
 }

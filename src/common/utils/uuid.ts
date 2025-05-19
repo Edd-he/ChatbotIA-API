@@ -1,4 +1,4 @@
-import { v7 } from 'uuid';
+import { v7 } from 'uuid'
 export function generateUUIDV7() {
-  return v7();
+  return v7()
 }

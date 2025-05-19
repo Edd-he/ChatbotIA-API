@@ -1,7 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsBoolean } from 'class-validator';
-import { PaginatedParamsDto } from './paginated-params';
-import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger'
+import { IsOptional, IsBoolean } from 'class-validator'
+import { Transform } from 'class-transformer'
+
+import { PaginatedParamsDto } from './paginated-params'
 
 enum StatusEnum {
   en = 'en',
@@ -22,14 +23,14 @@ export class StatusParamsDto extends PaginatedParamsDto {
   })
   @Transform(({ value }) => {
     if (value === undefined || value === null || value === '') {
-      return null;
+      return null
     }
 
-    if (value === 'en') return true;
-    if (value === 'dis') return false;
-    if (value === 'all') return null;
+    if (value === 'en') return true
+    if (value === 'dis') return false
+    if (value === 'all') return null
 
-    return value;
+    return value
   })
-  status?: boolean | null = null;
+  status?: boolean | null = null
 }

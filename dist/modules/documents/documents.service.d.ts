@@ -1,23 +1,27 @@
 import { PrismaService } from '@providers/prisma/prisma.service';
-import { UpdateDocumentDto } from './dto/update-document.dto';
 import { CloudinaryService } from '@providers/cloudinary/cloudinary.service';
-import { CreateDocumentDto } from './dto/create-document.dto';
 import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
+import { Prisma } from '@prisma/client';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { CreateDocumentDto } from './dto/create-document.dto';
+import { UpdateDocumentDto } from './dto/update-document.dto';
 export declare class DocumentsService {
+    private readonly eventEmitter;
     private readonly db;
     private readonly cloudinary;
-    constructor(db: PrismaService, cloudinary: CloudinaryService);
+    constructor(eventEmitter: EventEmitter2, db: PrismaService, cloudinary: CloudinaryService);
     create(createDocumentDto: CreateDocumentDto, file: Express.Multer.File): Promise<{
         description: string;
         id: string;
         created_at: Date;
         name: string;
         tags: string[];
+        topic_id: string;
         is_active: boolean;
         updated_at: Date;
-        is_archived: boolean;
         url: string;
-        topic_id: string;
+        size: Prisma.Decimal;
+        is_archived: boolean;
     }>;
     getAll({ page, page_size, status, query }: SearchStatusQueryParamsDto): Promise<{
         description: string;
@@ -25,11 +29,12 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
+        topic_id: string;
         is_active: boolean;
         updated_at: Date;
-        is_archived: boolean;
         url: string;
-        topic_id: string;
+        size: Prisma.Decimal;
+        is_archived: boolean;
     }[]>;
     getAllByTopic(topicId: string): Promise<{
         description: string;
@@ -37,11 +42,12 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
+        topic_id: string;
         is_active: boolean;
         updated_at: Date;
-        is_archived: boolean;
         url: string;
-        topic_id: string;
+        size: Prisma.Decimal;
+        is_archived: boolean;
     }[]>;
     getOne(id: string): Promise<{
         description: string;
@@ -49,11 +55,12 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
+        topic_id: string;
         is_active: boolean;
         updated_at: Date;
-        is_archived: boolean;
         url: string;
-        topic_id: string;
+        size: Prisma.Decimal;
+        is_archived: boolean;
     }>;
     update(id: string, updateDocumentDto: UpdateDocumentDto): Promise<{
         description: string;
@@ -61,11 +68,12 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
+        topic_id: string;
         is_active: boolean;
         updated_at: Date;
-        is_archived: boolean;
         url: string;
-        topic_id: string;
+        size: Prisma.Decimal;
+        is_archived: boolean;
     }>;
     remove(id: string): Promise<{
         description: string;
@@ -73,10 +81,11 @@ export declare class DocumentsService {
         created_at: Date;
         name: string;
         tags: string[];
+        topic_id: string;
         is_active: boolean;
         updated_at: Date;
-        is_archived: boolean;
         url: string;
-        topic_id: string;
+        size: Prisma.Decimal;
+        is_archived: boolean;
     }>;
 }

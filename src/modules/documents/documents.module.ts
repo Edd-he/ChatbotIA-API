@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
-import { DocumentsService } from './documents.service';
-import { DocumentsController } from './controllers/documents.controller';
-import { DocumentsInTopicController } from './controllers/documents-in-topic.controller';
+import { Module } from '@nestjs/common'
+
+import { DocumentsService } from './documents.service'
+import { DocumentsController } from './controllers/documents.controller'
+import { DocumentsInTopicController } from './controllers/documents-in-topic.controller'
 
 @Module({
   controllers: [DocumentsController, DocumentsInTopicController],

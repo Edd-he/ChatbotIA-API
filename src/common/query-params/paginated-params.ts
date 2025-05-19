@@ -1,6 +1,6 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsOptional, IsInt, Min } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
+import { IsOptional, IsInt, Min } from 'class-validator'
 
 export class PaginatedParamsDto {
   @ApiPropertyOptional({
@@ -12,7 +12,7 @@ export class PaginatedParamsDto {
   @IsInt()
   @Min(1, { message: 'El tamaño de pagina debe ser al menos 1' })
   @Transform(({ value }) => (value ? parseInt(value, 10) : 25))
-  page_size: number = 25;
+  page_size: number = 25
 
   @ApiPropertyOptional({
     description: 'Número de página',
@@ -23,5 +23,5 @@ export class PaginatedParamsDto {
   @IsOptional()
   @Min(1, { message: 'La número de pagina debe ser al menos 1' })
   @Transform(({ value }) => (value ? parseInt(value, 10) : 1))
-  page: number = 1;
+  page: number = 1
 }

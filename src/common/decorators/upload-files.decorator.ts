@@ -3,7 +3,7 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   UploadedFile,
-} from '@nestjs/common';
+} from '@nestjs/common'
 
 export const UploadFiles = () => {
   return UploadedFiles(
@@ -11,8 +11,8 @@ export const UploadFiles = () => {
       fileIsRequired: false,
       validators: [new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 })],
     }),
-  );
-};
+  )
+}
 
 export const UploadFile = () => {
   return UploadedFile(
@@ -20,5 +20,5 @@ export const UploadFile = () => {
       fileIsRequired: false,
       validators: [new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 })],
     }),
-  );
-};
+  )
+}

@@ -1,9 +1,10 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { LoggerService } from './logger.service';
-import { PaginatedParamsDto } from '@common/query-params/paginated-params';
-import { ApiBearerAuth } from '@nestjs/swagger';
-import { Auth } from '@auth/decorators/auth.decorator';
-import { ApiOperation } from '@nestjs/swagger';
+import { Controller, Get, Query } from '@nestjs/common'
+import { PaginatedParamsDto } from '@common/query-params/paginated-params'
+import { ApiBearerAuth } from '@nestjs/swagger'
+import { Auth } from '@auth/decorators/auth.decorator'
+import { ApiOperation } from '@nestjs/swagger'
+
+import { LoggerService } from './logger.service'
 @ApiBearerAuth()
 @Auth(['ADMIN', 'SUPER_ADMIN'])
 @Controller('Logs')
@@ -13,6 +14,6 @@ export class LoggerController {
   @Get('get-all-logs')
   @ApiOperation({ summary: 'Obtiene todos los logs de entidades' })
   async findAll(@Query() query: PaginatedParamsDto) {
-    return await this.logger.getAll(query);
+    return await this.logger.getAll(query)
   }
 }

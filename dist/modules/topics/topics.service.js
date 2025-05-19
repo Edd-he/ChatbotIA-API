@@ -88,6 +88,42 @@ let TopicsService = class TopicsService {
             throw new common_1.InternalServerErrorException('Hubo un error al actualizar el topico');
         }
     }
+    async updateSizeAndCount(id, size) {
+        try {
+            const newSize = size.toNumber();
+            const data = {};
+            if (newSize < 0) {
+                data.total_size = {
+                    decrement: Math.abs(newSize),
+                };
+                data.documents_count = {
+                    decrement: 1,
+                };
+            }
+            else {
+                data.total_size = {
+                    increment: newSize,
+                };
+                data.documents_count = {
+                    increment: 1,
+                };
+            }
+            const updatedTopic = await this.db.topic.update({
+                where: {
+                    id,
+                    is_archived: false,
+                },
+                data,
+            });
+            return updatedTopic;
+        }
+        catch (e) {
+            if (e.code) {
+                throw new prisma_exception_1.PrismaException(e);
+            }
+            throw new common_1.InternalServerErrorException('Hubo un error al actualizar el tópico');
+        }
+    }
     async remove(id) {
         try {
             const archivedTopic = await this.db.topic.update({

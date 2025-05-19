@@ -15,12 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TopicsController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
-const topics_service_1 = require("./topics.service");
-const create_topic_dto_1 = require("./dto/create-topic.dto");
-const update_topic_dto_1 = require("./dto/update-topic.dto");
 const validate_uuid_pipe_1 = require("../../common/pipes/validate-uuid.pipe");
 const swagger_1 = require("@nestjs/swagger");
 const search_status_query_params_1 = require("../../common/query-params/search-status-query-params");
+const topics_service_1 = require("./topics.service");
+const create_topic_dto_1 = require("./dto/create-topic.dto");
+const update_topic_dto_1 = require("./dto/update-topic.dto");
 let TopicsController = class TopicsController {
     constructor(topicsService) {
         this.topicsService = topicsService;

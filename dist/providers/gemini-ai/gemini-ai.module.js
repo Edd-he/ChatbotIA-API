@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GeminiAIModule = void 0;
 const common_1 = require("@nestjs/common");
-const gemini_ai_service_1 = require("./gemini-ai.service");
 const axios_1 = require("@nestjs/axios");
+const gemini_ai_service_1 = require("./gemini-ai.service");
 const gemini_ai_provider_1 = require("./gemini-ai.provider");
 let GeminiAIModule = class GeminiAIModule {
 };

@@ -1,9 +1,9 @@
-import { BadRequestException } from '@nestjs/common';
-import { ApiPropertyOptional } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsOptional } from 'class-validator';
-import { isValid, parse } from 'date-fns';
-import { PaginatedParamsDto } from '@common/query-params/paginated-params';
+import { BadRequestException } from '@nestjs/common'
+import { ApiPropertyOptional } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
+import { IsOptional } from 'class-validator'
+import { isValid, parse } from 'date-fns'
+import { PaginatedParamsDto } from '@common/query-params/paginated-params'
 
 export class AnalyticsQueryParams extends PaginatedParamsDto {
   @ApiPropertyOptional({
@@ -13,19 +13,19 @@ export class AnalyticsQueryParams extends PaginatedParamsDto {
   })
   @IsOptional()
   @Transform(({ value }) => {
-    if (!value) return null;
-    if (value instanceof Date) return value;
-    const date = parse(value, 'yyyy-MM-dd', new Date());
+    if (!value) return null
+    if (value instanceof Date) return value
+    const date = parse(value, 'yyyy-MM-dd', new Date())
 
     if (!isValid(date)) {
       throw new BadRequestException(
         `El parámetro start_date no es una fecha válida. Usa el formato yyyy-MM-dd.`,
-      );
+      )
     }
 
-    return date;
+    return date
   })
-  start_date?: string;
+  start_date?: string
 
   @ApiPropertyOptional({
     description: 'Rango Final de fechas',
@@ -34,17 +34,17 @@ export class AnalyticsQueryParams extends PaginatedParamsDto {
   })
   @IsOptional()
   @Transform(({ value }) => {
-    if (!value) return null;
-    if (value instanceof Date) return value;
-    const date = parse(value, 'yyyy-MM-dd', new Date());
+    if (!value) return null
+    if (value instanceof Date) return value
+    const date = parse(value, 'yyyy-MM-dd', new Date())
 
     if (!isValid(date)) {
       throw new BadRequestException(
         `El parámetro start_date no es una fecha válida. Usa el formato yyyy-MM-dd.`,
-      );
+      )
     }
 
-    return date;
+    return date
   })
-  end_date?: string;
+  end_date?: string
 }

@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const auth_service_1 = require("./auth.service");
 const signIn_dto_1 = require("./dto/signIn.dto");
 const user_session_decorator_1 = require("./decorators/user-session.decorator");
-const swagger_1 = require("@nestjs/swagger");
 const auth_decorator_1 = require("./decorators/auth.decorator");
 const refresh_guard_1 = require("./guards/refresh.guard");
 let AuthController = class AuthController {

@@ -1,7 +1,8 @@
-import { CreateTopicDto } from './dto/create-topic.dto';
-import { UpdateTopicDto } from './dto/update-topic.dto';
 import { PrismaService } from '@providers/prisma/prisma.service';
 import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
+import { Prisma } from '@prisma/client';
+import { UpdateTopicDto } from './dto/update-topic.dto';
+import { CreateTopicDto } from './dto/create-topic.dto';
 export declare class TopicsService {
     private readonly db;
     constructor(db: PrismaService);
@@ -13,6 +14,8 @@ export declare class TopicsService {
         is_active: boolean;
         updated_at: Date;
         is_archived: boolean;
+        documents_count: number;
+        total_size: Prisma.Decimal;
     }>;
     getAll({ page, page_size, status, query }: SearchStatusQueryParamsDto): Promise<{
         description: string | null;
@@ -22,6 +25,8 @@ export declare class TopicsService {
         is_active: boolean;
         updated_at: Date;
         is_archived: boolean;
+        documents_count: number;
+        total_size: Prisma.Decimal;
     }[]>;
     getOneWithDocuments(id: string): Promise<{
         documents: {
@@ -30,11 +35,12 @@ export declare class TopicsService {
             created_at: Date;
             name: string;
             tags: string[];
+            topic_id: string;
             is_active: boolean;
             updated_at: Date;
-            is_archived: boolean;
             url: string;
-            topic_id: string;
+            size: Prisma.Decimal;
+            is_archived: boolean;
         }[];
     } & {
         description: string | null;
@@ -44,6 +50,8 @@ export declare class TopicsService {
         is_active: boolean;
         updated_at: Date;
         is_archived: boolean;
+        documents_count: number;
+        total_size: Prisma.Decimal;
     }>;
     update(id: string, updateTopicDto: UpdateTopicDto): Promise<{
         description: string | null;
@@ -53,6 +61,19 @@ export declare class TopicsService {
         is_active: boolean;
         updated_at: Date;
         is_archived: boolean;
+        documents_count: number;
+        total_size: Prisma.Decimal;
+    }>;
+    updateSizeAndCount(id: string, size: Prisma.Decimal): Promise<{
+        description: string | null;
+        id: string;
+        created_at: Date;
+        name: string;
+        is_active: boolean;
+        updated_at: Date;
+        is_archived: boolean;
+        documents_count: number;
+        total_size: Prisma.Decimal;
     }>;
     remove(id: string): Promise<{
         description: string | null;
@@ -62,5 +83,7 @@ export declare class TopicsService {
         is_active: boolean;
         updated_at: Date;
         is_archived: boolean;
+        documents_count: number;
+        total_size: Prisma.Decimal;
     }>;
 }

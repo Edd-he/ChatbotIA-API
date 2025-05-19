@@ -1,16 +1,20 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PrismaService } from '@providers/prisma/prisma.service';
-import { UpdateDocumentDto } from './dto/update-document.dto';
-import { PrismaException } from '@providers/prisma/exceptions/prisma.exception';
-import { CloudinaryService } from '@providers/cloudinary/cloudinary.service';
-import { CreateDocumentDto } from './dto/create-document.dto';
-import { generateUUIDV7 } from '@common/utils/uuid';
-import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
-import { Prisma } from '@prisma/client';
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { PrismaService } from '@providers/prisma/prisma.service'
+import { PrismaException } from '@providers/prisma/exceptions/prisma.exception'
+import { CloudinaryService } from '@providers/cloudinary/cloudinary.service'
+import { generateUUIDV7 } from '@common/utils/uuid'
+import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params'
+import { Prisma } from '@prisma/client'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { DOCUMENT_EVENTS } from '@modules/events/document-events/document-events.interface'
+
+import { CreateDocumentDto } from './dto/create-document.dto'
+import { UpdateDocumentDto } from './dto/update-document.dto'
 
 @Injectable()
 export class DocumentsService {
   constructor(
+    private readonly eventEmitter: EventEmitter2,
     private readonly db: PrismaService,
     private readonly cloudinary: CloudinaryService,
   ) {}
@@ -20,31 +24,33 @@ export class DocumentsService {
     file: Express.Multer.File,
   ) {
     try {
-      const url = await this.cloudinary.uploadFileToCloudinary(file);
+      const url = await this.cloudinary.uploadFileToCloudinary(file)
       const newDocument = await this.db.document.create({
         data: {
           id: generateUUIDV7(),
           ...createDocumentDto,
+          size: file.size,
           url,
         },
-      });
+      })
 
       if (newDocument) {
-        return newDocument;
+        this.eventEmitter.emit(DOCUMENT_EVENTS.ON_DOCUMENT_CREATED, newDocument)
+        return newDocument
       }
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Hubo un error al crear el documento',
-      );
+      )
     }
   }
 
   async getAll({ page, page_size, status, query }: SearchStatusQueryParamsDto) {
-    const pages = page || 1;
-    const skip = (pages - 1) * page_size;
+    const pages = page || 1
+    const skip = (pages - 1) * page_size
     return await this.db.document.findMany({
       where: {
         AND: [
@@ -57,7 +63,7 @@ export class DocumentsService {
       },
       take: page_size,
       skip: skip,
-    });
+    })
   }
 
   async getAllByTopic(topicId: string) {
@@ -66,7 +72,7 @@ export class DocumentsService {
         topic_id: topicId,
         is_archived: false,
       },
-    });
+    })
   }
 
   async getOne(id: string) {
@@ -75,7 +81,7 @@ export class DocumentsService {
         id,
         is_archived: false,
       },
-    });
+    })
   }
 
   async update(id: string, updateDocumentDto: UpdateDocumentDto) {
@@ -88,17 +94,17 @@ export class DocumentsService {
         data: {
           ...updateDocumentDto,
         },
-      });
+      })
       if (updatedDocument) {
-        return updatedDocument;
+        return updatedDocument
       }
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Hubo un error al actualizar el documento',
-      );
+      )
     }
   }
 
@@ -113,17 +119,17 @@ export class DocumentsService {
           is_active: false,
           is_archived: true,
         },
-      });
+      })
       if (archivedDocument) {
-        return archivedDocument;
+        return archivedDocument
       }
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Hubo un error al archivar el documento',
-      );
+      )
     }
   }
 }

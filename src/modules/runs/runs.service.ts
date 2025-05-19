@@ -1,10 +1,10 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { PrismaService } from 'src/providers/prisma/prisma.service'
+import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception'
+import { generateUUIDV7 } from '@common/utils/uuid'
+import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 
-import { PrismaService } from 'src/providers/prisma/prisma.service';
-import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception';
-import { CreateRunDto } from './dto/create-run.dto';
-import { generateUUIDV7 } from '@common/utils/uuid';
-import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
+import { CreateRunDto } from './dto/create-run.dto'
 @Injectable()
 export class RunsService {
   constructor(private readonly db: PrismaService) {}
@@ -16,16 +16,16 @@ export class RunsService {
           id: generateUUIDV7(),
           ...createRunDto,
         },
-      });
+      })
 
-      return run;
+      return run
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Ocurrio un error inesperado al registrar la ejecución',
-      );
+      )
     }
   }
 
@@ -35,8 +35,8 @@ export class RunsService {
     page,
     page_size,
   }: RangeDateQueryParams) {
-    const pages = page || 1;
-    const skip = (pages - 1) * page_size;
+    const pages = page || 1
+    const skip = (pages - 1) * page_size
     return await this.db.run.findMany({
       where: {
         created_at: {
@@ -46,7 +46,7 @@ export class RunsService {
       },
       skip: skip,
       take: page_size,
-    });
+    })
   }
 
   async getAllByConversation(conversationId: string) {
@@ -54,7 +54,7 @@ export class RunsService {
       where: {
         conversation_id: conversationId,
       },
-    });
+    })
   }
 
   async getOne(runId: string) {
@@ -62,6 +62,6 @@ export class RunsService {
       where: {
         id: runId,
       },
-    });
+    })
   }
 }

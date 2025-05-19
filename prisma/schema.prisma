@@ -40,14 +40,16 @@ model User {
 }
 
 model Topic {
-  id          String     @id
-  created_at  DateTime   @default(now())
-  updated_at  DateTime   @updatedAt
-  name        String     @db.VarChar(100)
-  description String?    @db.Text
-  documents   Document[]
-  is_active   Boolean    @default(true)
-  is_archived Boolean    @default(false)
+  id              String     @id
+  created_at      DateTime   @default(now())
+  updated_at      DateTime   @updatedAt
+  name            String     @db.VarChar(100)
+  description     String?    @db.Text
+  documents       Document[]
+  documents_count Int        @default(0)
+  total_size      Decimal    @default(0) @db.Decimal(10, 3)
+  is_active       Boolean    @default(true)
+  is_archived     Boolean    @default(false)
 }
 
 model Document {
@@ -60,6 +62,7 @@ model Document {
   tags        String[] @db.Text
   topic_id    String
   topic       Topic    @relation(fields: [topic_id], references: [id])
+  size        Decimal  @db.Decimal(10, 3)
   is_active   Boolean  @default(true)
   is_archived Boolean  @default(false)
 }
@@ -68,6 +71,8 @@ model Conversation {
   id           String             @id
   created_at   DateTime           @default(now())
   completed_at DateTime?
+  last_run     DateTime?
+  total_runs   Int                @default(0)
   total_tokens Int                @default(0)
   status       ConversationStatus @default(ACTIVE)
   runs         Run[]

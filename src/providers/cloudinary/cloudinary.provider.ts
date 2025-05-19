@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary } from 'cloudinary'
 
 export const CloudinaryProvider = {
   provide: 'Cloudinary',
@@ -7,6 +7,6 @@ export const CloudinaryProvider = {
       cloud_name: process.env.CLOUDINARY_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
+    })
   },
-};
+}

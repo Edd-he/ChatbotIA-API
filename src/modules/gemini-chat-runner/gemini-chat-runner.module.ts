@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
-import { GeminiChatRunnerService } from './gemini-chat-runner.service';
-import { RunsModule } from '@modules/runs/runs.module';
+import { Module } from '@nestjs/common'
+import { RunsModule } from '@modules/runs/runs.module'
+
+import { GeminiChatRunnerService } from './gemini-chat-runner.service'
 @Module({
   providers: [GeminiChatRunnerService],
   exports: [GeminiChatRunnerService],

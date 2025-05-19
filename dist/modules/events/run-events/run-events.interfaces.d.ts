@@ -8,6 +8,6 @@ export interface RunExecutedEvent {
     output: string;
     error?: string;
 }
-export declare enum RunEvents {
+export declare enum RUN_EVENTS {
     ON_RUN_EXECUTED_EVENT = "run.excuted"
 }

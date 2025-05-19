@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SearchQueryParamsDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const paginated_params_1 = require("./paginated-params");
 const class_validator_1 = require("class-validator");
+const paginated_params_1 = require("./paginated-params");
 class SearchQueryParamsDto extends paginated_params_1.PaginatedParamsDto {
     constructor() {
         super(...arguments);

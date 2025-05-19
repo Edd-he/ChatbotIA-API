@@ -1,8 +1,8 @@
 export interface IGeminiMessagePart {
-  text: string;
+  text: string
 }
 
 export interface IGeminiMessageChat {
-  role: 'user' | 'model';
-  parts: IGeminiMessagePart[];
+  role: 'user' | 'model'
+  parts: IGeminiMessagePart[]
 }

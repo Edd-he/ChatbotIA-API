@@ -1,7 +1,7 @@
 import { UsersService } from '@modules/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { SignInDto } from './dto/signIn.dto';
 import { IUserSession } from '@auth/interfaces/user-session.interface';
+import { SignInDto } from './dto/signIn.dto';
 export declare class AuthService {
     private readonly userService;
     private readonly jwtService;

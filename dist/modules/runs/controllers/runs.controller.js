@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RunsController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
-const runs_service_1 = require("../runs.service");
 const validate_uuid_pipe_1 = require("../../../common/pipes/validate-uuid.pipe");
 const rangeDate_query_params_1 = require("../../../common/query-params/rangeDate-query-params");
 const swagger_1 = require("@nestjs/swagger");
+const runs_service_1 = require("../runs.service");
 let RunsController = class RunsController {
     constructor(runsService) {
         this.runsService = runsService;

@@ -66,16 +66,20 @@ let ConversationsService = class ConversationsService {
             },
         });
     }
-    async updateTotalTokens(conversationId, tokens) {
+    async update(conversationId, tokens) {
         try {
             await this.db.conversation.update({
                 where: {
                     id: conversationId,
                 },
                 data: {
+                    total_runs: {
+                        increment: 1,
+                    },
                     total_tokens: {
                         increment: tokens,
                     },
+                    last_run: new Date(),
                 },
             });
         }

@@ -16,8 +16,11 @@ const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exc
 const cloudinary_service_1 = require("../../providers/cloudinary/cloudinary.service");
 const uuid_1 = require("../../common/utils/uuid");
 const client_1 = require("@prisma/client");
+const event_emitter_1 = require("@nestjs/event-emitter");
+const document_events_interface_1 = require("../events/document-events/document-events.interface");
 let DocumentsService = class DocumentsService {
-    constructor(db, cloudinary) {
+    constructor(eventEmitter, db, cloudinary) {
+        this.eventEmitter = eventEmitter;
         this.db = db;
         this.cloudinary = cloudinary;
     }
@@ -28,10 +31,12 @@ let DocumentsService = class DocumentsService {
                 data: {
                     id: (0, uuid_1.generateUUIDV7)(),
                     ...createDocumentDto,
+                    size: file.size,
                     url,
                 },
             });
             if (newDocument) {
+                this.eventEmitter.emit(document_events_interface_1.DOCUMENT_EVENTS.ON_DOCUMENT_CREATED, newDocument);
                 return newDocument;
             }
         }
@@ -124,7 +129,8 @@ let DocumentsService = class DocumentsService {
 exports.DocumentsService = DocumentsService;
 exports.DocumentsService = DocumentsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+    __metadata("design:paramtypes", [event_emitter_1.EventEmitter2,
+        prisma_service_1.PrismaService,
         cloudinary_service_1.CloudinaryService])
 ], DocumentsService);
 //# sourceMappingURL=documents.service.js.map

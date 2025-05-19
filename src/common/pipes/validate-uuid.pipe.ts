@@ -1,5 +1,5 @@
-import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common';
-import { validate, version } from 'uuid';
+import { PipeTransform, Injectable, BadRequestException } from '@nestjs/common'
+import { validate, version } from 'uuid'
 
 @Injectable()
 export class ValidateUUID implements PipeTransform {
@@ -7,13 +7,13 @@ export class ValidateUUID implements PipeTransform {
     if (!isValidUUIDv7(value)) {
       throw new BadRequestException(
         'UUID inválido. Se espera un UUID versión 7.',
-      );
+      )
     }
-    return value;
+    return value
   }
 }
 
 function isValidUUIDv7(uuid: string): boolean {
-  if (!validate(uuid)) return false;
-  return version(uuid) === 7;
+  if (!validate(uuid)) return false
+  return version(uuid) === 7
 }

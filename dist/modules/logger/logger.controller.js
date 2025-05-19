@@ -15,11 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoggerController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
-const logger_service_1 = require("./logger.service");
 const paginated_params_1 = require("../../common/query-params/paginated-params");
 const swagger_1 = require("@nestjs/swagger");
 const auth_decorator_1 = require("../auth/decorators/auth.decorator");
 const swagger_2 = require("@nestjs/swagger");
+const logger_service_1 = require("./logger.service");
 let LoggerController = class LoggerController {
     constructor(logger) {
         this.logger = logger;

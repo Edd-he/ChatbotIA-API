@@ -1,5 +1,5 @@
-import { ConversationsService } from './conversations.service';
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
+import { ConversationsService } from './conversations.service';
 export declare class ConversationsController {
     private readonly conversationsService;
     constructor(conversationsService: ConversationsService);
@@ -7,29 +7,33 @@ export declare class ConversationsController {
         title: string | null;
         id: string;
         created_at: Date;
-        status: import(".prisma/client").$Enums.ConversationStatus;
         completed_at: Date | null;
+        last_run: Date | null;
+        total_runs: number;
         total_tokens: number;
+        status: import(".prisma/client").$Enums.ConversationStatus;
     }[]>;
     getConversation(id: string): Promise<{
         runs: {
-            conversation_id: string;
+            error: string | null;
+            id: string;
+            created_at: Date;
             is_run_successful: boolean;
             model_llm: string;
             latency: import("@prisma/client/runtime/library").Decimal;
             tokens: number;
             input: string;
             output: string;
-            error: string | null;
-            id: string;
-            created_at: Date;
+            conversation_id: string;
         }[];
     } & {
         title: string | null;
         id: string;
         created_at: Date;
-        status: import(".prisma/client").$Enums.ConversationStatus;
         completed_at: Date | null;
+        last_run: Date | null;
+        total_runs: number;
         total_tokens: number;
+        status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
 }

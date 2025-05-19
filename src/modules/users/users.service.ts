@@ -1,14 +1,15 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { PrismaService } from 'src/providers/prisma/prisma.service';
-import { Prisma, Role } from '@prisma/client';
-import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
-import { PrismaException } from '@providers/prisma/exceptions/prisma.exception';
-import * as bcrypt from 'bcryptjs';
-import { generateUUIDV7 } from '@common/utils/uuid';
-import { ReniecService } from '@providers/reniec/reniec.service';
-import { IReniecResponse } from '@providers/reniec/interfaces/reniec-response.interface';
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { PrismaService } from 'src/providers/prisma/prisma.service'
+import { Prisma, Role } from '@prisma/client'
+import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params'
+import { PrismaException } from '@providers/prisma/exceptions/prisma.exception'
+import * as bcrypt from 'bcryptjs'
+import { generateUUIDV7 } from '@common/utils/uuid'
+import { ReniecService } from '@providers/reniec/reniec.service'
+import { IReniecResponse } from '@providers/reniec/interfaces/reniec-response.interface'
+
+import { UpdateUserDto } from './dto/update-user.dto'
+import { CreateUserDto } from './dto/create-user.dto'
 
 @Injectable()
 export class UsersService {
@@ -17,10 +18,10 @@ export class UsersService {
     private reniecService: ReniecService,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    const { password, ...rest } = createUserDto;
+    const { password, ...rest } = createUserDto
 
     const { nombres, apellidoMaterno, apellidoPaterno }: IReniecResponse =
-      await this.reniecService.getInfoDNI(createUserDto.dni);
+      await this.reniecService.getInfoDNI(createUserDto.dni)
     try {
       const newAdmin = await this.db.user.create({
         data: {
@@ -31,16 +32,16 @@ export class UsersService {
           role: Role.ADMIN,
           ...rest,
         },
-      });
+      })
 
-      return newAdmin;
+      return newAdmin
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Hubo un error al crear el usuario',
-      );
+      )
     }
   }
 
@@ -50,8 +51,8 @@ export class UsersService {
     page_size,
     status,
   }: SearchStatusQueryParamsDto) {
-    const pages = page || 1;
-    const skip = (pages - 1) * page_size;
+    const pages = page || 1
+    const skip = (pages - 1) * page_size
     return await this.db.user.findMany({
       omit: {
         password: true,
@@ -67,7 +68,7 @@ export class UsersService {
       },
       skip: skip,
       take: page_size,
-    });
+    })
   }
 
   async getOne(id: string) {
@@ -80,7 +81,7 @@ export class UsersService {
         id,
         is_archived: false,
       },
-    });
+    })
   }
 
   async getOneByEmail(email: string) {
@@ -92,7 +93,7 @@ export class UsersService {
         email,
         is_archived: false,
       },
-    });
+    })
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
@@ -105,16 +106,16 @@ export class UsersService {
         data: {
           ...updateUserDto,
         },
-      });
+      })
 
-      return updatedUser;
+      return updatedUser
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Hubo un error al actualizar el usuario',
-      );
+      )
     }
   }
 
@@ -129,20 +130,20 @@ export class UsersService {
           is_active: false,
           is_archived: true,
         },
-      });
+      })
 
-      return archivedUser;
+      return archivedUser
     } catch (e) {
       if (e.code) {
-        throw new PrismaException(e);
+        throw new PrismaException(e)
       }
       throw new InternalServerErrorException(
         'Hubo un error al archivar el usuario',
-      );
+      )
     }
   }
 
   async verifyDni(dni: string) {
-    return await this.reniecService.getInfoDNI(dni);
+    return await this.reniecService.getInfoDNI(dni)
   }
 }

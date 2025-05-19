@@ -1,7 +1,8 @@
-import { ValidateUUID } from '@common/pipes/validate-uuid.pipe';
-import { Controller, Get, Param } from '@nestjs/common';
-import { RunsService } from '../runs.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ValidateUUID } from '@common/pipes/validate-uuid.pipe'
+import { Controller, Get, Param } from '@nestjs/common'
+import { ApiOperation } from '@nestjs/swagger'
+
+import { RunsService } from '../runs.service'
 
 @Controller('Conversations')
 export class RunsInConversationController {
@@ -12,6 +13,6 @@ export class RunsInConversationController {
   getAllRunsByConversation(
     @Param('conversationId', ValidateUUID) conversationId: string,
   ) {
-    return this.runsService.getAllByConversation(conversationId);
+    return this.runsService.getAllByConversation(conversationId)
   }
 }

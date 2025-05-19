@@ -1,10 +1,11 @@
-import { ConversationsService } from '@modules/conversations/conversations.service';
-import { RunsService } from '@modules/runs/runs.service';
-import { Injectable } from '@nestjs/common';
-import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
-import { RunExecutedEvent, RunEvents } from './run-events.interfaces';
-import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service';
-import { GeminiModels } from '@providers/gemini-ai/interfaces/gemini-ai-models.enum';
+import { ConversationsService } from '@modules/conversations/conversations.service'
+import { RunsService } from '@modules/runs/runs.service'
+import { Injectable } from '@nestjs/common'
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
+import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service'
+import { GeminiModels } from '@providers/gemini-ai/interfaces/gemini-ai-models.enum'
+
+import { RunExecutedEvent, RUN_EVENTS } from './run-events.interfaces'
 
 @Injectable()
 export class OnRunExecuteHandler {
@@ -15,25 +16,25 @@ export class OnRunExecuteHandler {
     private readonly ai: GeminiAIService,
   ) {}
 
-  @OnEvent(RunEvents.ON_RUN_EXECUTED_EVENT)
+  @OnEvent(RUN_EVENTS.ON_RUN_EXECUTED_EVENT)
   async handleCreated(payload: RunExecutedEvent) {
     const conversation = await this.conversationsService.getOne(
       payload.conversation_id,
-    );
+    )
 
     if (!conversation) {
-      const title = await this.generateTittle(payload.input);
+      const title = await this.generateTittle(payload.input)
       await this.conversationsService.create({
         id: payload.conversation_id,
         title,
-      });
+      })
     }
-    await this.runsService.create(payload);
+    await this.runsService.create(payload)
 
-    await this.conversationsService.updateTotalTokens(
+    await this.conversationsService.update(
       payload.conversation_id,
       payload.tokens,
-    );
+    )
   }
 
   private async generateTittle(input: string) {
@@ -44,8 +45,8 @@ export class OnRunExecuteHandler {
       - el título debe ser un resumen del mensaje del usuario
       - no uses comillas ni dos puntos`,
       [input],
-    );
+    )
 
-    return response;
+    return response
   }
 }

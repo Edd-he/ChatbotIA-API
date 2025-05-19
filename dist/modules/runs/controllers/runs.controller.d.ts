@@ -1,30 +1,30 @@
-import { RunsService } from '../runs.service';
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
+import { RunsService } from '../runs.service';
 export declare class RunsController {
     private readonly runsService;
     constructor(runsService: RunsService);
     getAllruns(query: RangeDateQueryParams): Promise<{
-        conversation_id: string;
+        error: string | null;
+        id: string;
+        created_at: Date;
         is_run_successful: boolean;
         model_llm: string;
         latency: import("@prisma/client/runtime/library").Decimal;
         tokens: number;
         input: string;
         output: string;
-        error: string | null;
-        id: string;
-        created_at: Date;
+        conversation_id: string;
     }[]>;
     getRun(id: string): Promise<{
-        conversation_id: string;
+        error: string | null;
+        id: string;
+        created_at: Date;
         is_run_successful: boolean;
         model_llm: string;
         latency: import("@prisma/client/runtime/library").Decimal;
         tokens: number;
         input: string;
         output: string;
-        error: string | null;
-        id: string;
-        created_at: Date;
+        conversation_id: string;
     }>;
 }

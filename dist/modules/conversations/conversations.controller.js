@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ConversationsController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
-const conversations_service_1 = require("./conversations.service");
 const validate_uuid_pipe_1 = require("../../common/pipes/validate-uuid.pipe");
 const swagger_1 = require("@nestjs/swagger");
 const rangeDate_query_params_1 = require("../../common/query-params/rangeDate-query-params");
+const conversations_service_1 = require("./conversations.service");
 let ConversationsController = class ConversationsController {
     constructor(conversationsService) {
         this.conversationsService = conversationsService;
