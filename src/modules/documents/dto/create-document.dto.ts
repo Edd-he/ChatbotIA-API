@@ -9,6 +9,7 @@ import {
 } from 'class-validator'
 
 export class CreateDocumentDto {
+  @IsOptional()
   @IsUUID(7, {
     message: 'El ID de la conversacion debe ser un UUID version 7 ',
   })

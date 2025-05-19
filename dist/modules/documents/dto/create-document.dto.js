@@ -20,6 +20,7 @@ class CreateDocumentDto {
 }
 exports.CreateDocumentDto = CreateDocumentDto;
 __decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsUUID)(7, {
         message: 'El ID de la conversacion debe ser un UUID version 7 ',
     }),
