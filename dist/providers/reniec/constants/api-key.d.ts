@@ -1,1 +1,1 @@
-export declare const RENIEC_TOKEN = "apis-token-14657.XszRMdMOHIxtt2VSZ0rjMY6vHyEqhRHo";
+export declare const RENIEC_TOKEN = "apis-token-15117.b7sXj578BsQseYC0Wkje7oWS6dbO1QsX";
