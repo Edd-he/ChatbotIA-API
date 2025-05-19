@@ -86,22 +86,20 @@ export class TopicsService {
       )
     }
   }
-  async updateSizeAndCount(id: string, size: Prisma.Decimal) {
+  async updateSizeAndCount(id: string, size: number) {
     try {
-      const newSize = size.toNumber()
-
       const data: any = {}
 
-      if (newSize < 0) {
+      if (size < 0) {
         data.total_size = {
-          decrement: Math.abs(newSize),
+          decrement: Math.abs(size),
         }
         data.documents_count = {
           decrement: 1,
         }
       } else {
         data.total_size = {
-          increment: newSize,
+          increment: size,
         }
         data.documents_count = {
           increment: 1,

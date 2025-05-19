@@ -10,5 +10,6 @@ export interface DocumentCreatedEvent {
     size: Prisma.Decimal;
 }
 export declare enum DOCUMENT_EVENTS {
-    ON_DOCUMENT_CREATED = "documents.created"
+    ON_DOCUMENT_CREATED = "documents.created",
+    ON_DOCUMENT_REMOVED = "documents.removed"
 }

@@ -12,4 +12,5 @@ export interface DocumentCreatedEvent {
 }
 export enum DOCUMENT_EVENTS {
   ON_DOCUMENT_CREATED = 'documents.created',
+  ON_DOCUMENT_REMOVED = 'documents.removed',
 }

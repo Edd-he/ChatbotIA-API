@@ -25,8 +25,8 @@ let DocumentsService = class DocumentsService {
         this.cloudinary = cloudinary;
     }
     async create(createDocumentDto, file) {
+        const url = await this.cloudinary.uploadFileToCloudinary(file);
         try {
-            const url = await this.cloudinary.uploadFileToCloudinary(file);
             const newDocument = await this.db.document.create({
                 data: {
                     id: (0, uuid_1.generateUUIDV7)(),
@@ -115,6 +115,7 @@ let DocumentsService = class DocumentsService {
                 },
             });
             if (archivedDocument) {
+                this.eventEmitter.emit(document_events_interface_1.DOCUMENT_EVENTS.ON_DOCUMENT_REMOVED, archivedDocument);
                 return archivedDocument;
             }
         }

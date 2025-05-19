@@ -9,12 +9,14 @@ import { OnRunExecuteHandler } from './run-events/on-run-execute'
 import { EntityArchivedLogHandler } from './logger/entity-archived-log.handler'
 import { EntityCreatedLogHandler } from './logger/entity-created-log.handler'
 import { EntityUpdatedLogHandler } from './logger/entity-updated-log.handler'
-import { OnDocumentCreatedHandler } from './document-events/on-document-created'
+import { OnDocumentCreateHandler } from './document-events/on-document-create'
+import { OnDocumentRemoveHandler } from './document-events/on-document-remove'
 
 @Module({
   providers: [
     OnRunExecuteHandler,
-    OnDocumentCreatedHandler,
+    OnDocumentCreateHandler,
+    OnDocumentRemoveHandler,
     EntityArchivedLogHandler,
     EntityCreatedLogHandler,
     EntityUpdatedLogHandler,

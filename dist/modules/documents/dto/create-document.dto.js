@@ -38,8 +38,14 @@ __decorate([
     __metadata("design:type", String)
 ], CreateDocumentDto.prototype, "description", void 0);
 __decorate([
-    (0, class_validator_1.IsArray)({ message: 'Los tags deben  ser un array de strings' }),
-    (0, class_validator_1.IsString)({ each: true }),
+    (0, class_transformer_1.Transform)(({ value }) => {
+        if (typeof value === 'string') {
+            return value.split(',').map((tag) => tag.trim());
+        }
+        return value;
+    }),
+    (0, class_validator_1.IsArray)({ message: 'Los tags deben ser un array de strings' }),
+    (0, class_validator_1.IsString)({ each: true, message: 'Cada tag debe ser un string' }),
     __metadata("design:type", Array)
 ], CreateDocumentDto.prototype, "tags", void 0);
 __decorate([

@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CloudinaryService = void 0;
 const common_1 = require("@nestjs/common");
 const cloudinary_1 = require("cloudinary");
-const streamifier_1 = require("streamifier");
+const streamifier = require("streamifier");
 let CloudinaryService = class CloudinaryService {
     uploadFile(file) {
         return new Promise((resolve, reject) => {
@@ -21,7 +21,7 @@ let CloudinaryService = class CloudinaryService {
                 }
                 reject(new Error('No se encontró secure_url en la respuesta'));
             });
-            streamifier_1.default.createReadStream(file.buffer).pipe(uploadStream);
+            streamifier.createReadStream(file.buffer).pipe(uploadStream);
         });
     }
     async uploadFilesToCloudinary(files) {

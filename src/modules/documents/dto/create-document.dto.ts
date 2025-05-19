@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer'
+import { Transform, Type } from 'class-transformer'
 import {
   IsArray,
   IsBoolean,
@@ -24,8 +24,14 @@ export class CreateDocumentDto {
   @IsString({ message: 'el nombre del documento debe ser una cadena de texto' })
   description: string
 
-  @IsArray({ message: 'Los tags deben  ser un array de strings' })
-  @IsString({ each: true })
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.split(',').map((tag) => tag.trim())
+    }
+    return value
+  })
+  @IsArray({ message: 'Los tags deben ser un array de strings' })
+  @IsString({ each: true, message: 'Cada tag debe ser un string' })
   tags: string[]
 
   @Type(() => Boolean)

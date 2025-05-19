@@ -23,8 +23,8 @@ export class DocumentsService {
     createDocumentDto: CreateDocumentDto,
     file: Express.Multer.File,
   ) {
+    const url = await this.cloudinary.uploadFileToCloudinary(file)
     try {
-      const url = await this.cloudinary.uploadFileToCloudinary(file)
       const newDocument = await this.db.document.create({
         data: {
           id: generateUUIDV7(),
@@ -121,6 +121,10 @@ export class DocumentsService {
         },
       })
       if (archivedDocument) {
+        this.eventEmitter.emit(
+          DOCUMENT_EVENTS.ON_DOCUMENT_REMOVED,
+          archivedDocument,
+        )
         return archivedDocument
       }
     } catch (e) {

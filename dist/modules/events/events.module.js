@@ -17,7 +17,8 @@ const on_run_execute_1 = require("./run-events/on-run-execute");
 const entity_archived_log_handler_1 = require("./logger/entity-archived-log.handler");
 const entity_created_log_handler_1 = require("./logger/entity-created-log.handler");
 const entity_updated_log_handler_1 = require("./logger/entity-updated-log.handler");
-const on_document_created_1 = require("./document-events/on-document-created");
+const on_document_create_1 = require("./document-events/on-document-create");
+const on_document_remove_1 = require("./document-events/on-document-remove");
 let EventsModule = class EventsModule {
 };
 exports.EventsModule = EventsModule;
@@ -25,7 +26,8 @@ exports.EventsModule = EventsModule = __decorate([
     (0, common_1.Module)({
         providers: [
             on_run_execute_1.OnRunExecuteHandler,
-            on_document_created_1.OnDocumentCreatedHandler,
+            on_document_create_1.OnDocumentCreateHandler,
+            on_document_remove_1.OnDocumentRemoveHandler,
             entity_archived_log_handler_1.EntityArchivedLogHandler,
             entity_created_log_handler_1.EntityCreatedLogHandler,
             entity_updated_log_handler_1.EntityUpdatedLogHandler,

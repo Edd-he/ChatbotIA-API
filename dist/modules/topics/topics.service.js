@@ -90,11 +90,10 @@ let TopicsService = class TopicsService {
     }
     async updateSizeAndCount(id, size) {
         try {
-            const newSize = size.toNumber();
             const data = {};
-            if (newSize < 0) {
+            if (size < 0) {
                 data.total_size = {
-                    decrement: Math.abs(newSize),
+                    decrement: Math.abs(size),
                 };
                 data.documents_count = {
                     decrement: 1,
@@ -102,7 +101,7 @@ let TopicsService = class TopicsService {
             }
             else {
                 data.total_size = {
-                    increment: newSize,
+                    increment: size,
                 };
                 data.documents_count = {
                     increment: 1,

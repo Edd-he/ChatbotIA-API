@@ -64,7 +64,7 @@ export declare class TopicsService {
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;
-    updateSizeAndCount(id: string, size: Prisma.Decimal): Promise<{
+    updateSizeAndCount(id: string, size: number): Promise<{
         description: string | null;
         id: string;
         created_at: Date;
