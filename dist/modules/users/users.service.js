@@ -17,13 +17,14 @@ const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exc
 const bcrypt = require("bcryptjs");
 const uuid_1 = require("../../common/utils/uuid");
 const reniec_service_1 = require("../../providers/reniec/reniec.service");
+const format_date_1 = require("../../common/utils/format-date");
 let UsersService = class UsersService {
     constructor(db, reniecService) {
         this.db = db;
         this.reniecService = reniecService;
     }
     async create(createUserDto) {
-        const { password, ...rest } = createUserDto;
+        const { password, role, ...rest } = createUserDto;
         const { nombres, apellidoMaterno, apellidoPaterno } = await this.reniecService.getInfoDNI(createUserDto.dni);
         try {
             const newAdmin = await this.db.user.create({
@@ -32,7 +33,7 @@ let UsersService = class UsersService {
                     name: nombres,
                     last_name: apellidoPaterno + ' ' + apellidoMaterno,
                     password: await bcrypt.hash(password, 10),
-                    role: client_1.Role.ADMIN,
+                    role: role,
                     ...rest,
                 },
             });
@@ -48,22 +49,40 @@ let UsersService = class UsersService {
     async findAll({ query, page, page_size, status, }) {
         const pages = page || 1;
         const skip = (pages - 1) * page_size;
-        return await this.db.user.findMany({
-            omit: {
-                password: true,
-            },
-            where: {
-                AND: [
-                    query
-                        ? { name: { contains: query, mode: client_1.Prisma.QueryMode.insensitive } }
-                        : {},
-                    status !== null && status !== undefined ? { is_active: status } : {},
-                ],
-                is_archived: false,
-            },
-            skip: skip,
-            take: page_size,
+        const where = {
+            AND: [
+                query
+                    ? { name: { contains: query, mode: client_1.Prisma.QueryMode.insensitive } }
+                    : {},
+                status !== null && status !== undefined ? { is_active: status } : {},
+            ],
+            is_archived: false,
+        };
+        const [users, total] = await Promise.all([
+            this.db.user.findMany({
+                where,
+                skip,
+                take: page_size,
+                omit: {
+                    password: true,
+                },
+            }),
+            this.db.user.count({ where }),
+        ]);
+        const totalPages = Math.ceil(total / page_size);
+        const data = users.map((u, i) => {
+            return {
+                ...u,
+                number: i + 1,
+                created_at: (0, format_date_1.formatDate)(u.created_at),
+                updated_at: (0, format_date_1.formatDate)(u.updated_at),
+            };
         });
+        return {
+            data,
+            total,
+            totalPages,
+        };
     }
     async getOne(id) {
         return await this.db.user.findFirst({

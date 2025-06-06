@@ -9,30 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EntityUpdatedLogHandler = void 0;
+exports.OnEntityArchivedLogHandler = void 0;
 const logger_service_1 = require("../../logger/logger.service");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const client_1 = require("@prisma/client");
 const logger_events_interfaces_1 = require("./logger-events.interfaces");
-let EntityUpdatedLogHandler = class EntityUpdatedLogHandler {
+let OnEntityArchivedLogHandler = class OnEntityArchivedLogHandler {
     constructor(logger) {
         this.logger = logger;
     }
     async handleCreated(payload) {
         const { session, entityId } = payload;
-        await this.logger.updateEntityLog(session, client_1.Entity.User, entityId);
+        await this.logger.deleteEntityLog(session, client_1.Entity.User, entityId);
     }
 };
-exports.EntityUpdatedLogHandler = EntityUpdatedLogHandler;
+exports.OnEntityArchivedLogHandler = OnEntityArchivedLogHandler;
 __decorate([
-    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.USER_UPDATED_EVENT),
+    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.USER_ARCHIVED_EVENT),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], EntityUpdatedLogHandler.prototype, "handleCreated", null);
-exports.EntityUpdatedLogHandler = EntityUpdatedLogHandler = __decorate([
+], OnEntityArchivedLogHandler.prototype, "handleCreated", null);
+exports.OnEntityArchivedLogHandler = OnEntityArchivedLogHandler = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [logger_service_1.LoggerService])
-], EntityUpdatedLogHandler);
-//# sourceMappingURL=entity-updated-log.handler.js.map
+], OnEntityArchivedLogHandler);
+//# sourceMappingURL=on-entity-archived-log.handler.js.map

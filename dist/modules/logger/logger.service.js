@@ -20,10 +20,19 @@ let LoggerService = class LoggerService {
     async getAll({ page, page_size }) {
         const pages = page || 1;
         const skip = (pages - 1) * page_size;
-        return await this.db.log.findMany({
-            skip: skip,
-            take: page_size,
-        });
+        const [data, total] = await Promise.all([
+            this.db.log.findMany({
+                skip,
+                take: page_size,
+            }),
+            this.db.log.count(),
+        ]);
+        const totalPages = Math.ceil(total / page_size);
+        return {
+            data,
+            total,
+            totalPages,
+        };
     }
     async createEntityLog(user, entity, entity_id) {
         try {
@@ -37,8 +46,7 @@ let LoggerService = class LoggerService {
             });
         }
         catch (e) {
-            console.log('e');
-            console.log(e);
+            console.warn(e);
         }
     }
     async updateEntityLog(user, entity, entity_id) {
@@ -53,7 +61,7 @@ let LoggerService = class LoggerService {
             });
         }
         catch (e) {
-            console.log(e);
+            console.warn(e);
         }
     }
     async deleteEntityLog(user, entity, entity_id) {
@@ -68,7 +76,7 @@ let LoggerService = class LoggerService {
             });
         }
         catch (e) {
-            console.log(e);
+            console.warn(e);
         }
     }
 };

@@ -7,6 +7,7 @@ import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-q
 import { Prisma } from '@prisma/client'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { DOCUMENT_EVENTS } from '@modules/events/document-events/document-events.interface'
+import { formatDate } from '@common/utils/format-date'
 
 import { CreateDocumentDto } from './dto/create-document.dto'
 import { UpdateDocumentDto } from './dto/update-document.dto'
@@ -51,19 +52,41 @@ export class DocumentsService {
   async getAll({ page, page_size, status, query }: SearchStatusQueryParamsDto) {
     const pages = page || 1
     const skip = (pages - 1) * page_size
-    return await this.db.document.findMany({
-      where: {
-        AND: [
-          query
-            ? { name: { contains: query, mode: Prisma.QueryMode.insensitive } }
-            : {},
-          status !== null && status !== undefined ? { is_active: status } : {},
-        ],
-        is_archived: false,
-      },
-      take: page_size,
-      skip: skip,
+
+    const where = {
+      AND: [
+        query
+          ? { name: { contains: query, mode: Prisma.QueryMode.insensitive } }
+          : {},
+        status !== null && status !== undefined ? { is_active: status } : {},
+      ],
+      is_archived: false,
+    }
+
+    const [docs, total] = await Promise.all([
+      this.db.document.findMany({
+        where,
+        take: page_size,
+        skip,
+      }),
+      this.db.document.count({ where }),
+    ])
+
+    const totalPages = Math.ceil(total / page_size)
+
+    const data = docs.map((d, i) => {
+      return {
+        ...d,
+        number: i + 1,
+        created_at: formatDate(d.created_at),
+        updated_at: formatDate(d.updated_at),
+      }
     })
+    return {
+      data,
+      total,
+      totalPages,
+    }
   }
 
   async getAllByTopic(topicId: string) {

@@ -18,21 +18,26 @@ export declare class UsersService {
         dni: string;
         email: string;
         password: string;
-        last_name: string;
         role: import(".prisma/client").$Enums.Role;
+        last_name: string;
     }>;
     findAll({ query, page, page_size, status, }: SearchStatusQueryParamsDto): Promise<{
-        id: string;
-        created_at: Date;
-        name: string;
-        is_active: boolean;
-        is_archived: boolean;
-        updated_at: Date;
-        dni: string;
-        email: string;
-        last_name: string;
-        role: import(".prisma/client").$Enums.Role;
-    }[]>;
+        data: {
+            number: number;
+            created_at: string;
+            updated_at: string;
+            id: string;
+            name: string;
+            is_active: boolean;
+            is_archived: boolean;
+            dni: string;
+            email: string;
+            role: import(".prisma/client").$Enums.Role;
+            last_name: string;
+        }[];
+        total: number;
+        totalPages: number;
+    }>;
     getOne(id: string): Promise<{
         id: string;
         created_at: Date;
@@ -41,8 +46,8 @@ export declare class UsersService {
         updated_at: Date;
         dni: string;
         email: string;
-        last_name: string;
         role: import(".prisma/client").$Enums.Role;
+        last_name: string;
     }>;
     getOneByEmail(email: string): Promise<{
         id: string;
@@ -53,8 +58,8 @@ export declare class UsersService {
         dni: string;
         email: string;
         password: string;
-        last_name: string;
         role: import(".prisma/client").$Enums.Role;
+        last_name: string;
     }>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<{
         id: string;
@@ -66,8 +71,8 @@ export declare class UsersService {
         dni: string;
         email: string;
         password: string;
-        last_name: string;
         role: import(".prisma/client").$Enums.Role;
+        last_name: string;
     }>;
     remove(id: string): Promise<{
         id: string;
@@ -79,8 +84,8 @@ export declare class UsersService {
         dni: string;
         email: string;
         password: string;
-        last_name: string;
         role: import(".prisma/client").$Enums.Role;
+        last_name: string;
     }>;
     verifyDni(dni: string): Promise<IReniecResponse>;
 }

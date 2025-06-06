@@ -3,6 +3,7 @@ import { PrismaService } from 'src/providers/prisma/prisma.service'
 import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception'
 import { generateUUIDV7 } from '@common/utils/uuid'
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
+import { formatDate } from '@common/utils/format-date'
 
 import { CreateRunDto } from './dto/create-run.dto'
 @Injectable()
@@ -37,16 +38,36 @@ export class RunsService {
   }: RangeDateQueryParams) {
     const pages = page || 1
     const skip = (pages - 1) * page_size
-    return await this.db.run.findMany({
-      where: {
-        created_at: {
-          ...(start_date ? { gte: start_date } : {}),
-          ...(end_date ? { lte: end_date } : {}),
-        },
+
+    const where = {
+      created_at: {
+        ...(start_date ? { gte: start_date } : {}),
+        ...(end_date ? { lte: end_date } : {}),
       },
-      skip: skip,
-      take: page_size,
+    }
+
+    const [runs, total] = await Promise.all([
+      this.db.run.findMany({
+        where,
+        skip,
+        take: page_size,
+      }),
+      this.db.run.count({ where }),
+    ])
+
+    const totalPages = Math.ceil(total / page_size)
+    const data = runs.map((r, i) => {
+      return {
+        ...r,
+        number: i + 1,
+        created_at: formatDate(r.created_at),
+      }
     })
+    return {
+      data,
+      total,
+      totalPages,
+    }
   }
 
   async getAllByConversation(conversationId: string) {

@@ -18,21 +18,26 @@ export declare class UsersController {
         dni: string;
         email: string;
         password: string;
-        last_name: string;
         role: import(".prisma/client").$Enums.Role;
+        last_name: string;
     }>;
     getAllUsers(query: SearchStatusQueryParamsDto): Promise<{
-        id: string;
-        created_at: Date;
-        name: string;
-        is_active: boolean;
-        is_archived: boolean;
-        updated_at: Date;
-        dni: string;
-        email: string;
-        last_name: string;
-        role: import(".prisma/client").$Enums.Role;
-    }[]>;
+        data: {
+            number: number;
+            created_at: string;
+            updated_at: string;
+            id: string;
+            name: string;
+            is_active: boolean;
+            is_archived: boolean;
+            dni: string;
+            email: string;
+            role: import(".prisma/client").$Enums.Role;
+            last_name: string;
+        }[];
+        total: number;
+        totalPages: number;
+    }>;
     verifyDni(dni: string): Promise<import("../../providers/reniec/interfaces/reniec-response.interface").IReniecResponse>;
     getOneUser(userId: string): Promise<{
         id: string;
@@ -42,8 +47,8 @@ export declare class UsersController {
         updated_at: Date;
         dni: string;
         email: string;
-        last_name: string;
         role: import(".prisma/client").$Enums.Role;
+        last_name: string;
     }>;
     updateUser(userId: string, session: IUserSession, updateUserDto: UpdateUserDto): Promise<{
         id: string;
@@ -55,8 +60,8 @@ export declare class UsersController {
         dni: string;
         email: string;
         password: string;
-        last_name: string;
         role: import(".prisma/client").$Enums.Role;
+        last_name: string;
     }>;
     removeUser(userId: string, session: IUserSession): Promise<{
         id: string;
@@ -68,7 +73,7 @@ export declare class UsersController {
         dni: string;
         email: string;
         password: string;
-        last_name: string;
         role: import(".prisma/client").$Enums.Role;
+        last_name: string;
     }>;
 }

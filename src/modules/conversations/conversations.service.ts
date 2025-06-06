@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { PrismaService } from 'src/providers/prisma/prisma.service'
 import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception'
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
+import { formatDate } from '@common/utils/format-date'
 
 import { CreateConversationDto } from './dto/create-conversation.dto'
 
@@ -17,7 +18,6 @@ export class ConversationsService {
       })
       if (newConversation) return newConversation
     } catch (e) {
-      console.log(e)
       if (e.code) {
         throw new PrismaException(e)
       }
@@ -35,16 +35,38 @@ export class ConversationsService {
   }: RangeDateQueryParams) {
     const pages = page || 1
     const skip = (pages - 1) * page_size
-    return await this.db.conversation.findMany({
-      where: {
-        created_at: {
-          ...(start_date ? { gte: start_date } : {}),
-          ...(end_date ? { lte: end_date } : {}),
-        },
+
+    const where = {
+      created_at: {
+        ...(start_date ? { gte: start_date } : {}),
+        ...(end_date ? { lte: end_date } : {}),
       },
-      take: page_size,
-      skip: skip,
+    }
+
+    const [conversations, total] = await Promise.all([
+      this.db.conversation.findMany({
+        where,
+        take: page_size,
+        skip,
+      }),
+      this.db.conversation.count({ where }),
+    ])
+
+    const totalPages = Math.ceil(total / page_size)
+    const data = conversations.map((c, i) => {
+      return {
+        ...c,
+        number: i + 1,
+        created_at: formatDate(c.created_at),
+        last_run: formatDate(c.last_run),
+        completed_at: formatDate(c.completed_at),
+      }
     })
+    return {
+      data,
+      total,
+      totalPages,
+    }
   }
 
   async getOneWithRuns(id: string) {

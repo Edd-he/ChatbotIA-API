@@ -1,12 +1,13 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { PrismaService } from 'src/providers/prisma/prisma.service'
-import { Prisma, Role } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params'
 import { PrismaException } from '@providers/prisma/exceptions/prisma.exception'
 import * as bcrypt from 'bcryptjs'
 import { generateUUIDV7 } from '@common/utils/uuid'
 import { ReniecService } from '@providers/reniec/reniec.service'
 import { IReniecResponse } from '@providers/reniec/interfaces/reniec-response.interface'
+import { formatDate } from '@common/utils/format-date'
 
 import { UpdateUserDto } from './dto/update-user.dto'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -18,7 +19,7 @@ export class UsersService {
     private reniecService: ReniecService,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    const { password, ...rest } = createUserDto
+    const { password, role, ...rest } = createUserDto
 
     const { nombres, apellidoMaterno, apellidoPaterno }: IReniecResponse =
       await this.reniecService.getInfoDNI(createUserDto.dni)
@@ -29,7 +30,7 @@ export class UsersService {
           name: nombres,
           last_name: apellidoPaterno + ' ' + apellidoMaterno,
           password: await bcrypt.hash(password, 10),
-          role: Role.ADMIN,
+          role: role,
           ...rest,
         },
       })
@@ -53,22 +54,43 @@ export class UsersService {
   }: SearchStatusQueryParamsDto) {
     const pages = page || 1
     const skip = (pages - 1) * page_size
-    return await this.db.user.findMany({
-      omit: {
-        password: true,
-      },
-      where: {
-        AND: [
-          query
-            ? { name: { contains: query, mode: Prisma.QueryMode.insensitive } }
-            : {},
-          status !== null && status !== undefined ? { is_active: status } : {},
-        ],
-        is_archived: false,
-      },
-      skip: skip,
-      take: page_size,
+
+    const where = {
+      AND: [
+        query
+          ? { name: { contains: query, mode: Prisma.QueryMode.insensitive } }
+          : {},
+        status !== null && status !== undefined ? { is_active: status } : {},
+      ],
+      is_archived: false,
+    }
+
+    const [users, total] = await Promise.all([
+      this.db.user.findMany({
+        where,
+        skip,
+        take: page_size,
+        omit: {
+          password: true,
+        },
+      }),
+      this.db.user.count({ where }),
+    ])
+
+    const totalPages = Math.ceil(total / page_size)
+    const data = users.map((u, i) => {
+      return {
+        ...u,
+        number: i + 1,
+        created_at: formatDate(u.created_at),
+        updated_at: formatDate(u.updated_at),
+      }
     })
+    return {
+      data,
+      total,
+      totalPages,
+    }
   }
 
   async getOne(id: string) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { UsersService } from '@modules/users/users.service'
 import { JwtService } from '@nestjs/jwt'

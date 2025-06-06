@@ -18,6 +18,7 @@ const uuid_1 = require("../../common/utils/uuid");
 const client_1 = require("@prisma/client");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const document_events_interface_1 = require("../events/document-events/document-events.interface");
+const format_date_1 = require("../../common/utils/format-date");
 let DocumentsService = class DocumentsService {
     constructor(eventEmitter, db, cloudinary) {
         this.eventEmitter = eventEmitter;
@@ -50,19 +51,37 @@ let DocumentsService = class DocumentsService {
     async getAll({ page, page_size, status, query }) {
         const pages = page || 1;
         const skip = (pages - 1) * page_size;
-        return await this.db.document.findMany({
-            where: {
-                AND: [
-                    query
-                        ? { name: { contains: query, mode: client_1.Prisma.QueryMode.insensitive } }
-                        : {},
-                    status !== null && status !== undefined ? { is_active: status } : {},
-                ],
-                is_archived: false,
-            },
-            take: page_size,
-            skip: skip,
+        const where = {
+            AND: [
+                query
+                    ? { name: { contains: query, mode: client_1.Prisma.QueryMode.insensitive } }
+                    : {},
+                status !== null && status !== undefined ? { is_active: status } : {},
+            ],
+            is_archived: false,
+        };
+        const [docs, total] = await Promise.all([
+            this.db.document.findMany({
+                where,
+                take: page_size,
+                skip,
+            }),
+            this.db.document.count({ where }),
+        ]);
+        const totalPages = Math.ceil(total / page_size);
+        const data = docs.map((d, i) => {
+            return {
+                ...d,
+                number: i + 1,
+                created_at: (0, format_date_1.formatDate)(d.created_at),
+                updated_at: (0, format_date_1.formatDate)(d.updated_at),
+            };
         });
+        return {
+            data,
+            total,
+            totalPages,
+        };
     }
     async getAllByTopic(topicId) {
         return await this.db.document.findMany({

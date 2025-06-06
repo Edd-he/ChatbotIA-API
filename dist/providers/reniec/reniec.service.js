@@ -13,7 +13,7 @@ exports.ReniecService = void 0;
 const axios_1 = require("@nestjs/axios");
 const common_1 = require("@nestjs/common");
 const rxjs_1 = require("rxjs");
-const api_key_1 = require("./constants/api-key");
+const envs_1 = require("../../config/envs");
 let ReniecService = class ReniecService {
     constructor(http) {
         this.http = http;
@@ -23,14 +23,14 @@ let ReniecService = class ReniecService {
         try {
             const response = await (0, rxjs_1.lastValueFrom)(this.http.get(url, {
                 headers: {
-                    Authorization: `Bearer ${api_key_1.RENIEC_TOKEN}`,
+                    Authorization: `Bearer ${envs_1.envs.reniecToken}`,
                     'Content-Type': 'application/json',
                 },
             }));
             return response.data;
         }
         catch (e) {
-            console.log(e);
+            console.warn(e);
             throw new common_1.NotFoundException('El DNI no existe');
         }
     }

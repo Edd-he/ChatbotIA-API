@@ -5,6 +5,7 @@ import { PrismaException } from '@providers/prisma/exceptions/prisma.exception'
 import { generateUUIDV7 } from '@common/utils/uuid'
 import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params'
 import { Prisma } from '@prisma/client'
+import { formatDate } from '@common/utils/format-date'
 
 import { UpdateTopicDto } from './dto/update-topic.dto'
 import { CreateTopicDto } from './dto/create-topic.dto'
@@ -36,19 +37,40 @@ export class TopicsService {
   async getAll({ page, page_size, status, query }: SearchStatusQueryParamsDto) {
     const pages = page || 1
     const skip = (pages - 1) * page_size
-    return await this.db.topic.findMany({
-      where: {
-        AND: [
-          query
-            ? { name: { contains: query, mode: Prisma.QueryMode.insensitive } }
-            : {},
-          status !== null && status !== undefined ? { is_active: status } : {},
-        ],
-        is_archived: false,
-      },
-      take: page_size,
-      skip: skip,
+
+    const where = {
+      AND: [
+        query
+          ? { name: { contains: query, mode: Prisma.QueryMode.insensitive } }
+          : {},
+        status !== null && status !== undefined ? { is_active: status } : {},
+      ],
+      is_archived: false,
+    }
+
+    const [topics, total] = await Promise.all([
+      this.db.topic.findMany({
+        where,
+        take: page_size,
+        skip,
+      }),
+      this.db.topic.count({ where }),
+    ])
+
+    const totalPages = Math.ceil(total / page_size)
+    const data = topics.map((t, i) => {
+      return {
+        ...t,
+        number: i + 1,
+        created_at: formatDate(t.created_at),
+        updated_at: formatDate(t.updated_at),
+      }
     })
+    return {
+      data,
+      total,
+      totalPages,
+    }
   }
 
   async getOneWithDocuments(id: string) {
@@ -86,6 +108,7 @@ export class TopicsService {
       )
     }
   }
+
   async updateSizeAndCount(id: string, size: number) {
     try {
       const data: any = {}

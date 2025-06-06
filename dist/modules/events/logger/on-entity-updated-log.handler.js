@@ -9,30 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.EntityCreatedLogHandler = void 0;
+exports.OnEntityUpdatedLogHandler = void 0;
 const logger_service_1 = require("../../logger/logger.service");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const client_1 = require("@prisma/client");
 const logger_events_interfaces_1 = require("./logger-events.interfaces");
-let EntityCreatedLogHandler = class EntityCreatedLogHandler {
+let OnEntityUpdatedLogHandler = class OnEntityUpdatedLogHandler {
     constructor(logger) {
         this.logger = logger;
     }
     async handleCreated(payload) {
         const { session, entityId } = payload;
-        await this.logger.createEntityLog(session, client_1.Entity.User, entityId);
+        await this.logger.updateEntityLog(session, client_1.Entity.User, entityId);
     }
 };
-exports.EntityCreatedLogHandler = EntityCreatedLogHandler;
+exports.OnEntityUpdatedLogHandler = OnEntityUpdatedLogHandler;
 __decorate([
-    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.USER_CREATED_EVENT),
+    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.USER_UPDATED_EVENT),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], EntityCreatedLogHandler.prototype, "handleCreated", null);
-exports.EntityCreatedLogHandler = EntityCreatedLogHandler = __decorate([
+], OnEntityUpdatedLogHandler.prototype, "handleCreated", null);
+exports.OnEntityUpdatedLogHandler = OnEntityUpdatedLogHandler = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [logger_service_1.LoggerService])
-], EntityCreatedLogHandler);
-//# sourceMappingURL=entity-created-log.handler.js.map
+], OnEntityUpdatedLogHandler);
+//# sourceMappingURL=on-entity-updated-log.handler.js.map

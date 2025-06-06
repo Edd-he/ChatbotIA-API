@@ -17,16 +17,21 @@ export declare class TopicsController {
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
     getAllTopics(query: SearchStatusQueryParamsDto): Promise<{
-        description: string | null;
-        id: string;
-        created_at: Date;
-        name: string;
-        is_active: boolean;
-        is_archived: boolean;
-        updated_at: Date;
-        documents_count: number;
-        total_size: import("@prisma/client/runtime/library").Decimal;
-    }[]>;
+        data: {
+            number: number;
+            created_at: string;
+            updated_at: string;
+            description: string | null;
+            id: string;
+            name: string;
+            is_active: boolean;
+            is_archived: boolean;
+            documents_count: number;
+            total_size: import("@prisma/client/runtime/library").Decimal;
+        }[];
+        total: number;
+        totalPages: number;
+    }>;
     getTopic(topicId: string): Promise<{
         documents: {
             description: string;

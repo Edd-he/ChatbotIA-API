@@ -14,6 +14,7 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../providers/prisma/prisma.service");
 const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exception");
 const uuid_1 = require("../../common/utils/uuid");
+const format_date_1 = require("../../common/utils/format-date");
 let RunsService = class RunsService {
     constructor(db) {
         this.db = db;
@@ -38,16 +39,33 @@ let RunsService = class RunsService {
     async getAll({ start_date, end_date, page, page_size, }) {
         const pages = page || 1;
         const skip = (pages - 1) * page_size;
-        return await this.db.run.findMany({
-            where: {
-                created_at: {
-                    ...(start_date ? { gte: start_date } : {}),
-                    ...(end_date ? { lte: end_date } : {}),
-                },
+        const where = {
+            created_at: {
+                ...(start_date ? { gte: start_date } : {}),
+                ...(end_date ? { lte: end_date } : {}),
             },
-            skip: skip,
-            take: page_size,
+        };
+        const [runs, total] = await Promise.all([
+            this.db.run.findMany({
+                where,
+                skip,
+                take: page_size,
+            }),
+            this.db.run.count({ where }),
+        ]);
+        const totalPages = Math.ceil(total / page_size);
+        const data = runs.map((r, i) => {
+            return {
+                ...r,
+                number: i + 1,
+                created_at: (0, format_date_1.formatDate)(r.created_at),
+            };
         });
+        return {
+            data,
+            total,
+            totalPages,
+        };
     }
     async getAllByConversation(conversationId) {
         return await this.db.run.findMany({

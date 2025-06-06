@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpStatus, Injectable } from '@nestjs/common'
 import {
   GenerateContentRequest,

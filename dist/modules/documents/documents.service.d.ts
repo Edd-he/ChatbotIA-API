@@ -24,18 +24,23 @@ export declare class DocumentsService {
         size: Prisma.Decimal;
     }>;
     getAll({ page, page_size, status, query }: SearchStatusQueryParamsDto): Promise<{
-        description: string;
-        id: string;
-        created_at: Date;
-        name: string;
-        tags: string[];
-        is_active: boolean;
-        is_archived: boolean;
-        updated_at: Date;
-        url: string;
-        topic_id: string;
-        size: Prisma.Decimal;
-    }[]>;
+        data: {
+            number: number;
+            created_at: string;
+            updated_at: string;
+            description: string;
+            id: string;
+            name: string;
+            tags: string[];
+            is_active: boolean;
+            is_archived: boolean;
+            url: string;
+            topic_id: string;
+            size: Prisma.Decimal;
+        }[];
+        total: number;
+        totalPages: number;
+    }>;
     getAllByTopic(topicId: string): Promise<{
         description: string;
         id: string;

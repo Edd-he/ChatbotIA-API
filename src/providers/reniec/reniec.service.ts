@@ -1,9 +1,9 @@
 import { HttpService } from '@nestjs/axios'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { lastValueFrom } from 'rxjs'
+import { envs } from 'src/config/envs'
 
 import { IReniecResponse } from './interfaces/reniec-response.interface'
-import { RENIEC_TOKEN } from './constants/api-key'
 
 @Injectable()
 export class ReniecService {
@@ -15,14 +15,14 @@ export class ReniecService {
       const response = await lastValueFrom(
         this.http.get(url, {
           headers: {
-            Authorization: `Bearer ${RENIEC_TOKEN}`,
+            Authorization: `Bearer ${envs.reniecToken}`,
             'Content-Type': 'application/json',
           },
         }),
       )
       return response.data as IReniecResponse
     } catch (e) {
-      console.log(e)
+      console.warn(e)
       throw new NotFoundException('El DNI no existe')
     }
   }

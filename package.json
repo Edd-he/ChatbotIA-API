@@ -43,6 +43,7 @@
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "form-data": "^4.0.2",
+    "joi": "^17.13.3",
     "partial-json-parser": "^1.2.2",
     "pdf-lib": "^1.17.1",
     "prisma": "^6.5.0",

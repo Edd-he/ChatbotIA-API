@@ -15,6 +15,7 @@ const prisma_service_1 = require("../../providers/prisma/prisma.service");
 const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exception");
 const uuid_1 = require("../../common/utils/uuid");
 const client_1 = require("@prisma/client");
+const format_date_1 = require("../../common/utils/format-date");
 let TopicsService = class TopicsService {
     constructor(db) {
         this.db = db;
@@ -41,19 +42,37 @@ let TopicsService = class TopicsService {
     async getAll({ page, page_size, status, query }) {
         const pages = page || 1;
         const skip = (pages - 1) * page_size;
-        return await this.db.topic.findMany({
-            where: {
-                AND: [
-                    query
-                        ? { name: { contains: query, mode: client_1.Prisma.QueryMode.insensitive } }
-                        : {},
-                    status !== null && status !== undefined ? { is_active: status } : {},
-                ],
-                is_archived: false,
-            },
-            take: page_size,
-            skip: skip,
+        const where = {
+            AND: [
+                query
+                    ? { name: { contains: query, mode: client_1.Prisma.QueryMode.insensitive } }
+                    : {},
+                status !== null && status !== undefined ? { is_active: status } : {},
+            ],
+            is_archived: false,
+        };
+        const [topics, total] = await Promise.all([
+            this.db.topic.findMany({
+                where,
+                take: page_size,
+                skip,
+            }),
+            this.db.topic.count({ where }),
+        ]);
+        const totalPages = Math.ceil(total / page_size);
+        const data = topics.map((t, i) => {
+            return {
+                ...t,
+                number: i + 1,
+                created_at: (0, format_date_1.formatDate)(t.created_at),
+                updated_at: (0, format_date_1.formatDate)(t.updated_at),
+            };
         });
+        return {
+            data,
+            total,
+            totalPages,
+        };
     }
     async getOneWithDocuments(id) {
         return await this.db.topic.findFirst({

@@ -13,6 +13,7 @@ exports.ConversationsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../providers/prisma/prisma.service");
 const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exception");
+const format_date_1 = require("../../common/utils/format-date");
 let ConversationsService = class ConversationsService {
     constructor(db) {
         this.db = db;
@@ -28,7 +29,6 @@ let ConversationsService = class ConversationsService {
                 return newConversation;
         }
         catch (e) {
-            console.log(e);
             if (e.code) {
                 throw new prisma_exception_1.PrismaException(e);
             }
@@ -38,16 +38,35 @@ let ConversationsService = class ConversationsService {
     async getAll({ page, page_size, start_date, end_date, }) {
         const pages = page || 1;
         const skip = (pages - 1) * page_size;
-        return await this.db.conversation.findMany({
-            where: {
-                created_at: {
-                    ...(start_date ? { gte: start_date } : {}),
-                    ...(end_date ? { lte: end_date } : {}),
-                },
+        const where = {
+            created_at: {
+                ...(start_date ? { gte: start_date } : {}),
+                ...(end_date ? { lte: end_date } : {}),
             },
-            take: page_size,
-            skip: skip,
+        };
+        const [conversations, total] = await Promise.all([
+            this.db.conversation.findMany({
+                where,
+                take: page_size,
+                skip,
+            }),
+            this.db.conversation.count({ where }),
+        ]);
+        const totalPages = Math.ceil(total / page_size);
+        const data = conversations.map((c, i) => {
+            return {
+                ...c,
+                number: i + 1,
+                created_at: (0, format_date_1.formatDate)(c.created_at),
+                last_run: (0, format_date_1.formatDate)(c.last_run),
+                completed_at: (0, format_date_1.formatDate)(c.completed_at),
+            };
         });
+        return {
+            data,
+            total,
+            totalPages,
+        };
     }
     async getOneWithRuns(id) {
         return await this.db.conversation.findFirst({

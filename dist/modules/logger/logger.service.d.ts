@@ -6,14 +6,18 @@ export declare class LoggerService {
     private readonly db;
     constructor(db: PrismaService);
     getAll({ page, page_size }: PaginatedParamsDto): Promise<{
-        id: number;
-        created_at: Date;
-        user_id: string;
-        action: import(".prisma/client").$Enums.Action;
-        entity: import(".prisma/client").$Enums.Entity;
-        entity_id: string;
-        details: import("@prisma/client/runtime/library").JsonValue | null;
-    }[]>;
+        data: {
+            id: number;
+            created_at: Date;
+            user_id: string;
+            action: import(".prisma/client").$Enums.Action;
+            entity: import(".prisma/client").$Enums.Entity;
+            entity_id: string;
+            details: import("@prisma/client/runtime/library").JsonValue | null;
+        }[];
+        total: number;
+        totalPages: number;
+    }>;
     createEntityLog(user: IUserSession, entity: Entity, entity_id: string): Promise<void>;
     updateEntityLog(user: IUserSession, entity: Entity, entity_id: string): Promise<void>;
     deleteEntityLog(user: IUserSession, entity: Entity, entity_id: string): Promise<void>;

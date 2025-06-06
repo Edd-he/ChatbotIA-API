@@ -6,9 +6,9 @@ import { TopicsModule } from '@modules/topics/topics.module'
 import { DocumentsModule } from '@modules/documents/documents.module'
 
 import { OnRunExecuteHandler } from './run-events/on-run-execute'
-import { EntityArchivedLogHandler } from './logger/entity-archived-log.handler'
-import { EntityCreatedLogHandler } from './logger/entity-created-log.handler'
-import { EntityUpdatedLogHandler } from './logger/entity-updated-log.handler'
+import { OnEntityArchivedLogHandler } from './logger/on-entity-archived-log.handler'
+import { OnEntityCreatedLogHandler } from './logger/on-entity-created-log.handler'
+import { OnEntityUpdatedLogHandler } from './logger/on-entity-updated-log.handler'
 import { OnDocumentCreateHandler } from './document-events/on-document-create'
 import { OnDocumentRemoveHandler } from './document-events/on-document-remove'
 
@@ -17,9 +17,9 @@ import { OnDocumentRemoveHandler } from './document-events/on-document-remove'
     OnRunExecuteHandler,
     OnDocumentCreateHandler,
     OnDocumentRemoveHandler,
-    EntityArchivedLogHandler,
-    EntityCreatedLogHandler,
-    EntityUpdatedLogHandler,
+    OnEntityArchivedLogHandler,
+    OnEntityCreatedLogHandler,
+    OnEntityUpdatedLogHandler,
   ],
   imports: [
     ConversationsModule,
