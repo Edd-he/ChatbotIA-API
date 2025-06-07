@@ -1,12 +1,11 @@
 import { Controller, Get, Query } from '@nestjs/common'
 import { PaginatedParamsDto } from '@common/query-params/paginated-params'
-import { ApiBearerAuth } from '@nestjs/swagger'
-import { Auth } from '@auth/decorators/auth.decorator'
+// import { ApiBearerAuth } from '@nestjs/swagger'
+// import { Auth } from '@auth/decorators/auth.decorator'
 import { ApiOperation } from '@nestjs/swagger'
 
 import { LoggerService } from './logger.service'
-@ApiBearerAuth()
-@Auth(['ADMIN', 'SUPER_ADMIN'])
+
 @Controller('Logs')
 export class LoggerController {
   constructor(private readonly logger: LoggerService) {}

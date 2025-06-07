@@ -17,8 +17,6 @@ const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const paginated_params_1 = require("../../common/query-params/paginated-params");
 const swagger_1 = require("@nestjs/swagger");
-const auth_decorator_1 = require("../auth/decorators/auth.decorator");
-const swagger_2 = require("@nestjs/swagger");
 const logger_service_1 = require("./logger.service");
 let LoggerController = class LoggerController {
     constructor(logger) {
@@ -31,7 +29,7 @@ let LoggerController = class LoggerController {
 exports.LoggerController = LoggerController;
 __decorate([
     (0, common_1.Get)('get-all-logs'),
-    (0, swagger_2.ApiOperation)({ summary: 'Obtiene todos los logs de entidades' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Obtiene todos los logs de entidades' }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
@@ -39,8 +37,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LoggerController.prototype, "findAll", null);
 exports.LoggerController = LoggerController = __decorate([
-    (0, swagger_1.ApiBearerAuth)(),
-    (0, auth_decorator_1.Auth)(['ADMIN', 'SUPER_ADMIN']),
     (0, common_1.Controller)('Logs'),
     __metadata("design:paramtypes", [logger_service_1.LoggerService])
 ], LoggerController);
