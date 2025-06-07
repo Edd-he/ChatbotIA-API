@@ -60,7 +60,7 @@ __decorate([
     (0, common_1.Patch)(':documentId/update-document'),
     (0, swagger_1.ApiOperation)({ summary: 'Actualiza información de un documento' }),
     openapi.ApiResponse({ status: 200 }),
-    __param(0, (0, common_1.Param)('id', validate_uuid_pipe_1.ValidateUUID)),
+    __param(0, (0, common_1.Param)('documentId', validate_uuid_pipe_1.ValidateUUID)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_document_dto_1.UpdateDocumentDto]),

@@ -34,7 +34,7 @@ export class DocumentsController {
   @Patch(':documentId/update-document')
   @ApiOperation({ summary: 'Actualiza información de un documento' })
   updateDocument(
-    @Param('id', ValidateUUID) id: string,
+    @Param('documentId', ValidateUUID) id: string,
     @Body() updateDocumentDto: UpdateDocumentDto,
   ) {
     return this.documentsService.update(id, updateDocumentDto)
