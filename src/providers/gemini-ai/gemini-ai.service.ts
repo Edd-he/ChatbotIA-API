@@ -6,6 +6,7 @@ import {
   Part,
 } from '@google/generative-ai'
 import { Observable } from 'rxjs'
+import { Schema } from '@google/generative-ai'
 
 import { GeminiRunData } from './entities/gemini-ai-run.entity'
 import { GeminiModels } from './interfaces/gemini-ai-models.enum'
@@ -21,6 +22,21 @@ export class GeminiAIService {
       model: geminiModel,
       systemInstruction: context,
       generationConfig: { temperature: 1 },
+    })
+  }
+  private generateStructuredModel(
+    geminiModel: GeminiModels,
+    context: string,
+    schema: Schema,
+  ) {
+    return this.genAI.getGenerativeModel({
+      model: geminiModel,
+      systemInstruction: context,
+      generationConfig: {
+        temperature: 1,
+        responseMimeType: 'application/json',
+        responseSchema: schema,
+      },
     })
   }
 
@@ -145,6 +161,18 @@ export class GeminiAIService {
     query: GenerateContentRequest | string | Array<string | Part>,
   ) {
     const model = this.generateModel(GeminiModel, context)
+
+    const { response } = await model.generateContent(query)
+    return response.text()
+  }
+
+  async getStructuredResponse(
+    GeminiModel: GeminiModels,
+    context: string,
+    query: GenerateContentRequest | string | Array<string | Part>,
+    schema: Schema,
+  ) {
+    const model = this.generateStructuredModel(GeminiModel, context, schema)
 
     const { response } = await model.generateContent(query)
     return response.text()

@@ -9,30 +9,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.OnEntityCreatedLogHandler = void 0;
+exports.OnEntityArchiveHandler = void 0;
 const logger_service_1 = require("../../logger/logger.service");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const client_1 = require("@prisma/client");
 const logger_events_interfaces_1 = require("./logger-events.interfaces");
-let OnEntityCreatedLogHandler = class OnEntityCreatedLogHandler {
+let OnEntityArchiveHandler = class OnEntityArchiveHandler {
     constructor(logger) {
         this.logger = logger;
     }
     async handleCreated(payload) {
         const { session, entityId } = payload;
-        await this.logger.createEntityLog(session, client_1.Entity.User, entityId);
+        await this.logger.deleteEntityLog(session, client_1.Entity.User, entityId);
     }
 };
-exports.OnEntityCreatedLogHandler = OnEntityCreatedLogHandler;
+exports.OnEntityArchiveHandler = OnEntityArchiveHandler;
 __decorate([
-    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.USER_CREATED_EVENT),
+    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.USER_ARCHIVED_EVENT),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], OnEntityCreatedLogHandler.prototype, "handleCreated", null);
-exports.OnEntityCreatedLogHandler = OnEntityCreatedLogHandler = __decorate([
+], OnEntityArchiveHandler.prototype, "handleCreated", null);
+exports.OnEntityArchiveHandler = OnEntityArchiveHandler = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [logger_service_1.LoggerService])
-], OnEntityCreatedLogHandler);
-//# sourceMappingURL=on-entity-created-log.handler.js.map
+], OnEntityArchiveHandler);
+//# sourceMappingURL=on-entity-archive.js.map

@@ -20,6 +20,12 @@ let MonitoringController = class MonitoringController {
     async getRunsAnalytics() {
         return await this.monitoringService.getRunsAnalytics();
     }
+    async getTopInputs() {
+        return await this.monitoringService.getTopInputs();
+    }
+    async getTokenPerMonth() {
+        return await this.monitoringService.getTokensPerMonth();
+    }
 };
 exports.MonitoringController = MonitoringController;
 __decorate([
@@ -29,6 +35,20 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], MonitoringController.prototype, "getRunsAnalytics", null);
+__decorate([
+    (0, common_1.Get)('/get-top-inputs'),
+    openapi.ApiResponse({ status: 200, type: Object }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], MonitoringController.prototype, "getTopInputs", null);
+__decorate([
+    (0, common_1.Get)('/get-tokens-month'),
+    openapi.ApiResponse({ status: 200 }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], MonitoringController.prototype, "getTokenPerMonth", null);
 exports.MonitoringController = MonitoringController = __decorate([
     (0, common_1.Controller)('monitoring'),
     __metadata("design:paramtypes", [monitoring_service_1.MonitoringService])

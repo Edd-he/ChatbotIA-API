@@ -14,9 +14,9 @@ const logger_module_1 = require("../logger/logger.module");
 const topics_module_1 = require("../topics/topics.module");
 const documents_module_1 = require("../documents/documents.module");
 const on_run_execute_1 = require("./run-events/on-run-execute");
-const on_entity_archived_log_handler_1 = require("./logger/on-entity-archived-log.handler");
-const on_entity_created_log_handler_1 = require("./logger/on-entity-created-log.handler");
-const on_entity_updated_log_handler_1 = require("./logger/on-entity-updated-log.handler");
+const on_entity_archive_1 = require("./logger/on-entity-archive");
+const on_entity_create_1 = require("./logger/on-entity-create");
+const on_entity_update_1 = require("./logger/on-entity-update");
 const on_document_create_1 = require("./document-events/on-document-create");
 const on_document_remove_1 = require("./document-events/on-document-remove");
 let EventsModule = class EventsModule {
@@ -28,9 +28,9 @@ exports.EventsModule = EventsModule = __decorate([
             on_run_execute_1.OnRunExecuteHandler,
             on_document_create_1.OnDocumentCreateHandler,
             on_document_remove_1.OnDocumentRemoveHandler,
-            on_entity_archived_log_handler_1.OnEntityArchivedLogHandler,
-            on_entity_created_log_handler_1.OnEntityCreatedLogHandler,
-            on_entity_updated_log_handler_1.OnEntityUpdatedLogHandler,
+            on_entity_archive_1.OnEntityArchiveHandler,
+            on_entity_create_1.OnEntityCreateHandler,
+            on_entity_update_1.OnEntityUpdateHandler,
         ],
         imports: [
             conversations_module_1.ConversationsModule,

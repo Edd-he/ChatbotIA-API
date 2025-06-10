@@ -7,4 +7,9 @@ export declare class MonitoringController {
         ok: number;
         error: number;
     }[]>;
+    getTopInputs(): Promise<any>;
+    getTokenPerMonth(): Promise<{
+        month: string;
+        totalTokens: number;
+    }[]>;
 }

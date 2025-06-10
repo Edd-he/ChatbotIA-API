@@ -6,7 +6,7 @@ import { Entity } from '@prisma/client'
 import { EntityOperationEvent, LoggerEvents } from './logger-events.interfaces'
 
 @Injectable()
-export class OnEntityArchivedLogHandler {
+export class OnEntityArchiveHandler {
   constructor(private readonly logger: LoggerService) {}
 
   @OnEvent(LoggerEvents.USER_ARCHIVED_EVENT)

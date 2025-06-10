@@ -17,6 +17,7 @@ const event_emitter_1 = require("@nestjs/event-emitter");
 const gemini_ai_service_1 = require("../../../providers/gemini-ai/gemini-ai.service");
 const gemini_ai_models_enum_1 = require("../../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
 const run_events_interfaces_1 = require("./run-events.interfaces");
+const generate_tittle_context_1 = require("./prompts/generate-tittle.context");
 let OnRunExecuteHandler = class OnRunExecuteHandler {
     constructor(events, runsService, conversationsService, ai) {
         this.events = events;
@@ -37,10 +38,7 @@ let OnRunExecuteHandler = class OnRunExecuteHandler {
         await this.conversationsService.update(payload.conversation_id, payload.tokens);
     }
     async generateTittle(input) {
-        const response = await this.ai.getResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH, `- generarás un título basado en el primer mensaje con el que el usuario inicia una conversación
-      - asegúrate de que no tenga más de 90 caracteres
-      - el título debe ser un resumen del mensaje del usuario
-      - no uses comillas ni dos puntos`, [input]);
+        const response = await this.ai.getResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH, generate_tittle_context_1.GENERATE_TITLE_CONTEXT, [input]);
         return response;
     }
 };

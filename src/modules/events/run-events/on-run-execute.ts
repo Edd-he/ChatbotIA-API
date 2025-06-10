@@ -6,6 +6,7 @@ import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service'
 import { GeminiModels } from '@providers/gemini-ai/interfaces/gemini-ai-models.enum'
 
 import { RunExecutedEvent, RUN_EVENTS } from './run-events.interfaces'
+import { GENERATE_TITLE_CONTEXT } from './prompts/generate-tittle.context'
 
 @Injectable()
 export class OnRunExecuteHandler {
@@ -40,10 +41,7 @@ export class OnRunExecuteHandler {
   private async generateTittle(input: string) {
     const response = await this.ai.getResponse(
       GeminiModels.GEMINI_1_5_FLASH,
-      `- generarás un título basado en el primer mensaje con el que el usuario inicia una conversación
-      - asegúrate de que no tenga más de 90 caracteres
-      - el título debe ser un resumen del mensaje del usuario
-      - no uses comillas ni dos puntos`,
+      GENERATE_TITLE_CONTEXT,
       [input],
     )
 

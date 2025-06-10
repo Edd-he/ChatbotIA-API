@@ -10,4 +10,14 @@ export class MonitoringController {
   async getRunsAnalytics() {
     return await this.monitoringService.getRunsAnalytics()
   }
+
+  @Get('/get-top-inputs')
+  async getTopInputs() {
+    return await this.monitoringService.getTopInputs()
+  }
+
+  @Get('/get-tokens-month')
+  async getTokenPerMonth() {
+    return await this.monitoringService.getTokensPerMonth()
+  }
 }

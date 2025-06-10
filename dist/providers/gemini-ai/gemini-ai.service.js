@@ -25,6 +25,17 @@ let GeminiAIService = class GeminiAIService {
             generationConfig: { temperature: 1 },
         });
     }
+    generateStructuredModel(geminiModel, context, schema) {
+        return this.genAI.getGenerativeModel({
+            model: geminiModel,
+            systemInstruction: context,
+            generationConfig: {
+                temperature: 1,
+                responseMimeType: 'application/json',
+                responseSchema: schema,
+            },
+        });
+    }
     handleStreamError(observer, run, message, statusCode) {
         run.setError(message);
         observer.error(JSON.stringify({
@@ -97,6 +108,11 @@ let GeminiAIService = class GeminiAIService {
     }
     async getResponse(GeminiModel, context, query) {
         const model = this.generateModel(GeminiModel, context);
+        const { response } = await model.generateContent(query);
+        return response.text();
+    }
+    async getStructuredResponse(GeminiModel, context, query, schema) {
+        const model = this.generateStructuredModel(GeminiModel, context, schema);
         const { response } = await model.generateContent(query);
         return response.text();
     }
