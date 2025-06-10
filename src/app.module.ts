@@ -16,6 +16,7 @@ import { GeminiChatRunnerModule } from './modules/gemini-chat-runner/gemini-chat
 import { ConversationsModule } from './modules/conversations/conversations.module'
 import { DocumentsModule } from './modules/documents/documents.module'
 import { RunsModule } from './modules/runs/runs.module'
+import { MonitoringModule } from './modules/monitoring/monitoring.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { RunsModule } from './modules/runs/runs.module'
     DocumentsModule,
     RunsModule,
     EventsModule,
+    MonitoringModule,
   ],
 })
 export class AppModule {}

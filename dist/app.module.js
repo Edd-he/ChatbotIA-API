@@ -24,6 +24,7 @@ const gemini_chat_runner_module_1 = require("./modules/gemini-chat-runner/gemini
 const conversations_module_1 = require("./modules/conversations/conversations.module");
 const documents_module_1 = require("./modules/documents/documents.module");
 const runs_module_1 = require("./modules/runs/runs.module");
+const monitoring_module_1 = require("./modules/monitoring/monitoring.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -48,6 +49,7 @@ exports.AppModule = AppModule = __decorate([
             documents_module_1.DocumentsModule,
             runs_module_1.RunsModule,
             events_module_1.EventsModule,
+            monitoring_module_1.MonitoringModule,
         ],
     })
 ], AppModule);

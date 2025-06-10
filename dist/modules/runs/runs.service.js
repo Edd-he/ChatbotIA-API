@@ -74,6 +74,14 @@ let RunsService = class RunsService {
             },
         });
     }
+    async getConversationContext(conversationId) {
+        return await this.db.run.findMany({
+            where: {
+                conversation_id: conversationId,
+            },
+            select: { input: true, output: true },
+        });
+    }
     async getOne(runId) {
         return await this.db.run.findFirst({
             where: {

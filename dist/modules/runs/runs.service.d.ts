@@ -45,6 +45,10 @@ export declare class RunsService {
         output: string;
         conversation_id: string;
     }[]>;
+    getConversationContext(conversationId: string): Promise<{
+        input: string;
+        output: string;
+    }[]>;
     getOne(runId: string): Promise<{
         error: string | null;
         id: string;

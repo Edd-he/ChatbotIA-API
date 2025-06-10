@@ -8,7 +8,6 @@ import { IGeminiRunError } from '@providers/gemini-ai/interfaces/gemini-ai-error
 import { GeminiModels } from '@providers/gemini-ai/interfaces/gemini-ai-models.enum'
 import { IGeminiRunData } from '@providers/gemini-ai/interfaces/gemini-ai-entity.interface'
 import { RunsService } from '@modules/runs/runs.service'
-import { Run } from '@prisma/client'
 import { IGeminiMessageChat } from '@providers/gemini-ai/interfaces/gemini-ai-historial.interface'
 import {
   RunExecutedEvent,
@@ -31,7 +30,7 @@ export class GeminiChatRunnerService {
   ): Observable<any> {
     return new Observable((subscriber) => {
       this.runService
-        .getAllByConversation(conversation_id)
+        .getConversationContext(conversation_id)
         .then((result) => {
           const historial = this.mapRunsToHistory(result)
           const stream = this.gemini.streamChatMessage(
@@ -83,7 +82,12 @@ export class GeminiChatRunnerService {
     this.eventEmitter.emit(RUN_EVENTS.ON_RUN_EXECUTED_EVENT, runExecutedEvent)
   }
 
-  private mapRunsToHistory(runs: Run[]): IGeminiMessageChat[] {
+  private mapRunsToHistory(
+    runs: {
+      input: string
+      output: string
+    }[],
+  ): IGeminiMessageChat[] {
     const historial = runs.flatMap((run) => [
       {
         role: 'user' as const,

@@ -28,7 +28,7 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
     streamChatResponse(conversation_id, message) {
         return new rxjs_1.Observable((subscriber) => {
             this.runService
-                .getAllByConversation(conversation_id)
+                .getConversationContext(conversation_id)
                 .then((result) => {
                 const historial = this.mapRunsToHistory(result);
                 const stream = this.gemini.streamChatMessage(historial, message, gemini_ai_models_enum_1.GeminiModels.GEMINI_2_0_FLASH, instructions_const_1.ASSISTANT_INSTRUCTION);
