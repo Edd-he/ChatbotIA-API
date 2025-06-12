@@ -23,14 +23,14 @@ let ConversationsController = class ConversationsController {
     constructor(conversationsService) {
         this.conversationsService = conversationsService;
     }
-    getAllConversations(query) {
-        return this.conversationsService.getAll(query);
+    async getAllConversations(query) {
+        return await this.conversationsService.getAll(query);
     }
-    getConversation(id) {
-        return this.conversationsService.getOneWithRuns(id);
+    async getConversation(id) {
+        return await this.conversationsService.getOneWithRuns(id);
     }
-    getTitle(id) {
-        return this.conversationsService.getOneTitle(id);
+    async getTitle(conversationId) {
+        return await this.conversationsService.getOneTitle(conversationId);
     }
 };
 exports.ConversationsController = ConversationsController;
@@ -43,7 +43,7 @@ __decorate([
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [rangeDate_query_params_1.RangeDateQueryParams]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ConversationsController.prototype, "getAllConversations", null);
 __decorate([
     (0, common_1.Get)(':conversationId/get-conversation'),
@@ -54,7 +54,7 @@ __decorate([
     __param(0, (0, common_1.Param)('conversationId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ConversationsController.prototype, "getConversation", null);
 __decorate([
     (0, common_1.Get)(':conversationId/get-title'),
@@ -65,7 +65,7 @@ __decorate([
     __param(0, (0, common_1.Param)('conversationId', validate_uuid_pipe_1.ValidateUUID)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], ConversationsController.prototype, "getTitle", null);
 exports.ConversationsController = ConversationsController = __decorate([
     (0, swagger_1.ApiTags)('Conversations'),

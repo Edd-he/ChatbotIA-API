@@ -14,23 +14,25 @@ export class ConversationsController {
   @ApiOperation({
     summary: 'Obtiene todas las conversaciones generadas en el sistema',
   })
-  getAllConversations(@Query() query: RangeDateQueryParams) {
-    return this.conversationsService.getAll(query)
+  async getAllConversations(@Query() query: RangeDateQueryParams) {
+    return await this.conversationsService.getAll(query)
   }
 
   @Get(':conversationId/get-conversation')
   @ApiOperation({
     summary: 'Obtiene una conversación junto a sus ejecuciones generadas',
   })
-  getConversation(@Param('conversationId', ValidateUUID) id: string) {
-    return this.conversationsService.getOneWithRuns(id)
+  async getConversation(@Param('conversationId', ValidateUUID) id: string) {
+    return await this.conversationsService.getOneWithRuns(id)
   }
 
   @Get(':conversationId/get-title')
   @ApiOperation({
     summary: 'Obten el titulo de una conversación',
   })
-  getTitle(@Param('conversationId', ValidateUUID) id: string) {
-    return this.conversationsService.getOneTitle(id)
+  async getTitle(
+    @Param('conversationId', ValidateUUID) conversationId: string,
+  ) {
+    return await this.conversationsService.getOneTitle(conversationId)
   }
 }

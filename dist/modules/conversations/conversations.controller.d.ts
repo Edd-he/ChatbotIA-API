@@ -41,7 +41,7 @@ export declare class ConversationsController {
         total_tokens: number;
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
-    getTitle(id: string): Promise<{
+    getTitle(conversationId: string): Promise<{
         title: string;
     }>;
 }
