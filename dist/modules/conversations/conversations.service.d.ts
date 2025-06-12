@@ -1,9 +1,11 @@
 import { PrismaService } from 'src/providers/prisma/prisma.service';
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
+import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 export declare class ConversationsService {
     private readonly db;
-    constructor(db: PrismaService);
+    private readonly ai;
+    constructor(db: PrismaService, ai: GeminiAIService);
     create(createConversationDto: CreateConversationDto): Promise<{
         title: string | null;
         id: string;
@@ -32,15 +34,15 @@ export declare class ConversationsService {
     getOneWithRuns(id: string): Promise<{
         runs: {
             error: string | null;
-            id: string;
-            created_at: Date;
+            conversation_id: string;
             is_run_successful: boolean;
             model_llm: string;
             latency: import("@prisma/client/runtime/library").Decimal;
             tokens: number;
             input: string;
             output: string;
-            conversation_id: string;
+            id: string;
+            created_at: Date;
         }[];
     } & {
         title: string | null;
@@ -61,6 +63,9 @@ export declare class ConversationsService {
         total_runs: number;
         total_tokens: number;
         status: import(".prisma/client").$Enums.ConversationStatus;
+    }>;
+    getOneTitle(conversationId: string): Promise<{
+        title: string;
     }>;
     update(conversationId: string, tokens: number): Promise<void>;
 }

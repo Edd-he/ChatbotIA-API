@@ -3,12 +3,16 @@ import { PrismaService } from 'src/providers/prisma/prisma.service'
 import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception'
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 import { formatDate } from '@common/utils/format-date'
+import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service'
 
 import { CreateConversationDto } from './dto/create-conversation.dto'
 
 @Injectable()
 export class ConversationsService {
-  constructor(private readonly db: PrismaService) {}
+  constructor(
+    private readonly db: PrismaService,
+    private readonly ai: GeminiAIService,
+  ) {}
   async create(createConversationDto: CreateConversationDto) {
     try {
       const newConversation = await this.db.conversation.create({
@@ -85,6 +89,15 @@ export class ConversationsService {
       where: {
         id: conversationId,
       },
+    })
+  }
+
+  async getOneTitle(conversationId: string) {
+    return await this.db.conversation.findFirst({
+      where: {
+        id: conversationId,
+      },
+      select: { title: true },
     })
   }
 

@@ -21,15 +21,15 @@ export declare class ConversationsController {
     getConversation(id: string): Promise<{
         runs: {
             error: string | null;
-            id: string;
-            created_at: Date;
+            conversation_id: string;
             is_run_successful: boolean;
             model_llm: string;
             latency: import("@prisma/client/runtime/library").Decimal;
             tokens: number;
             input: string;
             output: string;
-            conversation_id: string;
+            id: string;
+            created_at: Date;
         }[];
     } & {
         title: string | null;
@@ -40,5 +40,8 @@ export declare class ConversationsController {
         total_runs: number;
         total_tokens: number;
         status: import(".prisma/client").$Enums.ConversationStatus;
+    }>;
+    getTitle(id: string): Promise<{
+        title: string;
     }>;
 }

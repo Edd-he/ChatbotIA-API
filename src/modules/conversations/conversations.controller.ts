@@ -25,4 +25,12 @@ export class ConversationsController {
   getConversation(@Param('conversationId', ValidateUUID) id: string) {
     return this.conversationsService.getOneWithRuns(id)
   }
+
+  @Get(':conversationId/get-title')
+  @ApiOperation({
+    summary: 'Obten el titulo de una conversación',
+  })
+  getTitle(@Param('conversationId', ValidateUUID) id: string) {
+    return this.conversationsService.getOneTitle(id)
+  }
 }

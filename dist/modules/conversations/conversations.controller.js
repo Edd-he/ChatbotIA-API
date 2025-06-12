@@ -29,6 +29,9 @@ let ConversationsController = class ConversationsController {
     getConversation(id) {
         return this.conversationsService.getOneWithRuns(id);
     }
+    getTitle(id) {
+        return this.conversationsService.getOneTitle(id);
+    }
 };
 exports.ConversationsController = ConversationsController;
 __decorate([
@@ -53,6 +56,17 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ConversationsController.prototype, "getConversation", null);
+__decorate([
+    (0, common_1.Get)(':conversationId/get-title'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Obten el titulo de una conversación',
+    }),
+    openapi.ApiResponse({ status: 200 }),
+    __param(0, (0, common_1.Param)('conversationId', validate_uuid_pipe_1.ValidateUUID)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ConversationsController.prototype, "getTitle", null);
 exports.ConversationsController = ConversationsController = __decorate([
     (0, swagger_1.ApiTags)('Conversations'),
     (0, common_1.Controller)('conversations'),

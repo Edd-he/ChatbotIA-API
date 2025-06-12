@@ -14,9 +14,11 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../providers/prisma/prisma.service");
 const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exception");
 const format_date_1 = require("../../common/utils/format-date");
+const gemini_ai_service_1 = require("../../providers/gemini-ai/gemini-ai.service");
 let ConversationsService = class ConversationsService {
-    constructor(db) {
+    constructor(db, ai) {
         this.db = db;
+        this.ai = ai;
     }
     async create(createConversationDto) {
         try {
@@ -85,6 +87,14 @@ let ConversationsService = class ConversationsService {
             },
         });
     }
+    async getOneTitle(conversationId) {
+        return await this.db.conversation.findFirst({
+            where: {
+                id: conversationId,
+            },
+            select: { title: true },
+        });
+    }
     async update(conversationId, tokens) {
         try {
             await this.db.conversation.update({
@@ -113,6 +123,7 @@ let ConversationsService = class ConversationsService {
 exports.ConversationsService = ConversationsService;
 exports.ConversationsService = ConversationsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        gemini_ai_service_1.GeminiAIService])
 ], ConversationsService);
 //# sourceMappingURL=conversations.service.js.map

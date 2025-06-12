@@ -6,44 +6,44 @@ export declare class RunsService {
     constructor(db: PrismaService);
     create(createRunDto: CreateRunDto): Promise<{
         error: string | null;
-        id: string;
-        created_at: Date;
+        conversation_id: string;
         is_run_successful: boolean;
         model_llm: string;
         latency: import("@prisma/client/runtime/library").Decimal;
         tokens: number;
         input: string;
         output: string;
-        conversation_id: string;
+        id: string;
+        created_at: Date;
     }>;
     getAll({ start_date, end_date, page, page_size, }: RangeDateQueryParams): Promise<{
         data: {
             number: number;
             created_at: string;
             error: string | null;
-            id: string;
+            conversation_id: string;
             is_run_successful: boolean;
             model_llm: string;
             latency: import("@prisma/client/runtime/library").Decimal;
             tokens: number;
             input: string;
             output: string;
-            conversation_id: string;
+            id: string;
         }[];
         total: number;
         totalPages: number;
     }>;
     getAllByConversation(conversationId: string): Promise<{
         error: string | null;
-        id: string;
-        created_at: Date;
+        conversation_id: string;
         is_run_successful: boolean;
         model_llm: string;
         latency: import("@prisma/client/runtime/library").Decimal;
         tokens: number;
         input: string;
         output: string;
-        conversation_id: string;
+        id: string;
+        created_at: Date;
     }[]>;
     getConversationContext(conversationId: string): Promise<{
         input: string;
@@ -51,14 +51,14 @@ export declare class RunsService {
     }[]>;
     getOne(runId: string): Promise<{
         error: string | null;
-        id: string;
-        created_at: Date;
+        conversation_id: string;
         is_run_successful: boolean;
         model_llm: string;
         latency: import("@prisma/client/runtime/library").Decimal;
         tokens: number;
         input: string;
         output: string;
-        conversation_id: string;
+        id: string;
+        created_at: Date;
     }>;
 }
