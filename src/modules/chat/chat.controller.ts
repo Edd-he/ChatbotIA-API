@@ -1,6 +1,7 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common'
 import { Response, Request } from 'express'
 import { ApiOperation } from '@nestjs/swagger'
+import { ValidateUUID } from '@common/pipes/validate-uuid.pipe'
 
 import { ChatService } from './chat.service'
 import { RequestChatDto } from './dto/request-chat.dto'
@@ -43,5 +44,15 @@ export class ChatController {
     req.on('close', () => {
       subscription.unsubscribe()
     })
+  }
+
+  @Get(':conversationId/get-chat-history')
+  @ApiOperation({
+    summary: 'Obtiene el historial de mensajes de una conversación',
+  })
+  async getHistory(
+    @Param('conversationId', ValidateUUID) conversationId: string,
+  ) {
+    return await this.chatService.getChathistory(conversationId)
   }
 }

@@ -16,6 +16,7 @@ exports.ChatController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const validate_uuid_pipe_1 = require("../../common/pipes/validate-uuid.pipe");
 const chat_service_1 = require("./chat.service");
 const request_chat_dto_1 = require("./dto/request-chat.dto");
 let ChatController = class ChatController {
@@ -47,6 +48,9 @@ let ChatController = class ChatController {
             subscription.unsubscribe();
         });
     }
+    async getHistory(conversationId) {
+        return await this.chatService.getChathistory(conversationId);
+    }
 };
 exports.ChatController = ChatController;
 __decorate([
@@ -62,6 +66,17 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object, request_chat_dto_1.RequestChatDto]),
     __metadata("design:returntype", void 0)
 ], ChatController.prototype, "send", null);
+__decorate([
+    (0, common_1.Get)(':conversationId/get-chat-history'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Obtiene el historial de mensajes de una conversación',
+    }),
+    openapi.ApiResponse({ status: 200, type: [Object] }),
+    __param(0, (0, common_1.Param)('conversationId', validate_uuid_pipe_1.ValidateUUID)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ChatController.prototype, "getHistory", null);
 exports.ChatController = ChatController = __decorate([
     (0, common_1.Controller)('chat'),
     __metadata("design:paramtypes", [chat_service_1.ChatService])

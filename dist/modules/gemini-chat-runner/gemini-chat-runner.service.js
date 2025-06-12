@@ -18,7 +18,7 @@ const gemini_ai_run_entity_1 = require("../../providers/gemini-ai/entities/gemin
 const gemini_ai_models_enum_1 = require("../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
 const runs_service_1 = require("../runs/runs.service");
 const run_events_interfaces_1 = require("../events/run-events/run-events.interfaces");
-const instructions_const_1 = require("./constants/instructions.const");
+const instructions_const_1 = require("./prompts/instructions.const");
 let GeminiChatRunnerService = class GeminiChatRunnerService {
     constructor(gemini, eventEmitter, runService) {
         this.gemini = gemini;

@@ -14,7 +14,7 @@ import {
   RUN_EVENTS,
 } from '@modules/events/run-events/run-events.interfaces'
 
-import { ASSISTANT_INSTRUCTION } from './constants/instructions.const'
+import { ASSISTANT_INSTRUCTION } from './prompts/instructions.const'
 
 @Injectable()
 export class GeminiChatRunnerService {
