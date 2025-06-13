@@ -93,12 +93,15 @@ export class ConversationsService {
   }
 
   async getOneTitle(conversationId: string) {
-    return await this.db.conversation.findFirst({
+    const conversation = await this.db.conversation.findFirst({
       where: {
         id: conversationId,
       },
       select: { title: true },
     })
+
+    console.warn(conversation)
+    return conversation
   }
 
   async update(conversationId: string, tokens: number) {
