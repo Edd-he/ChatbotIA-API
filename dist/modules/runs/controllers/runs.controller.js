@@ -16,9 +16,9 @@ exports.RunsController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const validate_uuid_pipe_1 = require("../../../common/pipes/validate-uuid.pipe");
-const rangeDate_query_params_1 = require("../../../common/query-params/rangeDate-query-params");
 const swagger_1 = require("@nestjs/swagger");
 const runs_service_1 = require("../runs.service");
+const runs_query_params_1 = require("../query-params/runs-query-params");
 let RunsController = class RunsController {
     constructor(runsService) {
         this.runsService = runsService;
@@ -37,7 +37,7 @@ __decorate([
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [rangeDate_query_params_1.RangeDateQueryParams]),
+    __metadata("design:paramtypes", [runs_query_params_1.RunQueryParams]),
     __metadata("design:returntype", void 0)
 ], RunsController.prototype, "getAllruns", null);
 __decorate([

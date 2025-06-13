@@ -15,8 +15,6 @@ const prisma_service_1 = require("../../providers/prisma/prisma.service");
 const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exception");
 const format_date_1 = require("../../common/utils/format-date");
 const gemini_ai_service_1 = require("../../providers/gemini-ai/gemini-ai.service");
-const gemini_ai_models_enum_1 = require("../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
-const generate_tittle_context_1 = require("./prompts/generate-tittle.context");
 let ConversationsService = class ConversationsService {
     constructor(db, ai) {
         this.db = db;
@@ -89,33 +87,9 @@ let ConversationsService = class ConversationsService {
             },
         });
     }
-    async generateTitle({ conversation_id, input }) {
-        const conversation = await this.db.conversation.findFirst({
-            where: { id: conversation_id },
-        });
-        if (conversation.title !== null)
-            throw new common_1.BadRequestException('El título ya ha sido generado');
-        const title = await this.generateTittle(input);
-        try {
-            await this.db.conversation.update({
-                where: {
-                    id: conversation_id,
-                },
-                data: {
-                    title,
-                },
-            });
-            return title;
-        }
-        catch (e) {
-            if (e.code)
-                throw new prisma_exception_1.PrismaException(e);
-            throw new common_1.InternalServerErrorException('Hubo un error al generar el título');
-        }
-    }
     async update(conversationId, tokens) {
         try {
-            await this.db.conversation.update({
+            const conversationUpdated = await this.db.conversation.update({
                 where: {
                     id: conversationId,
                 },
@@ -129,17 +103,13 @@ let ConversationsService = class ConversationsService {
                     last_run: new Date(),
                 },
             });
+            return conversationUpdated;
         }
         catch (e) {
-            if (e.code) {
+            if (e.code)
                 throw new prisma_exception_1.PrismaException(e);
-            }
             throw new common_1.InternalServerErrorException('Hubo un error al actualizar los tokens');
         }
-    }
-    async generateTittle(input) {
-        const response = await this.ai.getResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH, generate_tittle_context_1.GENERATE_TITLE_CONTEXT, [input]);
-        return response;
     }
 };
 exports.ConversationsService = ConversationsService;

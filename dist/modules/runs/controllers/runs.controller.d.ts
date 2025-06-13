@@ -1,9 +1,9 @@
-import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
 import { RunsService } from '../runs.service';
+import { RunQueryParams } from '../query-params/runs-query-params';
 export declare class RunsController {
     private readonly runsService;
     constructor(runsService: RunsService);
-    getAllruns(query: RangeDateQueryParams): Promise<{
+    getAllruns(query: RunQueryParams): Promise<{
         data: {
             number: number;
             created_at: string;

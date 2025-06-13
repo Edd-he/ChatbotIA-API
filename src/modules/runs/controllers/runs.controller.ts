@@ -1,16 +1,16 @@
 import { Controller, Get, Param, Query } from '@nestjs/common'
 import { ValidateUUID } from '@common/pipes/validate-uuid.pipe'
-import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 import { ApiOperation } from '@nestjs/swagger'
 
 import { RunsService } from '../runs.service'
+import { RunQueryParams } from '../query-params/runs-query-params'
 @Controller('runs')
 export class RunsController {
   constructor(private readonly runsService: RunsService) {}
 
   @Get('/get-all-runs')
   @ApiOperation({ summary: 'Obiene todas las ejecuciones' })
-  getAllruns(@Query() query: RangeDateQueryParams) {
+  getAllruns(@Query() query: RunQueryParams) {
     return this.runsService.getAll(query)
   }
 

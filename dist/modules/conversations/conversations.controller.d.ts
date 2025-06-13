@@ -1,6 +1,5 @@
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
 import { ConversationsService } from './conversations.service';
-import { GenerateTitleDto } from './dto/generate-title.dto';
 export declare class ConversationsController {
     private readonly conversationsService;
     constructor(conversationsService: ConversationsService);
@@ -42,5 +41,4 @@ export declare class ConversationsController {
         total_tokens: number;
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
-    generateTitle(generateTitleDto: GenerateTitleDto): Promise<string>;
 }

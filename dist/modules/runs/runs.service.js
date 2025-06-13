@@ -36,15 +36,17 @@ let RunsService = class RunsService {
             throw new common_1.InternalServerErrorException('Ocurrio un error inesperado al registrar la ejecución');
         }
     }
-    async getAll({ start_date, end_date, page, page_size, }) {
-        const pages = page || 1;
-        const skip = (pages - 1) * page_size;
+    async getAll({ start_date, end_date, page = 1, page_size, error, }) {
+        const skip = (page - 1) * page_size;
         const where = {
             created_at: {
                 ...(start_date ? { gte: start_date } : {}),
                 ...(end_date ? { lte: end_date } : {}),
             },
         };
+        if (error !== undefined && error !== null) {
+            where.is_run_successful = !error;
+        }
         const [runs, total] = await Promise.all([
             this.db.run.findMany({
                 where,
@@ -54,13 +56,11 @@ let RunsService = class RunsService {
             this.db.run.count({ where }),
         ]);
         const totalPages = Math.ceil(total / page_size);
-        const data = runs.map((r, i) => {
-            return {
-                ...r,
-                number: i + 1,
-                created_at: (0, format_date_1.formatDate)(r.created_at),
-            };
-        });
+        const data = runs.map((r, i) => ({
+            ...r,
+            number: i + 1,
+            created_at: (0, format_date_1.formatDate)(r.created_at),
+        }));
         return {
             data,
             total,

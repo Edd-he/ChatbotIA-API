@@ -2,10 +2,10 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { PrismaService } from 'src/providers/prisma/prisma.service'
 import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception'
 import { generateUUIDV7 } from '@common/utils/uuid'
-import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 import { formatDate } from '@common/utils/format-date'
 
 import { CreateRunDto } from './dto/create-run.dto'
+import { RunQueryParams } from './query-params/runs-query-params'
 @Injectable()
 export class RunsService {
   constructor(private readonly db: PrismaService) {}
@@ -33,17 +33,21 @@ export class RunsService {
   async getAll({
     start_date,
     end_date,
-    page,
+    page = 1,
     page_size,
-  }: RangeDateQueryParams) {
-    const pages = page || 1
-    const skip = (pages - 1) * page_size
+    error,
+  }: RunQueryParams) {
+    const skip = (page - 1) * page_size
 
-    const where = {
+    const where: any = {
       created_at: {
         ...(start_date ? { gte: start_date } : {}),
         ...(end_date ? { lte: end_date } : {}),
       },
+    }
+
+    if (error !== undefined && error !== null) {
+      where.is_run_successful = !error
     }
 
     const [runs, total] = await Promise.all([
@@ -56,13 +60,13 @@ export class RunsService {
     ])
 
     const totalPages = Math.ceil(total / page_size)
-    const data = runs.map((r, i) => {
-      return {
-        ...r,
-        number: i + 1,
-        created_at: formatDate(r.created_at),
-      }
-    })
+
+    const data = runs.map((r, i) => ({
+      ...r,
+      number: i + 1,
+      created_at: formatDate(r.created_at),
+    }))
+
     return {
       data,
       total,

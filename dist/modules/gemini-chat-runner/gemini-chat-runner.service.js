@@ -48,7 +48,8 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
                     },
                     complete: async () => {
                         const metadata = JSON.parse(lastChunk);
-                        this.handleRunExecutedEvent(metadata, conversation_id);
+                        const title = await this.handleRunExecutedEvent(metadata, conversation_id);
+                        subscriber.next(JSON.stringify({ title: title }));
                         subscriber.complete();
                     },
                 });
@@ -58,13 +59,14 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
             });
         });
     }
-    handleRunExecutedEvent(GeminiRunMetaDataRaw, conversation_id) {
+    async handleRunExecutedEvent(GeminiRunMetaDataRaw, conversation_id) {
         const metadata = Object.assign(new gemini_ai_run_entity_1.GeminiRunData(), GeminiRunMetaDataRaw);
         const dto = metadata.toCreateDto(conversation_id);
         const runExecutedEvent = {
             ...dto,
         };
-        this.eventEmitter.emit(run_events_interfaces_1.RUN_EVENTS.ON_RUN_EXECUTED_EVENT, runExecutedEvent);
+        const title = await this.eventEmitter.emitAsync(run_events_interfaces_1.RUN_EVENTS.ON_RUN_EXECUTED_EVENT, runExecutedEvent);
+        return title;
     }
     mapRunsToHistory(runs) {
         const historial = runs.flatMap((run) => [

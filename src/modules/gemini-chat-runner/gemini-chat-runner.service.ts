@@ -57,7 +57,11 @@ export class GeminiChatRunnerService {
             },
             complete: async () => {
               const metadata: IGeminiRunData = JSON.parse(lastChunk)
-              this.handleRunExecutedEvent(metadata, conversation_id)
+              const title = await this.handleRunExecutedEvent(
+                metadata,
+                conversation_id,
+              )
+              subscriber.next(JSON.stringify({ title: title }))
               subscriber.complete()
             },
           })
@@ -68,7 +72,7 @@ export class GeminiChatRunnerService {
     })
   }
 
-  private handleRunExecutedEvent(
+  private async handleRunExecutedEvent(
     GeminiRunMetaDataRaw: IGeminiRunData,
     conversation_id: string,
   ) {
@@ -79,7 +83,11 @@ export class GeminiChatRunnerService {
       ...dto,
     }
 
-    this.eventEmitter.emit(RUN_EVENTS.ON_RUN_EXECUTED_EVENT, runExecutedEvent)
+    const title = await this.eventEmitter.emitAsync(
+      RUN_EVENTS.ON_RUN_EXECUTED_EVENT,
+      runExecutedEvent,
+    )
+    return title
   }
 
   private mapRunsToHistory(

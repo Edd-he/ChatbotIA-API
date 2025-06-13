@@ -15,7 +15,9 @@ const runs_service_1 = require("../../runs/runs.service");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const gemini_ai_service_1 = require("../../../providers/gemini-ai/gemini-ai.service");
+const gemini_ai_models_enum_1 = require("../../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
 const run_events_interfaces_1 = require("./run-events.interfaces");
+const generate_tittle_context_1 = require("./prompts/generate-tittle.context");
 let OnRunExecuteHandler = class OnRunExecuteHandler {
     constructor(events, runsService, conversationsService, ai) {
         this.events = events;
@@ -25,13 +27,21 @@ let OnRunExecuteHandler = class OnRunExecuteHandler {
     }
     async handleCreated(payload) {
         const conversation = await this.conversationsService.getOne(payload.conversation_id);
+        let title = null;
         if (!conversation) {
+            title = await this.generateTitle(payload.input);
             await this.conversationsService.create({
                 id: payload.conversation_id,
+                title,
             });
         }
         await this.runsService.create(payload);
         await this.conversationsService.update(payload.conversation_id, payload.tokens);
+        return title;
+    }
+    async generateTitle(input) {
+        const response = await this.ai.getResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH, generate_tittle_context_1.GENERATE_TITLE_CONTEXT, [input]);
+        return response;
     }
 };
 exports.OnRunExecuteHandler = OnRunExecuteHandler;

@@ -1,6 +1,6 @@
 import { PrismaService } from 'src/providers/prisma/prisma.service';
-import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
 import { CreateRunDto } from './dto/create-run.dto';
+import { RunQueryParams } from './query-params/runs-query-params';
 export declare class RunsService {
     private readonly db;
     constructor(db: PrismaService);
@@ -16,7 +16,7 @@ export declare class RunsService {
         id: string;
         created_at: Date;
     }>;
-    getAll({ start_date, end_date, page, page_size, }: RangeDateQueryParams): Promise<{
+    getAll({ start_date, end_date, page, page_size, error, }: RunQueryParams): Promise<{
         data: {
             number: number;
             created_at: string;
