@@ -19,6 +19,7 @@ const validate_uuid_pipe_1 = require("../../common/pipes/validate-uuid.pipe");
 const swagger_1 = require("@nestjs/swagger");
 const rangeDate_query_params_1 = require("../../common/query-params/rangeDate-query-params");
 const conversations_service_1 = require("./conversations.service");
+const generate_title_dto_1 = require("./dto/generate-title.dto");
 let ConversationsController = class ConversationsController {
     constructor(conversationsService) {
         this.conversationsService = conversationsService;
@@ -29,8 +30,8 @@ let ConversationsController = class ConversationsController {
     async getConversation(id) {
         return await this.conversationsService.getOneWithRuns(id);
     }
-    async getTitle(conversationId) {
-        return await this.conversationsService.getOneTitle(conversationId);
+    async generateTitle(generateTitleDto) {
+        return await this.conversationsService.generateTitle(generateTitleDto);
     }
 };
 exports.ConversationsController = ConversationsController;
@@ -57,16 +58,16 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ConversationsController.prototype, "getConversation", null);
 __decorate([
-    (0, common_1.Get)(':conversationId/get-title'),
+    (0, common_1.Post)(':conversationId/generate-title'),
     (0, swagger_1.ApiOperation)({
-        summary: 'Obten el titulo de una conversación',
+        summary: 'Genera un título para la conversación',
     }),
-    openapi.ApiResponse({ status: 200 }),
-    __param(0, (0, common_1.Param)('conversationId', validate_uuid_pipe_1.ValidateUUID)),
+    openapi.ApiResponse({ status: 201, type: String }),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [generate_title_dto_1.GenerateTitleDto]),
     __metadata("design:returntype", Promise)
-], ConversationsController.prototype, "getTitle", null);
+], ConversationsController.prototype, "generateTitle", null);
 exports.ConversationsController = ConversationsController = __decorate([
     (0, swagger_1.ApiTags)('Conversations'),
     (0, common_1.Controller)('conversations'),

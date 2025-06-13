@@ -19,7 +19,7 @@ import { ASSISTANT_INSTRUCTION } from './prompts/instructions.const'
 @Injectable()
 export class GeminiChatRunnerService {
   constructor(
-    private readonly gemini: GeminiAIService,
+    private readonly ai: GeminiAIService,
     private readonly eventEmitter: EventEmitter2,
     private readonly runService: RunsService,
   ) {}
@@ -33,7 +33,7 @@ export class GeminiChatRunnerService {
         .getConversationContext(conversation_id)
         .then((result) => {
           const historial = this.mapRunsToHistory(result)
-          const stream = this.gemini.streamChatMessage(
+          const stream = this.ai.streamChatMessage(
             historial,
             message,
             GeminiModels.GEMINI_2_0_FLASH,

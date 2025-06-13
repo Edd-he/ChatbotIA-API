@@ -1,9 +1,10 @@
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common'
 import { ValidateUUID } from '@common/pipes/validate-uuid.pipe'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 
 import { ConversationsService } from './conversations.service'
+import { GenerateTitleDto } from './dto/generate-title.dto'
 
 @ApiTags('Conversations')
 @Controller('conversations')
@@ -26,13 +27,11 @@ export class ConversationsController {
     return await this.conversationsService.getOneWithRuns(id)
   }
 
-  @Get(':conversationId/get-title')
+  @Post(':conversationId/generate-title')
   @ApiOperation({
-    summary: 'Obten el titulo de una conversación',
+    summary: 'Genera un título para la conversación',
   })
-  async getTitle(
-    @Param('conversationId', ValidateUUID) conversationId: string,
-  ) {
-    return await this.conversationsService.getOneTitle(conversationId)
+  async generateTitle(@Body() generateTitleDto: GenerateTitleDto) {
+    return await this.conversationsService.generateTitle(generateTitleDto)
   }
 }

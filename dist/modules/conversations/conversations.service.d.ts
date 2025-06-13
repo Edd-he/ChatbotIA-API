@@ -2,6 +2,7 @@ import { PrismaService } from 'src/providers/prisma/prisma.service';
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
 import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
+import { GenerateTitleDto } from './dto/generate-title.dto';
 export declare class ConversationsService {
     private readonly db;
     private readonly ai;
@@ -64,8 +65,7 @@ export declare class ConversationsService {
         total_tokens: number;
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
-    getOneTitle(conversationId: string): Promise<{
-        title: string;
-    }>;
+    generateTitle({ conversation_id, input }: GenerateTitleDto): Promise<string>;
     update(conversationId: string, tokens: number): Promise<void>;
+    private generateTittle;
 }

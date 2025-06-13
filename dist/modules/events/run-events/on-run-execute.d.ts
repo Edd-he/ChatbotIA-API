@@ -10,5 +10,4 @@ export declare class OnRunExecuteHandler {
     private readonly ai;
     constructor(events: EventEmitter2, runsService: RunsService, conversationsService: ConversationsService, ai: GeminiAIService);
     handleCreated(payload: RunExecutedEvent): Promise<void>;
-    private generateTittle;
 }

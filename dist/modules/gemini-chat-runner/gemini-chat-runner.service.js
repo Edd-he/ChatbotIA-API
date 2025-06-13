@@ -20,8 +20,8 @@ const runs_service_1 = require("../runs/runs.service");
 const run_events_interfaces_1 = require("../events/run-events/run-events.interfaces");
 const instructions_const_1 = require("./prompts/instructions.const");
 let GeminiChatRunnerService = class GeminiChatRunnerService {
-    constructor(gemini, eventEmitter, runService) {
-        this.gemini = gemini;
+    constructor(ai, eventEmitter, runService) {
+        this.ai = ai;
         this.eventEmitter = eventEmitter;
         this.runService = runService;
     }
@@ -31,7 +31,7 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
                 .getConversationContext(conversation_id)
                 .then((result) => {
                 const historial = this.mapRunsToHistory(result);
-                const stream = this.gemini.streamChatMessage(historial, message, gemini_ai_models_enum_1.GeminiModels.GEMINI_2_0_FLASH, instructions_const_1.ASSISTANT_INSTRUCTION);
+                const stream = this.ai.streamChatMessage(historial, message, gemini_ai_models_enum_1.GeminiModels.GEMINI_2_0_FLASH, instructions_const_1.ASSISTANT_INSTRUCTION);
                 let previousChunk = null;
                 let lastChunk = null;
                 stream.subscribe({

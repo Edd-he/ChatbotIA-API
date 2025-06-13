@@ -1,11 +1,18 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { PrismaService } from 'src/providers/prisma/prisma.service'
 import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception'
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 import { formatDate } from '@common/utils/format-date'
 import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service'
+import { GeminiModels } from '@providers/gemini-ai/interfaces/gemini-ai-models.enum'
 
 import { CreateConversationDto } from './dto/create-conversation.dto'
+import { GENERATE_TITLE_CONTEXT } from './prompts/generate-tittle.context'
+import { GenerateTitleDto } from './dto/generate-title.dto'
 
 @Injectable()
 export class ConversationsService {
@@ -92,16 +99,32 @@ export class ConversationsService {
     })
   }
 
-  async getOneTitle(conversationId: string) {
+  async generateTitle({ conversation_id, input }: GenerateTitleDto) {
     const conversation = await this.db.conversation.findFirst({
-      where: {
-        id: conversationId,
-      },
-      select: { title: true },
+      where: { id: conversation_id },
     })
+    if (conversation.title !== null)
+      throw new BadRequestException('El título ya ha sido generado')
 
-    console.warn(conversation)
-    return conversation
+    const title = await this.generateTittle(input)
+
+    try {
+      await this.db.conversation.update({
+        where: {
+          id: conversation_id,
+        },
+        data: {
+          title,
+        },
+      })
+      return title
+    } catch (e) {
+      if (e.code) throw new PrismaException(e)
+
+      throw new InternalServerErrorException(
+        'Hubo un error al generar el título',
+      )
+    }
   }
 
   async update(conversationId: string, tokens: number) {
@@ -129,5 +152,15 @@ export class ConversationsService {
         'Hubo un error al actualizar los tokens',
       )
     }
+  }
+
+  private async generateTittle(input: string) {
+    const response = await this.ai.getResponse(
+      GeminiModels.GEMINI_1_5_FLASH,
+      GENERATE_TITLE_CONTEXT,
+      [input],
+    )
+
+    return response
   }
 }
