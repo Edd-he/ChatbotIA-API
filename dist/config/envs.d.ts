@@ -9,4 +9,10 @@ export declare const envs: {
     cloudinaryName: string;
     cloudinaryApiKey: string;
     cloudinaryApiSecret: string;
+    pusher: {
+        appId: string;
+        key: string;
+        secret: string;
+        cluster: string;
+    };
 };

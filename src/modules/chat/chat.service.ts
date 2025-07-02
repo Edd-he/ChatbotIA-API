@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Observable } from 'rxjs'
-import { GeminiChatRunnerService } from '@modules/gemini-chat-runner/gemini-chat-runner.service'
+import { GeminiChatRunnerService } from '@modules/orchestrators/gemini-chat-runner/gemini-chat-runner.service'
 import { RunsService } from '@modules/runs/runs.service'
 
 import { Message } from './interfaces/chat.interfaces'

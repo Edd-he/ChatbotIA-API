@@ -14,6 +14,7 @@ import {
   RUN_EVENTS,
 } from '@modules/events/run-events/run-events.interfaces'
 import { DocumentsService } from '@modules/documents/documents.service'
+import { PusherService } from '@providers/pusher/pusher.service'
 
 import { ASSISTANT_INSTRUCTION } from './prompts/instructions.const'
 
@@ -24,6 +25,7 @@ export class GeminiChatRunnerService {
     private readonly eventEmitter: EventEmitter2,
     private readonly runService: RunsService,
     private readonly documentService: DocumentsService,
+    private readonly pusherService: PusherService,
   ) {}
 
   streamChatResponse(
@@ -62,6 +64,7 @@ export class GeminiChatRunnerService {
             error: async (e) => {
               const { metadata, error }: IGeminiRunError = JSON.parse(e)
               this.handleRunExecutedEvent(metadata, conversation_id)
+              await this.reportError(error.message)
               subscriber.error(error)
             },
             complete: async () => {
@@ -147,5 +150,12 @@ export class GeminiChatRunnerService {
     }
 
     return contextParts
+  }
+
+  async reportError(error: string) {
+    await this.pusherService.trigger('chat-monitor', 'chatbot-error', {
+      error,
+      timestamp: new Date().toISOString(),
+    })
   }
 }

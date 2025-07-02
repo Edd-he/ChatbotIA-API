@@ -12,6 +12,7 @@ const config_1 = require("@nestjs/config");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const reniec_module_1 = require("./providers/reniec/reniec.module");
 const events_module_1 = require("./modules/events/events.module");
+const pusher_module_1 = require("./providers/pusher/pusher.module");
 const chat_module_1 = require("./modules/chat/chat.module");
 const users_module_1 = require("./modules/users/users.module");
 const auth_module_1 = require("./modules/auth/auth.module");
@@ -38,6 +39,7 @@ exports.AppModule = AppModule = __decorate([
             gemini_ai_module_1.GeminiAIModule,
             reniec_module_1.ReniecModule,
             auth_module_1.AuthModule,
+            pusher_module_1.PusherModule,
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             users_module_1.UsersModule,
             event_emitter_1.EventEmitterModule.forRoot({

@@ -19,13 +19,15 @@ const gemini_ai_models_enum_1 = require("../../providers/gemini-ai/interfaces/ge
 const runs_service_1 = require("../runs/runs.service");
 const run_events_interfaces_1 = require("../events/run-events/run-events.interfaces");
 const documents_service_1 = require("../documents/documents.service");
+const pusher_service_1 = require("../../providers/pusher/pusher.service");
 const instructions_const_1 = require("./prompts/instructions.const");
 let GeminiChatRunnerService = class GeminiChatRunnerService {
-    constructor(ai, eventEmitter, runService, documentService) {
+    constructor(ai, eventEmitter, runService, documentService, pusherService) {
         this.ai = ai;
         this.eventEmitter = eventEmitter;
         this.runService = runService;
         this.documentService = documentService;
+        this.pusherService = pusherService;
     }
     streamChatResponse(conversation_id, message, topic_id) {
         return new rxjs_1.Observable((subscriber) => {
@@ -51,6 +53,7 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
                     error: async (e) => {
                         const { metadata, error } = JSON.parse(e);
                         this.handleRunExecutedEvent(metadata, conversation_id);
+                        await this.reportError(error.message);
                         subscriber.error(error);
                     },
                     complete: async () => {
@@ -114,6 +117,12 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
         }
         return contextParts;
     }
+    async reportError(error) {
+        await this.pusherService.trigger('chat-monitor', 'chatbot-error', {
+            error,
+            timestamp: new Date().toISOString(),
+        });
+    }
 };
 exports.GeminiChatRunnerService = GeminiChatRunnerService;
 exports.GeminiChatRunnerService = GeminiChatRunnerService = __decorate([
@@ -121,6 +130,7 @@ exports.GeminiChatRunnerService = GeminiChatRunnerService = __decorate([
     __metadata("design:paramtypes", [gemini_ai_service_1.GeminiAIService,
         event_emitter_1.EventEmitter2,
         runs_service_1.RunsService,
-        documents_service_1.DocumentsService])
+        documents_service_1.DocumentsService,
+        pusher_service_1.PusherService])
 ], GeminiChatRunnerService);
 //# sourceMappingURL=gemini-chat-runner.service.js.map
