@@ -6,6 +6,7 @@ import {
   IsBoolean,
   IsOptional,
   IsEnum,
+  IsArray,
 } from 'class-validator'
 import { Role } from '@prisma/client'
 import { ApiProperty } from '@nestjs/swagger'
@@ -32,4 +33,9 @@ export class CreateUserDto {
   @ApiProperty({ enum: Role })
   @IsEnum(Role, { message: 'El rol debe ser uno válido' })
   role: Role
+
+  @IsOptional()
+  @IsArray({ message: 'Los permisos deben ser un array de strings' })
+  @IsString({ each: true, message: 'Cada permiso debe ser un string' })
+  modules_access: string[]
 }

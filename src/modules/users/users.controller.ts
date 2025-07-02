@@ -15,13 +15,17 @@ import { IUserSession } from '@auth/interfaces/user-session.interface'
 import { PublicAccess } from '@auth/decorators/public.decorator'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { LoggerEvents } from '@modules/events/logger/logger-events.interfaces'
-import { ApiOperation } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger'
+import { Auth } from '@modules/auth/decorators/auth.decorator'
+import { Entity } from '@prisma/client'
 
 import { ValidateDNI } from './pipes/validate-dni.pipe'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersService } from './users.service'
 
+@ApiBearerAuth()
+@Auth(['SUPER_ADMIN'])
 @Controller('users')
 export class UsersController {
   constructor(
@@ -38,8 +42,9 @@ export class UsersController {
     @Body() createUserDto: CreateUserDto,
   ) {
     const admin = await this.usersService.create(createUserDto)
-    this.eventEmitter.emit(LoggerEvents.USER_CREATED_EVENT, {
+    this.eventEmitter.emit(LoggerEvents.ENTITY_CREATED_EVENT, {
       session,
+      entity: Entity.User,
       entityId: admin.id,
     })
     return admin
@@ -79,12 +84,18 @@ export class UsersController {
     @UserSession() session: IUserSession,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    const admin = await this.usersService.update(userId, updateUserDto)
-    this.eventEmitter.emit(LoggerEvents.USER_UPDATED_EVENT, {
+    const { actualUser, updatedUser } = await this.usersService.update(
+      userId,
+      updateUserDto,
+    )
+    this.eventEmitter.emit(LoggerEvents.ENTITY_UPDATED_EVENT, {
       session,
-      entityId: admin.id,
+      entity: Entity.User,
+      entityId: actualUser.id,
+      after: updatedUser,
+      before: actualUser,
     })
-    return admin
+    return updatedUser
   }
 
   @Delete(':userId/remove-user')
@@ -96,8 +107,9 @@ export class UsersController {
     @UserSession() session: IUserSession,
   ) {
     const admin = await this.usersService.remove(userId)
-    this.eventEmitter.emit(LoggerEvents.USER_ARCHIVED_EVENT, {
+    this.eventEmitter.emit(LoggerEvents.ENTITY_ARCHIVED_EVENT, {
       session,
+      entity: Entity.User,
       entityId: admin.id,
     })
     return admin

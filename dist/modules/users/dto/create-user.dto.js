@@ -17,7 +17,7 @@ const client_1 = require("@prisma/client");
 const swagger_1 = require("@nestjs/swagger");
 class CreateUserDto {
     static _OPENAPI_METADATA_FACTORY() {
-        return { dni: { required: true, type: () => String, minLength: 8, maxLength: 8 }, email: { required: true, type: () => String, format: "email" }, password: { required: true, type: () => String, minLength: 8, maxLength: 20 }, is_active: { required: false, type: () => Boolean }, role: { required: true, type: () => Object } };
+        return { dni: { required: true, type: () => String, minLength: 8, maxLength: 8 }, email: { required: true, type: () => String, format: "email" }, password: { required: true, type: () => String, minLength: 8, maxLength: 20 }, is_active: { required: false, type: () => Boolean }, role: { required: true, type: () => Object }, modules_access: { required: true, type: () => [String] } };
     }
 }
 exports.CreateUserDto = CreateUserDto;
@@ -48,4 +48,10 @@ __decorate([
     (0, class_validator_1.IsEnum)(client_1.Role, { message: 'El rol debe ser uno válido' }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "role", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsArray)({ message: 'Los permisos deben ser un array de strings' }),
+    (0, class_validator_1.IsString)({ each: true, message: 'Cada permiso debe ser un string' }),
+    __metadata("design:type", Array)
+], CreateUserDto.prototype, "modules_access", void 0);
 //# sourceMappingURL=create-user.dto.js.map

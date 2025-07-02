@@ -14,6 +14,7 @@ const common_1 = require("@nestjs/common");
 const users_service_1 = require("../users/users.service");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcryptjs");
+const envs_1 = require("../../config/envs");
 let AuthService = class AuthService {
     constructor(userService, jwtService) {
         this.userService = userService;
@@ -33,6 +34,7 @@ let AuthService = class AuthService {
             username: user.name + ' ' + user.last_name,
             email: user.email,
             role: user.role,
+            modules: user.modules_access,
         };
         return {
             user: payload,
@@ -55,14 +57,15 @@ let AuthService = class AuthService {
             username: user.username,
             email: user.email,
             role: user.role,
+            modules: user.modules_access,
         };
         return {
             access: await this.jwtService.signAsync(payload, {
-                secret: process.env.JWT_SECRET,
+                secret: envs_1.envs.jwtSecret,
                 expiresIn: '1d',
             }),
             refresh: await this.jwtService.signAsync(payload, {
-                secret: process.env.JWT_REFRESH_SECRET,
+                secret: envs_1.envs.refreshJwtSecret,
                 expiresIn: '7d',
             }),
         };

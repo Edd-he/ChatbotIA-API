@@ -5,4 +5,5 @@ export declare class CreateUserDto {
     password: string;
     is_active?: boolean;
     role: Role;
+    modules_access: string[];
 }

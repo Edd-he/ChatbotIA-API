@@ -9,15 +9,26 @@ import {
 } from '@nestjs/common'
 import { ValidateUUID } from '@common/pipes/validate-uuid.pipe'
 import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params'
-import { ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { UserSession } from '@modules/auth/decorators/user-session.decorator'
+import { IUserSession } from '@modules/auth/interfaces/user-session.interface'
+import { LoggerEvents } from '@modules/events/logger/logger-events.interfaces'
+import { Entity } from '@prisma/client'
+import { Auth } from '@modules/auth/decorators/auth.decorator'
 
-import { UpdateDocumentDto } from '../dto/update-document.dto'
 import { DocumentsService } from '../documents.service'
+import { UpdateDocumentDto } from '../dto/update-document.dto'
 
+@ApiBearerAuth()
+@Auth(['ADMIN', 'SUPER_ADMIN'])
 @ApiTags('Documents')
 @Controller('documents')
 export class DocumentsController {
-  constructor(private readonly documentsService: DocumentsService) {}
+  constructor(
+    private readonly documentsService: DocumentsService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   @Get('get-all-documents')
   @ApiOperation({ summary: 'Obtiene todos los documentos subidos' })
@@ -33,16 +44,36 @@ export class DocumentsController {
 
   @Patch(':documentId/update-document')
   @ApiOperation({ summary: 'Actualiza información de un documento' })
-  updateDocument(
+  async updateDocument(
+    @UserSession() session: IUserSession,
     @Param('documentId', ValidateUUID) id: string,
     @Body() updateDocumentDto: UpdateDocumentDto,
   ) {
-    return this.documentsService.update(id, updateDocumentDto)
+    const { actualDocument, updatedDocument } =
+      await this.documentsService.update(id, updateDocumentDto)
+
+    this.eventEmitter.emit(LoggerEvents.ENTITY_UPDATED_EVENT, {
+      session,
+      entity: Entity.Document,
+      entityId: actualDocument.id,
+      after: updatedDocument,
+      before: actualDocument,
+    })
+    return updatedDocument
   }
 
   @Delete(':documentId/remove-document')
   @ApiOperation({ summary: 'Elimina un documento' })
-  removeDocument(@Param('documentId', ValidateUUID) documentId: string) {
-    return this.documentsService.remove(documentId)
+  async removeDocument(
+    @UserSession() session: IUserSession,
+    @Param('documentId', ValidateUUID) documentId: string,
+  ) {
+    const document = await this.documentsService.remove(documentId)
+    this.eventEmitter.emit(LoggerEvents.ENTITY_ARCHIVED_EVENT, {
+      session,
+      entity: Entity.Document,
+      entityId: document.id,
+    })
+    return document
   }
 }

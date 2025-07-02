@@ -13,24 +13,23 @@ exports.OnEntityUpdateHandler = void 0;
 const logger_service_1 = require("../../logger/logger.service");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const client_1 = require("@prisma/client");
 const logger_events_interfaces_1 = require("./logger-events.interfaces");
 let OnEntityUpdateHandler = class OnEntityUpdateHandler {
     constructor(logger) {
         this.logger = logger;
     }
-    async handleCreated(payload) {
-        const { session, entityId } = payload;
-        await this.logger.updateEntityLog(session, client_1.Entity.User, entityId);
+    async handleUpdated(payload) {
+        const { session, entityId, entity, after, before } = payload;
+        await this.logger.updateEntityLog(session, entity, entityId, after, before);
     }
 };
 exports.OnEntityUpdateHandler = OnEntityUpdateHandler;
 __decorate([
-    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.USER_UPDATED_EVENT),
+    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.ENTITY_UPDATED_EVENT),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], OnEntityUpdateHandler.prototype, "handleCreated", null);
+], OnEntityUpdateHandler.prototype, "handleUpdated", null);
 exports.OnEntityUpdateHandler = OnEntityUpdateHandler = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [logger_service_1.LoggerService])

@@ -101,6 +101,7 @@ let DocumentsService = class DocumentsService {
     }
     async update(id, updateDocumentDto) {
         try {
+            const actualDocument = await this.getOne(id);
             const updatedDocument = await this.db.document.update({
                 where: {
                     id,
@@ -109,9 +110,10 @@ let DocumentsService = class DocumentsService {
                 data: {
                     ...updateDocumentDto,
                 },
+                omit: { is_archived: true },
             });
             if (updatedDocument) {
-                return updatedDocument;
+                return { actualDocument, updatedDocument };
             }
         }
         catch (e) {

@@ -19,15 +19,27 @@ const upload_files_decorator_1 = require("../../../common/decorators/upload-file
 const validate_uuid_pipe_1 = require("../../../common/pipes/validate-uuid.pipe");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const user_session_decorator_1 = require("../../auth/decorators/user-session.decorator");
+const event_emitter_1 = require("@nestjs/event-emitter");
+const logger_events_interfaces_1 = require("../../events/logger/logger-events.interfaces");
+const client_1 = require("@prisma/client");
+const auth_decorator_1 = require("../../auth/decorators/auth.decorator");
 const documents_service_1 = require("../documents.service");
 const create_document_dto_1 = require("../dto/create-document.dto");
 let DocumentsInTopicController = class DocumentsInTopicController {
-    constructor(documentsService) {
+    constructor(documentsService, eventEmitter) {
         this.documentsService = documentsService;
+        this.eventEmitter = eventEmitter;
     }
-    createDocument(topicId, createDocumentDto, file) {
+    async createDocument(session, topicId, createDocumentDto, file) {
         createDocumentDto.topic_id = topicId;
-        return this.documentsService.create(createDocumentDto, file);
+        const document = await this.documentsService.create(createDocumentDto, file);
+        this.eventEmitter.emit(logger_events_interfaces_1.LoggerEvents.ENTITY_CREATED_EVENT, {
+            session,
+            entity: client_1.Entity.Document,
+            entityId: document.id,
+        });
+        return document;
     }
     getAllDocumentsByTopic(topicId) {
         return this.documentsService.getAllByTopic(topicId);
@@ -69,12 +81,13 @@ __decorate([
     }),
     (0, swagger_1.ApiOperation)({ summary: 'Crea un documento de cierto tópico' }),
     openapi.ApiResponse({ status: 201 }),
-    __param(0, (0, common_1.Param)('topicId', validate_uuid_pipe_1.ValidateUUID)),
-    __param(1, (0, common_1.Body)()),
-    __param(2, (0, upload_files_decorator_1.UploadFile)()),
+    __param(0, (0, user_session_decorator_1.UserSession)()),
+    __param(1, (0, common_1.Param)('topicId', validate_uuid_pipe_1.ValidateUUID)),
+    __param(2, (0, common_1.Body)()),
+    __param(3, (0, upload_files_decorator_1.UploadFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, create_document_dto_1.CreateDocumentDto, Object]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:paramtypes", [Object, String, create_document_dto_1.CreateDocumentDto, Object]),
+    __metadata("design:returntype", Promise)
 ], DocumentsInTopicController.prototype, "createDocument", null);
 __decorate([
     (0, common_1.Get)('get-documents-by-topic'),
@@ -86,8 +99,11 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], DocumentsInTopicController.prototype, "getAllDocumentsByTopic", null);
 exports.DocumentsInTopicController = DocumentsInTopicController = __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, auth_decorator_1.Auth)(['ADMIN', 'SUPER_ADMIN']),
     (0, swagger_1.ApiTags)('Topics'),
     (0, common_1.Controller)('topics/:topicId/documents'),
-    __metadata("design:paramtypes", [documents_service_1.DocumentsService])
+    __metadata("design:paramtypes", [documents_service_1.DocumentsService,
+        event_emitter_1.EventEmitter2])
 ], DocumentsInTopicController);
 //# sourceMappingURL=documents-in-topic.controller.js.map

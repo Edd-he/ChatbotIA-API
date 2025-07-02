@@ -7,8 +7,8 @@ export declare class LoggerService {
     constructor(db: PrismaService);
     getAll({ page, page_size }: PaginatedParamsDto): Promise<{
         data: {
+            created_at: string;
             id: number;
-            created_at: Date;
             user_id: string;
             action: import(".prisma/client").$Enums.Action;
             entity: import(".prisma/client").$Enums.Entity;
@@ -19,6 +19,6 @@ export declare class LoggerService {
         totalPages: number;
     }>;
     createEntityLog(user: IUserSession, entity: Entity, entity_id: string): Promise<void>;
-    updateEntityLog(user: IUserSession, entity: Entity, entity_id: string): Promise<void>;
+    updateEntityLog(user: IUserSession, entity: Entity, entity_id: string, after?: any, before?: any): Promise<void>;
     deleteEntityLog(user: IUserSession, entity: Entity, entity_id: string): Promise<void>;
 }

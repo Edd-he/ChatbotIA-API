@@ -1,11 +1,14 @@
 import { SearchStatusQueryParamsDto } from '@common/query-params/search-status-query-params';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { IUserSession } from '@modules/auth/interfaces/user-session.interface';
 import { TopicsService } from './topics.service';
 import { CreateTopicDto } from './dto/create-topic.dto';
 import { UpdateTopicDto } from './dto/update-topic.dto';
 export declare class TopicsController {
     private readonly topicsService;
-    constructor(topicsService: TopicsService);
-    createTopic(createTopicDto: CreateTopicDto): Promise<{
+    private readonly eventEmitter;
+    constructor(topicsService: TopicsService, eventEmitter: EventEmitter2);
+    createTopic(session: IUserSession, createTopicDto: CreateTopicDto): Promise<{
         description: string | null;
         id: string;
         created_at: Date;
@@ -32,6 +35,12 @@ export declare class TopicsController {
         total: number;
         totalPages: number;
     }>;
+    getAvailableTopics(): Promise<{
+        description: string | null;
+        id: string;
+        created_at: Date;
+        name: string;
+    }[]>;
     getTopic(topicId: string): Promise<{
         documents: {
             description: string;
@@ -57,18 +66,17 @@ export declare class TopicsController {
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
-    updateTopic(topicId: string, updateTopicDto: UpdateTopicDto): Promise<{
+    updateTopic(session: IUserSession, topicId: string, updateTopicDto: UpdateTopicDto): Promise<{
         description: string | null;
         id: string;
         created_at: Date;
         name: string;
         is_active: boolean;
-        is_archived: boolean;
         updated_at: Date;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
-    removeTopic(topicId: string): Promise<{
+    removeTopic(session: IUserSession, topicId: string): Promise<{
         description: string | null;
         id: string;
         created_at: Date;

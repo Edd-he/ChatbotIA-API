@@ -3,5 +3,5 @@ import { EntityOperationEvent } from './logger-events.interfaces';
 export declare class OnEntityArchiveHandler {
     private readonly logger;
     constructor(logger: LoggerService);
-    handleCreated(payload: EntityOperationEvent): Promise<void>;
+    handleArchived(payload: EntityOperationEvent): Promise<void>;
 }

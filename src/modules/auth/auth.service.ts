@@ -4,6 +4,7 @@ import { UsersService } from '@modules/users/users.service'
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcryptjs'
 import { IUserSession } from '@auth/interfaces/user-session.interface'
+import { envs } from 'src/config/envs'
 
 import { SignInDto } from './dto/signIn.dto'
 
@@ -31,6 +32,7 @@ export class AuthService {
       username: user.name + ' ' + user.last_name,
       email: user.email,
       role: user.role,
+      modules: user.modules_access,
     }
 
     return {
@@ -56,14 +58,15 @@ export class AuthService {
       username: user.username,
       email: user.email,
       role: user.role,
+      modules: user.modules_access,
     }
     return {
       access: await this.jwtService.signAsync(payload, {
-        secret: process.env.JWT_SECRET,
+        secret: envs.jwtSecret,
         expiresIn: '1d',
       }),
       refresh: await this.jwtService.signAsync(payload, {
-        secret: process.env.JWT_REFRESH_SECRET,
+        secret: envs.refreshJwtSecret,
         expiresIn: '7d',
       }),
     }

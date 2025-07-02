@@ -1,7 +1,6 @@
 import { LoggerService } from '@modules/logger/logger.service'
 import { Injectable } from '@nestjs/common'
 import { OnEvent } from '@nestjs/event-emitter'
-import { Entity } from '@prisma/client'
 
 import { EntityOperationEvent, LoggerEvents } from './logger-events.interfaces'
 
@@ -9,9 +8,9 @@ import { EntityOperationEvent, LoggerEvents } from './logger-events.interfaces'
 export class OnEntityUpdateHandler {
   constructor(private readonly logger: LoggerService) {}
 
-  @OnEvent(LoggerEvents.USER_UPDATED_EVENT)
-  async handleCreated(payload: EntityOperationEvent) {
-    const { session, entityId } = payload
-    await this.logger.updateEntityLog(session, Entity.User, entityId)
+  @OnEvent(LoggerEvents.ENTITY_UPDATED_EVENT)
+  async handleUpdated(payload: EntityOperationEvent) {
+    const { session, entityId, entity, after, before } = payload
+    await this.logger.updateEntityLog(session, entity, entityId, after, before)
   }
 }

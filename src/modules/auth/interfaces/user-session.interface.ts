@@ -5,6 +5,7 @@ export interface IUserSession {
   username: string
   email: string
   role: Role
+  modules: string[]
   iat?: number
   exp?: number
 }

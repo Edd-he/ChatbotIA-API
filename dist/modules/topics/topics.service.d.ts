@@ -33,6 +33,22 @@ export declare class TopicsService {
         total: number;
         totalPages: number;
     }>;
+    getAvailables(): Promise<{
+        description: string | null;
+        id: string;
+        created_at: Date;
+        name: string;
+    }[]>;
+    getOne(id: string): Promise<{
+        description: string | null;
+        id: string;
+        created_at: Date;
+        name: string;
+        is_active: boolean;
+        updated_at: Date;
+        documents_count: number;
+        total_size: Prisma.Decimal;
+    }>;
     getOneWithDocuments(id: string): Promise<{
         documents: {
             description: string;
@@ -59,15 +75,26 @@ export declare class TopicsService {
         total_size: Prisma.Decimal;
     }>;
     update(id: string, updateTopicDto: UpdateTopicDto): Promise<{
-        description: string | null;
-        id: string;
-        created_at: Date;
-        name: string;
-        is_active: boolean;
-        is_archived: boolean;
-        updated_at: Date;
-        documents_count: number;
-        total_size: Prisma.Decimal;
+        actualTopic: {
+            description: string | null;
+            id: string;
+            created_at: Date;
+            name: string;
+            is_active: boolean;
+            updated_at: Date;
+            documents_count: number;
+            total_size: Prisma.Decimal;
+        };
+        updatedTopic: {
+            description: string | null;
+            id: string;
+            created_at: Date;
+            name: string;
+            is_active: boolean;
+            updated_at: Date;
+            documents_count: number;
+            total_size: Prisma.Decimal;
+        };
     }>;
     updateSizeAndCount(id: string, size: number): Promise<{
         description: string | null;

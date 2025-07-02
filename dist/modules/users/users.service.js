@@ -24,7 +24,7 @@ let UsersService = class UsersService {
         this.reniecService = reniecService;
     }
     async create(createUserDto) {
-        const { password, role, ...rest } = createUserDto;
+        const { password, role, modules_access, ...rest } = createUserDto;
         const { nombres, apellidoMaterno, apellidoPaterno } = await this.reniecService.getInfoDNI(createUserDto.dni);
         try {
             const newAdmin = await this.db.user.create({
@@ -34,7 +34,12 @@ let UsersService = class UsersService {
                     last_name: apellidoPaterno + ' ' + apellidoMaterno,
                     password: await bcrypt.hash(password, 10),
                     role: role,
+                    modules_access,
                     ...rest,
+                },
+                omit: {
+                    password: true,
+                    is_archived: true,
                 },
             });
             return newAdmin;
@@ -65,6 +70,7 @@ let UsersService = class UsersService {
                 take: page_size,
                 omit: {
                     password: true,
+                    is_archived: true,
                 },
             }),
             this.db.user.count({ where }),
@@ -108,17 +114,30 @@ let UsersService = class UsersService {
         });
     }
     async update(id, updateUserDto) {
+        const { role, is_active, dni, email, modules_access } = updateUserDto;
+        const { nombres, apellidoMaterno, apellidoPaterno } = await this.reniecService.getInfoDNI(updateUserDto.dni);
         try {
+            const actualUser = await this.getOne(id);
             const updatedUser = await this.db.user.update({
                 where: {
                     id,
                     is_archived: false,
                 },
                 data: {
-                    ...updateUserDto,
+                    email,
+                    dni,
+                    name: nombres,
+                    last_name: apellidoPaterno + ' ' + apellidoMaterno,
+                    role,
+                    is_active,
+                    modules_access,
+                },
+                omit: {
+                    password: true,
+                    is_archived: true,
                 },
             });
-            return updatedUser;
+            return { actualUser, updatedUser };
         }
         catch (e) {
             if (e.code) {

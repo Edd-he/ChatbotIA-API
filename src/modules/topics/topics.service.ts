@@ -73,6 +73,34 @@ export class TopicsService {
     }
   }
 
+  async getAvailables() {
+    return await this.db.topic.findMany({
+      where: {
+        is_active: true,
+        is_archived: false,
+      },
+      omit: {
+        is_active: true,
+        is_archived: true,
+        updated_at: true,
+        documents_count: true,
+        total_size: true,
+      },
+    })
+  }
+
+  async getOne(id: string) {
+    return await this.db.topic.findFirst({
+      where: {
+        id,
+        is_archived: false,
+      },
+      omit: {
+        is_archived: true,
+      },
+    })
+  }
+
   async getOneWithDocuments(id: string) {
     return await this.db.topic.findFirst({
       where: {
@@ -87,6 +115,7 @@ export class TopicsService {
 
   async update(id: string, updateTopicDto: UpdateTopicDto) {
     try {
+      const actualTopic = await this.getOne(id)
       const updatedTopic = await this.db.topic.update({
         where: {
           id,
@@ -95,9 +124,12 @@ export class TopicsService {
         data: {
           ...updateTopicDto,
         },
+        omit: {
+          is_archived: true,
+        },
       })
       if (updatedTopic) {
-        return updatedTopic
+        return { actualTopic, updatedTopic }
       }
     } catch (e) {
       if (e.code) {

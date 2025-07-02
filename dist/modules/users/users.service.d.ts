@@ -13,12 +13,11 @@ export declare class UsersService {
         created_at: Date;
         name: string;
         is_active: boolean;
-        is_archived: boolean;
         updated_at: Date;
         dni: string;
         email: string;
-        password: string;
         role: import(".prisma/client").$Enums.Role;
+        modules_access: string[];
         last_name: string;
     }>;
     findAll({ query, page, page_size, status, }: SearchStatusQueryParamsDto): Promise<{
@@ -29,10 +28,10 @@ export declare class UsersService {
             id: string;
             name: string;
             is_active: boolean;
-            is_archived: boolean;
             dni: string;
             email: string;
             role: import(".prisma/client").$Enums.Role;
+            modules_access: string[];
             last_name: string;
         }[];
         total: number;
@@ -47,6 +46,7 @@ export declare class UsersService {
         dni: string;
         email: string;
         role: import(".prisma/client").$Enums.Role;
+        modules_access: string[];
         last_name: string;
     }>;
     getOneByEmail(email: string): Promise<{
@@ -59,20 +59,34 @@ export declare class UsersService {
         email: string;
         password: string;
         role: import(".prisma/client").$Enums.Role;
+        modules_access: string[];
         last_name: string;
     }>;
     update(id: string, updateUserDto: UpdateUserDto): Promise<{
-        id: string;
-        created_at: Date;
-        name: string;
-        is_active: boolean;
-        is_archived: boolean;
-        updated_at: Date;
-        dni: string;
-        email: string;
-        password: string;
-        role: import(".prisma/client").$Enums.Role;
-        last_name: string;
+        actualUser: {
+            id: string;
+            created_at: Date;
+            name: string;
+            is_active: boolean;
+            updated_at: Date;
+            dni: string;
+            email: string;
+            role: import(".prisma/client").$Enums.Role;
+            modules_access: string[];
+            last_name: string;
+        };
+        updatedUser: {
+            id: string;
+            created_at: Date;
+            name: string;
+            is_active: boolean;
+            updated_at: Date;
+            dni: string;
+            email: string;
+            role: import(".prisma/client").$Enums.Role;
+            modules_access: string[];
+            last_name: string;
+        };
     }>;
     remove(id: string): Promise<{
         id: string;
@@ -85,6 +99,7 @@ export declare class UsersService {
         email: string;
         password: string;
         role: import(".prisma/client").$Enums.Role;
+        modules_access: string[];
         last_name: string;
     }>;
     verifyDni(dni: string): Promise<IReniecResponse>;

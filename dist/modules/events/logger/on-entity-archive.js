@@ -13,24 +13,23 @@ exports.OnEntityArchiveHandler = void 0;
 const logger_service_1 = require("../../logger/logger.service");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const client_1 = require("@prisma/client");
 const logger_events_interfaces_1 = require("./logger-events.interfaces");
 let OnEntityArchiveHandler = class OnEntityArchiveHandler {
     constructor(logger) {
         this.logger = logger;
     }
-    async handleCreated(payload) {
-        const { session, entityId } = payload;
-        await this.logger.deleteEntityLog(session, client_1.Entity.User, entityId);
+    async handleArchived(payload) {
+        const { session, entity, entityId } = payload;
+        await this.logger.deleteEntityLog(session, entity, entityId);
     }
 };
 exports.OnEntityArchiveHandler = OnEntityArchiveHandler;
 __decorate([
-    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.USER_ARCHIVED_EVENT),
+    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.ENTITY_ARCHIVED_EVENT),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], OnEntityArchiveHandler.prototype, "handleCreated", null);
+], OnEntityArchiveHandler.prototype, "handleArchived", null);
 exports.OnEntityArchiveHandler = OnEntityArchiveHandler = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [logger_service_1.LoggerService])

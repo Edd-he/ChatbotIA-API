@@ -40,7 +40,25 @@ __decorate([
 __decorate([
     (0, class_transformer_1.Transform)(({ value }) => {
         if (typeof value === 'string') {
-            return value.split(',').map((tag) => tag.trim());
+            try {
+                const parsed = JSON.parse(value);
+                if (Array.isArray(parsed))
+                    return parsed;
+            }
+            catch {
+                return [value];
+            }
+        }
+        if (Array.isArray(value) &&
+            typeof value[0] === 'string' &&
+            value[0].startsWith('["')) {
+            try {
+                const parsed = JSON.parse(value[0]);
+                if (Array.isArray(parsed))
+                    return parsed;
+            }
+            catch {
+            }
         }
         return value;
     }),

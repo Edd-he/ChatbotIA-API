@@ -22,6 +22,8 @@ const public_decorator_1 = require("../auth/decorators/public.decorator");
 const event_emitter_1 = require("@nestjs/event-emitter");
 const logger_events_interfaces_1 = require("../events/logger/logger-events.interfaces");
 const swagger_1 = require("@nestjs/swagger");
+const auth_decorator_1 = require("../auth/decorators/auth.decorator");
+const client_1 = require("@prisma/client");
 const validate_dni_pipe_1 = require("./pipes/validate-dni.pipe");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const create_user_dto_1 = require("./dto/create-user.dto");
@@ -33,8 +35,9 @@ let UsersController = class UsersController {
     }
     async createUser(session, createUserDto) {
         const admin = await this.usersService.create(createUserDto);
-        this.eventEmitter.emit(logger_events_interfaces_1.LoggerEvents.USER_CREATED_EVENT, {
+        this.eventEmitter.emit(logger_events_interfaces_1.LoggerEvents.ENTITY_CREATED_EVENT, {
             session,
+            entity: client_1.Entity.User,
             entityId: admin.id,
         });
         return admin;
@@ -49,17 +52,21 @@ let UsersController = class UsersController {
         return this.usersService.getOne(userId);
     }
     async updateUser(userId, session, updateUserDto) {
-        const admin = await this.usersService.update(userId, updateUserDto);
-        this.eventEmitter.emit(logger_events_interfaces_1.LoggerEvents.USER_UPDATED_EVENT, {
+        const { actualUser, updatedUser } = await this.usersService.update(userId, updateUserDto);
+        this.eventEmitter.emit(logger_events_interfaces_1.LoggerEvents.ENTITY_UPDATED_EVENT, {
             session,
-            entityId: admin.id,
+            entity: client_1.Entity.User,
+            entityId: actualUser.id,
+            after: updatedUser,
+            before: actualUser,
         });
-        return admin;
+        return updatedUser;
     }
     async removeUser(userId, session) {
         const admin = await this.usersService.remove(userId);
-        this.eventEmitter.emit(logger_events_interfaces_1.LoggerEvents.USER_ARCHIVED_EVENT, {
+        this.eventEmitter.emit(logger_events_interfaces_1.LoggerEvents.ENTITY_ARCHIVED_EVENT, {
             session,
+            entity: client_1.Entity.User,
             entityId: admin.id,
         });
         return admin;
@@ -138,6 +145,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "removeUser", null);
 exports.UsersController = UsersController = __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, auth_decorator_1.Auth)(['SUPER_ADMIN']),
     (0, common_1.Controller)('users'),
     __metadata("design:paramtypes", [users_service_1.UsersService,
         event_emitter_1.EventEmitter2])

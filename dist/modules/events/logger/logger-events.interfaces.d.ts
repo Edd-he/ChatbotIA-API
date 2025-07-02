@@ -1,10 +1,14 @@
 import { IUserSession } from '@modules/auth/interfaces/user-session.interface';
+import { Entity } from '@prisma/client';
 export interface EntityOperationEvent {
     session: IUserSession;
+    entity: Entity;
     entityId: string;
+    before?: any;
+    after?: any;
 }
 export declare enum LoggerEvents {
-    USER_CREATED_EVENT = "user.created",
-    USER_UPDATED_EVENT = "user.updated",
-    USER_ARCHIVED_EVENT = "user.archived"
+    ENTITY_CREATED_EVENT = "entity.created",
+    ENTITY_UPDATED_EVENT = "entity.updated",
+    ENTITY_ARCHIVED_EVENT = "entity.archived"
 }

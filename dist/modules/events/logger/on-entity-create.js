@@ -13,20 +13,19 @@ exports.OnEntityCreateHandler = void 0;
 const logger_service_1 = require("../../logger/logger.service");
 const common_1 = require("@nestjs/common");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const client_1 = require("@prisma/client");
 const logger_events_interfaces_1 = require("./logger-events.interfaces");
 let OnEntityCreateHandler = class OnEntityCreateHandler {
     constructor(logger) {
         this.logger = logger;
     }
     async handleCreated(payload) {
-        const { session, entityId } = payload;
-        await this.logger.createEntityLog(session, client_1.Entity.User, entityId);
+        const { session, entityId, entity } = payload;
+        await this.logger.createEntityLog(session, entity, entityId);
     }
 };
 exports.OnEntityCreateHandler = OnEntityCreateHandler;
 __decorate([
-    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.USER_CREATED_EVENT),
+    (0, event_emitter_1.OnEvent)(logger_events_interfaces_1.LoggerEvents.ENTITY_CREATED_EVENT),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)

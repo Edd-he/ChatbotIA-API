@@ -5,8 +5,8 @@ export declare class LoggerController {
     constructor(logger: LoggerService);
     findAll(query: PaginatedParamsDto): Promise<{
         data: {
+            created_at: string;
             id: number;
-            created_at: Date;
             user_id: string;
             action: import(".prisma/client").$Enums.Action;
             entity: import(".prisma/client").$Enums.Entity;

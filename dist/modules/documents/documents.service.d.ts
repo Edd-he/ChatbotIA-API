@@ -68,17 +68,31 @@ export declare class DocumentsService {
         size: Prisma.Decimal;
     }>;
     update(id: string, updateDocumentDto: UpdateDocumentDto): Promise<{
-        description: string;
-        id: string;
-        created_at: Date;
-        name: string;
-        tags: string[];
-        is_active: boolean;
-        is_archived: boolean;
-        updated_at: Date;
-        url: string;
-        topic_id: string;
-        size: Prisma.Decimal;
+        actualDocument: {
+            description: string;
+            id: string;
+            created_at: Date;
+            name: string;
+            tags: string[];
+            is_active: boolean;
+            is_archived: boolean;
+            updated_at: Date;
+            url: string;
+            topic_id: string;
+            size: Prisma.Decimal;
+        };
+        updatedDocument: {
+            description: string;
+            id: string;
+            created_at: Date;
+            name: string;
+            tags: string[];
+            is_active: boolean;
+            updated_at: Date;
+            url: string;
+            topic_id: string;
+            size: Prisma.Decimal;
+        };
     }>;
     remove(id: string): Promise<{
         description: string;

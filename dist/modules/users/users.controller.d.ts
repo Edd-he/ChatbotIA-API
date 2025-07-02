@@ -13,12 +13,11 @@ export declare class UsersController {
         created_at: Date;
         name: string;
         is_active: boolean;
-        is_archived: boolean;
         updated_at: Date;
         dni: string;
         email: string;
-        password: string;
         role: import(".prisma/client").$Enums.Role;
+        modules_access: string[];
         last_name: string;
     }>;
     getAllUsers(query: SearchStatusQueryParamsDto): Promise<{
@@ -29,10 +28,10 @@ export declare class UsersController {
             id: string;
             name: string;
             is_active: boolean;
-            is_archived: boolean;
             dni: string;
             email: string;
             role: import(".prisma/client").$Enums.Role;
+            modules_access: string[];
             last_name: string;
         }[];
         total: number;
@@ -48,6 +47,7 @@ export declare class UsersController {
         dni: string;
         email: string;
         role: import(".prisma/client").$Enums.Role;
+        modules_access: string[];
         last_name: string;
     }>;
     updateUser(userId: string, session: IUserSession, updateUserDto: UpdateUserDto): Promise<{
@@ -55,12 +55,11 @@ export declare class UsersController {
         created_at: Date;
         name: string;
         is_active: boolean;
-        is_archived: boolean;
         updated_at: Date;
         dni: string;
         email: string;
-        password: string;
         role: import(".prisma/client").$Enums.Role;
+        modules_access: string[];
         last_name: string;
     }>;
     removeUser(userId: string, session: IUserSession): Promise<{
@@ -74,6 +73,7 @@ export declare class UsersController {
         email: string;
         password: string;
         role: import(".prisma/client").$Enums.Role;
+        modules_access: string[];
         last_name: string;
     }>;
 }
