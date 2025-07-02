@@ -40,7 +40,9 @@ export class GeminiChatRunnerService {
         .getConversationContext(conversation_id)
         .then(async (result) => {
           const historial = this.mapRunsToHistory(result)
-          await this.conversationService.validateActive(conversation_id)
+          if (historial.length > 0) {
+            await this.conversationService.validateActive(conversation_id)
+          }
           if (topic_id) {
             const documents =
               await this.documentService.getAvailablesByTopic(topic_id)

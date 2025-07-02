@@ -139,7 +139,7 @@ let ConversationsService = class ConversationsService {
             },
         });
         if (!conv)
-            throw new common_1.ConflictException('La Conversación ya fue cerrada');
+            throw new common_1.ConflictException('Intento de ejecutar una conversacion cerrada');
     }
 };
 exports.ConversationsService = ConversationsService;

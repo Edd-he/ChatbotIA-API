@@ -150,6 +150,9 @@ export class ConversationsService {
         status: ConversationStatus.ACTIVE,
       },
     })
-    if (!conv) throw new ConflictException('La Conversación ya fue cerrada')
+    if (!conv)
+      throw new ConflictException(
+        'Intento de ejecutar una conversacion cerrada',
+      )
   }
 }
