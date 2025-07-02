@@ -82,6 +82,6 @@ export class DocumentsInTopicController {
   @Get('get-documents-by-topic')
   @ApiOperation({ summary: 'Obtiene todos los documentos de cierto Tópico' })
   getAllDocumentsByTopic(@Param('topicId', ValidateUUID) topicId: string) {
-    return this.documentsService.getAllByTopic(topicId)
+    return this.documentsService.getAvailablesByTopic(topicId)
   }
 }

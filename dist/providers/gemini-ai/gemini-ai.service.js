@@ -84,7 +84,7 @@ let GeminiAIService = class GeminiAIService {
             run.setInput(message);
             run.setModel(model.model);
             chat
-                .sendMessageStream([message])
+                .sendMessageStream(message)
                 .then(async (result) => {
                 try {
                     for await (const chunk of result.stream) {

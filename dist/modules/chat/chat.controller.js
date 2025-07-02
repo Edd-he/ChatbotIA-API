@@ -24,14 +24,10 @@ let ChatController = class ChatController {
         this.chatService = chatService;
     }
     send(res, req, body) {
-        const { message, conversation_id } = body;
         res.setHeader('Content-Type', 'text/event-stream');
         res.setHeader('Cache-Control', 'no-cache');
         res.setHeader('Connection', 'keep-alive');
-        const response = this.chatService.doStream({
-            conversation_id,
-            message,
-        });
+        const response = this.chatService.doStream(body);
         const subscription = response.subscribe({
             next: (chunk) => {
                 res.write(chunk);

@@ -89,11 +89,16 @@ export class DocumentsService {
     }
   }
 
-  async getAllByTopic(topicId: string) {
+  async getAvailablesByTopic(topicId: string) {
     return await this.db.document.findMany({
       where: {
         topic_id: topicId,
         is_archived: false,
+        is_active: true,
+      },
+      select: {
+        name: true,
+        url: true,
       },
     })
   }

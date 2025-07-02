@@ -42,7 +42,7 @@ let DocumentsInTopicController = class DocumentsInTopicController {
         return document;
     }
     getAllDocumentsByTopic(topicId) {
-        return this.documentsService.getAllByTopic(topicId);
+        return this.documentsService.getAvailablesByTopic(topicId);
     }
 };
 exports.DocumentsInTopicController = DocumentsInTopicController;

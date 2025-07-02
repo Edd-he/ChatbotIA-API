@@ -18,8 +18,9 @@ let ChatService = class ChatService {
         this.geminiRunner = geminiRunner;
         this.runsService = runsService;
     }
-    doStream({ conversation_id, message }) {
-        return this.geminiRunner.streamChatResponse(conversation_id, message);
+    doStream(requestChat) {
+        const { conversation_id, topic_id, message } = requestChat;
+        return this.geminiRunner.streamChatResponse(conversation_id, message, topic_id);
     }
     async getChathistory(converationId) {
         const runs = await this.runsService.getConversationContext(converationId);

@@ -20,16 +20,7 @@ export declare class DocumentsInTopicController {
         size: import("@prisma/client/runtime/library").Decimal;
     }>;
     getAllDocumentsByTopic(topicId: string): Promise<{
-        description: string;
-        id: string;
-        created_at: Date;
         name: string;
-        tags: string[];
-        is_active: boolean;
-        is_archived: boolean;
-        updated_at: Date;
         url: string;
-        topic_id: string;
-        size: import("@prisma/client/runtime/library").Decimal;
     }[]>;
 }

@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GeminiChatRunnerModule = void 0;
 const common_1 = require("@nestjs/common");
 const runs_module_1 = require("../runs/runs.module");
+const documents_module_1 = require("../documents/documents.module");
 const gemini_chat_runner_service_1 = require("./gemini-chat-runner.service");
 let GeminiChatRunnerModule = class GeminiChatRunnerModule {
 };
@@ -17,7 +18,7 @@ exports.GeminiChatRunnerModule = GeminiChatRunnerModule = __decorate([
     (0, common_1.Module)({
         providers: [gemini_chat_runner_service_1.GeminiChatRunnerService],
         exports: [gemini_chat_runner_service_1.GeminiChatRunnerService],
-        imports: [runs_module_1.RunsModule],
+        imports: [runs_module_1.RunsModule, documents_module_1.DocumentsModule],
     })
 ], GeminiChatRunnerModule);
 //# sourceMappingURL=gemini-chat-runner.module.js.map

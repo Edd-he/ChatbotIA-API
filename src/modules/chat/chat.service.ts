@@ -4,6 +4,7 @@ import { GeminiChatRunnerService } from '@modules/gemini-chat-runner/gemini-chat
 import { RunsService } from '@modules/runs/runs.service'
 
 import { Message } from './interfaces/chat.interfaces'
+import { RequestChatDto } from './dto/request-chat.dto'
 
 @Injectable()
 export class ChatService {
@@ -12,8 +13,13 @@ export class ChatService {
     private readonly runsService: RunsService,
   ) {}
 
-  doStream({ conversation_id, message }): Observable<unknown> {
-    return this.geminiRunner.streamChatResponse(conversation_id, message)
+  doStream(requestChat: RequestChatDto): Observable<unknown> {
+    const { conversation_id, topic_id, message } = requestChat
+    return this.geminiRunner.streamChatResponse(
+      conversation_id,
+      message,
+      topic_id,
+    )
   }
 
   async getChathistory(converationId: string): Promise<Message[]> {

@@ -83,11 +83,16 @@ let DocumentsService = class DocumentsService {
             totalPages,
         };
     }
-    async getAllByTopic(topicId) {
+    async getAvailablesByTopic(topicId) {
         return await this.db.document.findMany({
             where: {
                 topic_id: topicId,
                 is_archived: false,
+                is_active: true,
+            },
+            select: {
+                name: true,
+                url: true,
             },
         });
     }

@@ -18,19 +18,26 @@ const gemini_ai_run_entity_1 = require("../../providers/gemini-ai/entities/gemin
 const gemini_ai_models_enum_1 = require("../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
 const runs_service_1 = require("../runs/runs.service");
 const run_events_interfaces_1 = require("../events/run-events/run-events.interfaces");
+const documents_service_1 = require("../documents/documents.service");
 const instructions_const_1 = require("./prompts/instructions.const");
 let GeminiChatRunnerService = class GeminiChatRunnerService {
-    constructor(ai, eventEmitter, runService) {
+    constructor(ai, eventEmitter, runService, documentService) {
         this.ai = ai;
         this.eventEmitter = eventEmitter;
         this.runService = runService;
+        this.documentService = documentService;
     }
-    streamChatResponse(conversation_id, message) {
+    streamChatResponse(conversation_id, message, topic_id) {
         return new rxjs_1.Observable((subscriber) => {
             this.runService
                 .getConversationContext(conversation_id)
-                .then((result) => {
+                .then(async (result) => {
                 const historial = this.mapRunsToHistory(result);
+                if (topic_id) {
+                    const documents = await this.documentService.getAvailablesByTopic(topic_id);
+                    const documentParts = await this.extractDocumentsContext(documents);
+                    historial.unshift(...documentParts);
+                }
                 const stream = this.ai.streamChatMessage(historial, message, gemini_ai_models_enum_1.GeminiModels.GEMINI_2_0_FLASH, instructions_const_1.ASSISTANT_INSTRUCTION);
                 let previousChunk = null;
                 let lastChunk = null;
@@ -81,12 +88,39 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
         ]);
         return historial;
     }
+    async extractDocumentsContext(documents) {
+        const contextParts = [];
+        for (const doc of documents) {
+            try {
+                const buffer = await fetch(doc.url).then((res) => res.arrayBuffer());
+                contextParts.push({
+                    role: 'user',
+                    parts: [
+                        {
+                            text: `Por favor, responde teniendo en cuenta este documento y en base a la siguiente pregunta del usuario: ${doc.name}`,
+                        },
+                        {
+                            inlineData: {
+                                mimeType: 'application/pdf',
+                                data: Buffer.from(buffer).toString('base64'),
+                            },
+                        },
+                    ],
+                });
+            }
+            catch (err) {
+                console.error(`Error al procesar PDF: ${doc.url}`, err);
+            }
+        }
+        return contextParts;
+    }
 };
 exports.GeminiChatRunnerService = GeminiChatRunnerService;
 exports.GeminiChatRunnerService = GeminiChatRunnerService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [gemini_ai_service_1.GeminiAIService,
         event_emitter_1.EventEmitter2,
-        runs_service_1.RunsService])
+        runs_service_1.RunsService,
+        documents_service_1.DocumentsService])
 ], GeminiChatRunnerService);
 //# sourceMappingURL=gemini-chat-runner.service.js.map

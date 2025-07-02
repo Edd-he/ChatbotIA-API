@@ -113,6 +113,7 @@ export class GeminiAIService {
     contextInstructions: string,
   ): Observable<string> {
     const model = this.generateModel(geminiModel, contextInstructions)
+
     const chat = model.startChat({ history })
 
     return new Observable<string>((observer) => {
@@ -121,7 +122,7 @@ export class GeminiAIService {
       run.setModel(model.model)
 
       chat
-        .sendMessageStream([message])
+        .sendMessageStream(message)
         .then(async (result) => {
           try {
             for await (const chunk of result.stream) {

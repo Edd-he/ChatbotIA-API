@@ -13,6 +13,7 @@ import {
   RunExecutedEvent,
   RUN_EVENTS,
 } from '@modules/events/run-events/run-events.interfaces'
+import { DocumentsService } from '@modules/documents/documents.service'
 
 import { ASSISTANT_INSTRUCTION } from './prompts/instructions.const'
 
@@ -22,17 +23,26 @@ export class GeminiChatRunnerService {
     private readonly ai: GeminiAIService,
     private readonly eventEmitter: EventEmitter2,
     private readonly runService: RunsService,
+    private readonly documentService: DocumentsService,
   ) {}
 
   streamChatResponse(
     conversation_id: string,
     message: string,
+    topic_id?: string,
   ): Observable<any> {
     return new Observable((subscriber) => {
       this.runService
         .getConversationContext(conversation_id)
-        .then((result) => {
+        .then(async (result) => {
           const historial = this.mapRunsToHistory(result)
+
+          if (topic_id) {
+            const documents =
+              await this.documentService.getAvailablesByTopic(topic_id)
+            const documentParts = await this.extractDocumentsContext(documents)
+            historial.unshift(...documentParts)
+          }
           const stream = this.ai.streamChatMessage(
             historial,
             message,
@@ -46,7 +56,6 @@ export class GeminiChatRunnerService {
           stream.subscribe({
             next: (data) => {
               if (previousChunk !== null) subscriber.next(previousChunk)
-
               previousChunk = data
               lastChunk = data
             },
@@ -107,5 +116,36 @@ export class GeminiChatRunnerService {
       },
     ])
     return historial
+  }
+
+  private async extractDocumentsContext(
+    documents: { name: string; url: string }[],
+  ): Promise<any[]> {
+    const contextParts: IGeminiMessageChat[] = []
+
+    for (const doc of documents) {
+      try {
+        const buffer = await fetch(doc.url).then((res) => res.arrayBuffer())
+
+        contextParts.push({
+          role: 'user',
+          parts: [
+            {
+              text: `Por favor, responde teniendo en cuenta este documento y en base a la siguiente pregunta del usuario: ${doc.name}`,
+            },
+            {
+              inlineData: {
+                mimeType: 'application/pdf',
+                data: Buffer.from(buffer).toString('base64'),
+              },
+            },
+          ],
+        })
+      } catch (err) {
+        console.error(`Error al procesar PDF: ${doc.url}`, err)
+      }
+    }
+
+    return contextParts
   }
 }

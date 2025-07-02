@@ -1,4 +1,4 @@
-import { IsString, IsUUID, Length } from 'class-validator'
+import { IsOptional, IsString, IsUUID, Length } from 'class-validator'
 export class RequestChatDto {
   @IsUUID(7, {
     message: 'El id de la conversacion debe ser un uuid version 7 ',
@@ -10,4 +10,10 @@ export class RequestChatDto {
   })
   @IsString({ message: 'El mensaje debe ser un texto' })
   message: string
+
+  @IsOptional()
+  @IsUUID(7, {
+    message: 'El id del tópico elegido debe ser un uuid version 7 ',
+  })
+  topic_id: string
 }
