@@ -5,5 +5,5 @@ Evalúa la relevancia con base en:
 - La frecuencia con la que se repite el tema de los inputs (cantidad).
 - La importancia del contenido para alguien que consulta información clave.
 
-Cada pregunta generada debe tener un máximo de 300 caracteres.
+Cada pregunta generada debe tener un máximo de 140 caracteres.
 `
