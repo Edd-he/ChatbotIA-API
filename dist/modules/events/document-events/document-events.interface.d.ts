@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-export interface DocumentCreatedEvent {
+export interface DocumentEventPayload {
     id: string;
     name: string;
     is_active: boolean;

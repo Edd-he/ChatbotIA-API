@@ -101,7 +101,7 @@ let MonitoringService = class MonitoringService {
             take: 2000,
         });
         const validInputs = runs.filter((run) => run.input && run.input.trim().length > 0);
-        const aiResponse = await this.ai.getStructuredResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH, top_inputs_context_1.TOP_INPUTS_CONTEXT, [JSON.stringify(validInputs)], {
+        const aiResponse = await this.ai.getStructuredResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH_8B, top_inputs_context_1.TOP_INPUTS_CONTEXT, [JSON.stringify(validInputs)], {
             type: generative_ai_1.SchemaType.ARRAY,
             items: {
                 type: generative_ai_1.SchemaType.OBJECT,

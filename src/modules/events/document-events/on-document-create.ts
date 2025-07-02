@@ -5,7 +5,7 @@ import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
 
 import {
   DOCUMENT_EVENTS,
-  DocumentCreatedEvent,
+  DocumentEventPayload,
 } from './document-events.interface'
 
 @Injectable()
@@ -17,7 +17,7 @@ export class OnDocumentCreateHandler {
   ) {}
 
   @OnEvent(DOCUMENT_EVENTS.ON_DOCUMENT_CREATED)
-  async handleCreated(payload: DocumentCreatedEvent) {
+  async handleCreated(payload: DocumentEventPayload) {
     const size = payload.size.toNumber()
     await this.topicService.updateSizeAndCount(payload.topic_id, size)
   }

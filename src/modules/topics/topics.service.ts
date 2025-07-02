@@ -78,6 +78,12 @@ export class TopicsService {
       where: {
         is_active: true,
         is_archived: false,
+        documents: {
+          some: {
+            is_active: true,
+            is_archived: false,
+          },
+        },
       },
       omit: {
         is_active: true,

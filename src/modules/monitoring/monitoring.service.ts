@@ -110,7 +110,7 @@ export class MonitoringService {
     )
 
     const aiResponse = await this.ai.getStructuredResponse(
-      GeminiModels.GEMINI_1_5_FLASH,
+      GeminiModels.GEMINI_1_5_FLASH_8B,
       TOP_INPUTS_CONTEXT,
       [JSON.stringify(validInputs)],
       {
