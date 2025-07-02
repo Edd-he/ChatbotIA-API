@@ -11,6 +11,7 @@ import { formatDate } from '@common/utils/format-date'
 
 import { UpdateUserDto } from './dto/update-user.dto'
 import { CreateUserDto } from './dto/create-user.dto'
+import { ChangePasswordDto } from './dto/change-password.dto'
 
 @Injectable()
 export class UsersService {
@@ -161,7 +162,7 @@ export class UsersService {
     }
   }
 
-  async updatePassword(id: string, password: string) {
+  async updatePassword(id: string, dto: ChangePasswordDto) {
     try {
       const actualUser = await this.getOne(id)
       const updatedUser = await this.db.user.update({
@@ -170,7 +171,7 @@ export class UsersService {
           is_archived: false,
         },
         data: {
-          password: await bcrypt.hash(password, 10),
+          password: await bcrypt.hash(dto.newPassword, 10),
         },
         omit: {
           password: true,

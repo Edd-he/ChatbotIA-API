@@ -146,7 +146,7 @@ let UsersService = class UsersService {
             throw new common_1.InternalServerErrorException('Hubo un error al actualizar el usuario');
         }
     }
-    async updatePassword(id, password) {
+    async updatePassword(id, dto) {
         try {
             const actualUser = await this.getOne(id);
             const updatedUser = await this.db.user.update({
@@ -155,7 +155,7 @@ let UsersService = class UsersService {
                     is_archived: false,
                 },
                 data: {
-                    password: await bcrypt.hash(password, 10),
+                    password: await bcrypt.hash(dto.newPassword, 10),
                 },
                 omit: {
                     password: true,

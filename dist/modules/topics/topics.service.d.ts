@@ -8,12 +8,12 @@ export declare class TopicsService {
     constructor(db: PrismaService);
     create(createTopicDto: CreateTopicDto): Promise<{
         id: string;
+        description: string | null;
         created_at: Date;
-        updated_at: Date;
         name: string;
         is_active: boolean;
         is_archived: boolean;
-        description: string | null;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;
@@ -23,10 +23,10 @@ export declare class TopicsService {
             created_at: string;
             updated_at: string;
             id: string;
+            description: string | null;
             name: string;
             is_active: boolean;
             is_archived: boolean;
-            description: string | null;
             documents_count: number;
             total_size: Prisma.Decimal;
         }[];
@@ -35,86 +35,86 @@ export declare class TopicsService {
     }>;
     getAvailables(): Promise<{
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
-        description: string | null;
     }[]>;
     getOne(id: string): Promise<{
         id: string;
+        description: string | null;
         created_at: Date;
-        updated_at: Date;
         name: string;
         is_active: boolean;
-        description: string | null;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;
     getOneWithDocuments(id: string): Promise<{
         documents: {
             id: string;
+            description: string;
             created_at: Date;
-            updated_at: Date;
             name: string;
+            tags: string[];
             is_active: boolean;
             is_archived: boolean;
+            updated_at: Date;
             url: string;
-            description: string;
-            tags: string[];
             topic_id: string;
             size: Prisma.Decimal;
         }[];
     } & {
         id: string;
+        description: string | null;
         created_at: Date;
-        updated_at: Date;
         name: string;
         is_active: boolean;
         is_archived: boolean;
-        description: string | null;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;
     update(id: string, updateTopicDto: UpdateTopicDto): Promise<{
         actualTopic: {
             id: string;
+            description: string | null;
             created_at: Date;
-            updated_at: Date;
             name: string;
             is_active: boolean;
-            description: string | null;
+            updated_at: Date;
             documents_count: number;
             total_size: Prisma.Decimal;
         };
         updatedTopic: {
             id: string;
+            description: string | null;
             created_at: Date;
-            updated_at: Date;
             name: string;
             is_active: boolean;
-            description: string | null;
+            updated_at: Date;
             documents_count: number;
             total_size: Prisma.Decimal;
         };
     }>;
     updateSizeAndCount(id: string, size: number): Promise<{
         id: string;
+        description: string | null;
         created_at: Date;
-        updated_at: Date;
         name: string;
         is_active: boolean;
         is_archived: boolean;
-        description: string | null;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;
     remove(id: string): Promise<{
         id: string;
+        description: string | null;
         created_at: Date;
-        updated_at: Date;
         name: string;
         is_active: boolean;
         is_archived: boolean;
-        description: string | null;
+        updated_at: Date;
         documents_count: number;
         total_size: Prisma.Decimal;
     }>;

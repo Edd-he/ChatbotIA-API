@@ -23,6 +23,7 @@ import { ValidateDNI } from './pipes/validate-dni.pipe'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UsersService } from './users.service'
+import { ChangePasswordDto } from './dto/change-password.dto'
 
 @ApiBearerAuth()
 @Auth(['SUPER_ADMIN'])
@@ -105,7 +106,7 @@ export class UsersController {
   async changePassword(
     @Param('userId', ValidateUUID) userId: string,
     @UserSession() session: IUserSession,
-    @Body() newPassword: string,
+    @Body() newPassword: ChangePasswordDto,
   ) {
     const { actualUser, updatedUser } = await this.usersService.updatePassword(
       userId,

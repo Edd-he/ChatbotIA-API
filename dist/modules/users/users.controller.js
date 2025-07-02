@@ -28,6 +28,7 @@ const validate_dni_pipe_1 = require("./pipes/validate-dni.pipe");
 const update_user_dto_1 = require("./dto/update-user.dto");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const users_service_1 = require("./users.service");
+const change_password_dto_1 = require("./dto/change-password.dto");
 let UsersController = class UsersController {
     constructor(usersService, eventEmitter) {
         this.usersService = usersService;
@@ -153,7 +154,7 @@ __decorate([
     __param(1, (0, user_session_decorator_1.UserSession)()),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object, String]),
+    __metadata("design:paramtypes", [String, Object, change_password_dto_1.ChangePasswordDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "changePassword", null);
 __decorate([
