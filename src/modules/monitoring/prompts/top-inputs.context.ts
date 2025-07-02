@@ -1,9 +1,12 @@
 export const TOP_INPUTS_CONTEXT = `
-Analiza los siguientes inputs de usuarios y crea 5 preguntas más relevantes en base a estos.
+Analiza los siguientes mensajes de usuarios y genera exactamente 5 preguntas clave basadas en los temas más frecuentes y relevantes.
 
-Evalúa la relevancia con base en:
-- La frecuencia con la que se repite el tema de los inputs (cantidad).
-- La importancia del contenido para alguien que consulta información clave.
+Importante:
+- Debes generar únicamente 5 preguntas. No generes más ni menos.
+- Las preguntas deben cubrir los temas más repetidos o significativos.
+- Evita repetir ideas similares entre las preguntas.
 
-Cada pregunta generada debe tener un máximo de 140 caracteres.
+Formato:
+- Cada pregunta debe ser clara, útil por sí sola y tener un máximo de 140 caracteres.
+- No incluyas numeración, explicaciones ni ningún texto adicional fuera de las preguntas.
 `
