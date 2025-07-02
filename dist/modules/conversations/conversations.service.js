@@ -38,7 +38,7 @@ let ConversationsService = class ConversationsService {
             throw new common_1.InternalServerErrorException('Hubo un error al crear la conversación');
         }
     }
-    async getAll({ page, page_size, start_date, end_date, }) {
+    async getAll({ page, page_size, start_date, end_date, conversationStatus, }) {
         const pages = page || 1;
         const skip = (pages - 1) * page_size;
         const where = {
@@ -46,6 +46,7 @@ let ConversationsService = class ConversationsService {
                 ...(start_date ? { gte: start_date } : {}),
                 ...(end_date ? { lte: end_date } : {}),
             },
+            status: conversationStatus,
         };
         const [conversations, total] = await Promise.all([
             this.db.conversation.findMany({

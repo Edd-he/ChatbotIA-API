@@ -1,4 +1,5 @@
 import { PrismaService } from 'src/providers/prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 import { CreateRunDto } from './dto/create-run.dto';
 import { RunQueryParams } from './query-params/runs-query-params';
 export declare class RunsService {
@@ -9,14 +10,14 @@ export declare class RunsService {
         conversation_id: string;
         is_run_successful: boolean;
         model_llm: string;
-        latency: import("@prisma/client/runtime/library").Decimal;
+        latency: Prisma.Decimal;
         tokens: number;
         input: string;
         output: string;
         id: string;
         created_at: Date;
     }>;
-    getAll({ start_date, end_date, page, page_size, error, }: RunQueryParams): Promise<{
+    getAll({ start_date, end_date, page, page_size, error, query, }: RunQueryParams): Promise<{
         data: {
             number: number;
             created_at: string;
@@ -24,7 +25,7 @@ export declare class RunsService {
             conversation_id: string;
             is_run_successful: boolean;
             model_llm: string;
-            latency: import("@prisma/client/runtime/library").Decimal;
+            latency: Prisma.Decimal;
             tokens: number;
             input: string;
             output: string;
@@ -38,7 +39,7 @@ export declare class RunsService {
         conversation_id: string;
         is_run_successful: boolean;
         model_llm: string;
-        latency: import("@prisma/client/runtime/library").Decimal;
+        latency: Prisma.Decimal;
         tokens: number;
         input: string;
         output: string;
@@ -54,7 +55,7 @@ export declare class RunsService {
         conversation_id: string;
         is_run_successful: boolean;
         model_llm: string;
-        latency: import("@prisma/client/runtime/library").Decimal;
+        latency: Prisma.Decimal;
         tokens: number;
         input: string;
         output: string;

@@ -11,8 +11,8 @@ export declare class DocumentsService {
     private readonly cloudinary;
     constructor(eventEmitter: EventEmitter2, db: PrismaService, cloudinary: CloudinaryService);
     create(createDocumentDto: CreateDocumentDto, file: Express.Multer.File): Promise<{
-        description: string;
         id: string;
+        description: string;
         created_at: Date;
         name: string;
         tags: string[];
@@ -28,8 +28,8 @@ export declare class DocumentsService {
             number: number;
             created_at: string;
             updated_at: string;
-            description: string;
             id: string;
+            description: string;
             name: string;
             tags: string[];
             is_active: boolean;
@@ -46,8 +46,8 @@ export declare class DocumentsService {
         url: string;
     }[]>;
     getOne(id: string): Promise<{
-        description: string;
         id: string;
+        description: string;
         created_at: Date;
         name: string;
         tags: string[];
@@ -60,8 +60,8 @@ export declare class DocumentsService {
     }>;
     update(id: string, updateDocumentDto: UpdateDocumentDto): Promise<{
         actualDocument: {
-            description: string;
             id: string;
+            description: string;
             created_at: Date;
             name: string;
             tags: string[];
@@ -73,8 +73,8 @@ export declare class DocumentsService {
             size: Prisma.Decimal;
         };
         updatedDocument: {
-            description: string;
             id: string;
+            description: string;
             created_at: Date;
             name: string;
             tags: string[];
@@ -86,8 +86,8 @@ export declare class DocumentsService {
         };
     }>;
     remove(id: string): Promise<{
-        description: string;
         id: string;
+        description: string;
         created_at: Date;
         name: string;
         tags: string[];

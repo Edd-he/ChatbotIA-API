@@ -5,12 +5,12 @@ import {
 } from '@nestjs/common'
 import { PrismaService } from 'src/providers/prisma/prisma.service'
 import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception'
-import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 import { formatDate } from '@common/utils/format-date'
 import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service'
 import { ConversationStatus } from '@prisma/client'
 
 import { CreateConversationDto } from './dto/create-conversation.dto'
+import { ConversationsQueryParams } from './query-params/conversations-query-params'
 @Injectable()
 export class ConversationsService {
   constructor(
@@ -40,7 +40,8 @@ export class ConversationsService {
     page_size,
     start_date,
     end_date,
-  }: RangeDateQueryParams) {
+    conversationStatus,
+  }: ConversationsQueryParams) {
     const pages = page || 1
     const skip = (pages - 1) * page_size
 
@@ -49,6 +50,7 @@ export class ConversationsService {
         ...(start_date ? { gte: start_date } : {}),
         ...(end_date ? { lte: end_date } : {}),
       },
+      status: conversationStatus,
     }
 
     const [conversations, total] = await Promise.all([

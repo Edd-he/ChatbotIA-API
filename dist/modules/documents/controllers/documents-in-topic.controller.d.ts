@@ -7,8 +7,8 @@ export declare class DocumentsInTopicController {
     private readonly eventEmitter;
     constructor(documentsService: DocumentsService, eventEmitter: EventEmitter2);
     createDocument(session: IUserSession, topicId: string, createDocumentDto: CreateDocumentDto, file: Express.Multer.File): Promise<{
-        description: string;
         id: string;
+        description: string;
         created_at: Date;
         name: string;
         tags: string[];

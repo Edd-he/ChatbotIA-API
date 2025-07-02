@@ -7,8 +7,8 @@ export declare class TopicsService {
     private readonly db;
     constructor(db: PrismaService);
     create(createTopicDto: CreateTopicDto): Promise<{
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
         is_active: boolean;
@@ -22,8 +22,8 @@ export declare class TopicsService {
             number: number;
             created_at: string;
             updated_at: string;
-            description: string | null;
             id: string;
+            description: string | null;
             name: string;
             is_active: boolean;
             is_archived: boolean;
@@ -34,14 +34,14 @@ export declare class TopicsService {
         totalPages: number;
     }>;
     getAvailables(): Promise<{
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
     }[]>;
     getOne(id: string): Promise<{
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
         is_active: boolean;
@@ -51,8 +51,8 @@ export declare class TopicsService {
     }>;
     getOneWithDocuments(id: string): Promise<{
         documents: {
-            description: string;
             id: string;
+            description: string;
             created_at: Date;
             name: string;
             tags: string[];
@@ -64,8 +64,8 @@ export declare class TopicsService {
             size: Prisma.Decimal;
         }[];
     } & {
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
         is_active: boolean;
@@ -76,8 +76,8 @@ export declare class TopicsService {
     }>;
     update(id: string, updateTopicDto: UpdateTopicDto): Promise<{
         actualTopic: {
-            description: string | null;
             id: string;
+            description: string | null;
             created_at: Date;
             name: string;
             is_active: boolean;
@@ -86,8 +86,8 @@ export declare class TopicsService {
             total_size: Prisma.Decimal;
         };
         updatedTopic: {
-            description: string | null;
             id: string;
+            description: string | null;
             created_at: Date;
             name: string;
             is_active: boolean;
@@ -97,8 +97,8 @@ export declare class TopicsService {
         };
     }>;
     updateSizeAndCount(id: string, size: number): Promise<{
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
         is_active: boolean;
@@ -108,8 +108,8 @@ export declare class TopicsService {
         total_size: Prisma.Decimal;
     }>;
     remove(id: string): Promise<{
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
         is_active: boolean;

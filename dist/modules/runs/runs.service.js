@@ -15,6 +15,7 @@ const prisma_service_1 = require("../../providers/prisma/prisma.service");
 const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exception");
 const uuid_1 = require("../../common/utils/uuid");
 const format_date_1 = require("../../common/utils/format-date");
+const client_1 = require("@prisma/client");
 let RunsService = class RunsService {
     constructor(db) {
         this.db = db;
@@ -36,17 +37,32 @@ let RunsService = class RunsService {
             throw new common_1.InternalServerErrorException('Ocurrio un error inesperado al registrar la ejecución');
         }
     }
-    async getAll({ start_date, end_date, page = 1, page_size, error, }) {
-        const skip = (page - 1) * page_size;
+    async getAll({ start_date, end_date, page, page_size, error, query, }) {
+        const pages = page || 1;
+        const skip = (pages - 1) * page_size;
         const where = {
-            created_at: {
-                ...(start_date ? { gte: start_date } : {}),
-                ...(end_date ? { lte: end_date } : {}),
-            },
+            AND: [
+                query
+                    ? {
+                        conversation_id: {
+                            contains: query,
+                            mode: client_1.Prisma.QueryMode.insensitive,
+                        },
+                    }
+                    : {},
+                error !== undefined && error !== null
+                    ? { is_run_successful: !error }
+                    : {},
+                start_date || end_date
+                    ? {
+                        created_at: {
+                            ...(start_date ? { gte: start_date } : {}),
+                            ...(end_date ? { lte: end_date } : {}),
+                        },
+                    }
+                    : {},
+            ],
         };
-        if (error !== undefined && error !== null) {
-            where.is_run_successful = !error;
-        }
         const [runs, total] = await Promise.all([
             this.db.run.findMany({
                 where,
@@ -58,7 +74,7 @@ let RunsService = class RunsService {
         const totalPages = Math.ceil(total / page_size);
         const data = runs.map((r, i) => ({
             ...r,
-            number: i + 1,
+            number: i + 1 + skip,
             created_at: (0, format_date_1.formatDate)(r.created_at),
         }));
         return {

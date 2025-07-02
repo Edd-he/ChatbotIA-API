@@ -3,26 +3,34 @@ import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@providers/prisma/prisma.service'
 import { IUserSession } from '@auth/interfaces/user-session.interface'
 import { Action, Entity } from '@prisma/client'
-import { PaginatedParamsDto } from '@common/query-params/paginated-params'
 import { formatDate } from '@common/utils/format-date'
+
+import { LogsQueryParams } from './query-params/logs-query-params'
 
 @Injectable()
 export class LoggerService {
   constructor(private readonly db: PrismaService) {}
 
-  async getAll({ page, page_size }: PaginatedParamsDto) {
+  async getAll({ page, page_size, logAction }: LogsQueryParams) {
     const pages = page || 1
     const skip = (pages - 1) * page_size
 
     const [logs, total] = await Promise.all([
       this.db.log.findMany({
+        where: {
+          action: logAction,
+        },
         skip,
         take: page_size,
         orderBy: {
           id: 'desc',
         },
       }),
-      this.db.log.count(),
+      this.db.log.count({
+        where: {
+          action: logAction,
+        },
+      }),
     ])
 
     const totalPages = Math.ceil(total / page_size)

@@ -1,14 +1,14 @@
 import { PrismaService } from 'src/providers/prisma/prisma.service';
-import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
 import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
+import { ConversationsQueryParams } from './query-params/conversations-query-params';
 export declare class ConversationsService {
     private readonly db;
     private readonly ai;
     constructor(db: PrismaService, ai: GeminiAIService);
     create(createConversationDto: CreateConversationDto): Promise<{
-        title: string | null;
         id: string;
+        title: string | null;
         created_at: Date;
         completed_at: Date | null;
         last_run: Date | null;
@@ -16,14 +16,14 @@ export declare class ConversationsService {
         total_tokens: number;
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
-    getAll({ page, page_size, start_date, end_date, }: RangeDateQueryParams): Promise<{
+    getAll({ page, page_size, start_date, end_date, conversationStatus, }: ConversationsQueryParams): Promise<{
         data: {
             number: number;
             created_at: string;
             last_run: string;
             completed_at: string;
-            title: string | null;
             id: string;
+            title: string | null;
             total_runs: number;
             total_tokens: number;
             status: import(".prisma/client").$Enums.ConversationStatus;
@@ -45,8 +45,8 @@ export declare class ConversationsService {
             created_at: Date;
         }[];
     } & {
-        title: string | null;
         id: string;
+        title: string | null;
         created_at: Date;
         completed_at: Date | null;
         last_run: Date | null;
@@ -55,8 +55,8 @@ export declare class ConversationsService {
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
     getOne(conversationId: string): Promise<{
-        title: string | null;
         id: string;
+        title: string | null;
         created_at: Date;
         completed_at: Date | null;
         last_run: Date | null;
@@ -65,8 +65,8 @@ export declare class ConversationsService {
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
     update(conversationId: string, tokens: number): Promise<{
-        title: string | null;
         id: string;
+        title: string | null;
         created_at: Date;
         completed_at: Date | null;
         last_run: Date | null;
@@ -75,8 +75,8 @@ export declare class ConversationsService {
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
     close(conversationId: string): Promise<{
-        title: string | null;
         id: string;
+        title: string | null;
         created_at: Date;
         completed_at: Date | null;
         last_run: Date | null;

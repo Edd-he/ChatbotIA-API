@@ -3,6 +3,7 @@ import { PrismaService } from 'src/providers/prisma/prisma.service'
 import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception'
 import { generateUUIDV7 } from '@common/utils/uuid'
 import { formatDate } from '@common/utils/format-date'
+import { Prisma } from '@prisma/client'
 
 import { CreateRunDto } from './dto/create-run.dto'
 import { RunQueryParams } from './query-params/runs-query-params'
@@ -33,21 +34,36 @@ export class RunsService {
   async getAll({
     start_date,
     end_date,
-    page = 1,
+    page,
     page_size,
     error,
+    query,
   }: RunQueryParams) {
-    const skip = (page - 1) * page_size
+    const pages = page || 1
+    const skip = (pages - 1) * page_size
 
-    const where: any = {
-      created_at: {
-        ...(start_date ? { gte: start_date } : {}),
-        ...(end_date ? { lte: end_date } : {}),
-      },
-    }
-
-    if (error !== undefined && error !== null) {
-      where.is_run_successful = !error
+    const where = {
+      AND: [
+        query
+          ? {
+              conversation_id: {
+                contains: query,
+                mode: Prisma.QueryMode.insensitive,
+              },
+            }
+          : {},
+        error !== undefined && error !== null
+          ? { is_run_successful: !error }
+          : {},
+        start_date || end_date
+          ? {
+              created_at: {
+                ...(start_date ? { gte: start_date } : {}),
+                ...(end_date ? { lte: end_date } : {}),
+              },
+            }
+          : {},
+      ],
     }
 
     const [runs, total] = await Promise.all([
@@ -63,7 +79,7 @@ export class RunsService {
 
     const data = runs.map((r, i) => ({
       ...r,
-      number: i + 1,
+      number: i + 1 + skip,
       created_at: formatDate(r.created_at),
     }))
 

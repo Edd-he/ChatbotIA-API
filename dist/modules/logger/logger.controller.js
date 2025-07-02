@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoggerController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
-const paginated_params_1 = require("../../common/query-params/paginated-params");
 const swagger_1 = require("@nestjs/swagger");
 const logger_service_1 = require("./logger.service");
+const logs_query_params_1 = require("./query-params/logs-query-params");
 let LoggerController = class LoggerController {
     constructor(logger) {
         this.logger = logger;
@@ -33,7 +33,7 @@ __decorate([
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [paginated_params_1.PaginatedParamsDto]),
+    __metadata("design:paramtypes", [logs_query_params_1.LogsQueryParams]),
     __metadata("design:returntype", Promise)
 ], LoggerController.prototype, "findAll", null);
 exports.LoggerController = LoggerController = __decorate([

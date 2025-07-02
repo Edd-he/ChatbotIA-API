@@ -1,6 +1,6 @@
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 import { ApiPropertyOptional } from '@nestjs/swagger'
-import { IsOptional, IsBoolean } from 'class-validator'
+import { IsOptional, IsBoolean, IsString } from 'class-validator'
 import { Transform } from 'class-transformer'
 enum ErrorEnum {
   true = 'true',
@@ -31,4 +31,9 @@ export class RunQueryParams extends RangeDateQueryParams {
     return value
   })
   error?: boolean | null = null
+
+  @ApiPropertyOptional({ description: 'Texto de búsqueda', example: '' })
+  @IsOptional()
+  @IsString()
+  query: string
 }

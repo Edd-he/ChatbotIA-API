@@ -9,8 +9,8 @@ export declare class TopicsController {
     private readonly eventEmitter;
     constructor(topicsService: TopicsService, eventEmitter: EventEmitter2);
     createTopic(session: IUserSession, createTopicDto: CreateTopicDto): Promise<{
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
         is_active: boolean;
@@ -24,8 +24,8 @@ export declare class TopicsController {
             number: number;
             created_at: string;
             updated_at: string;
-            description: string | null;
             id: string;
+            description: string | null;
             name: string;
             is_active: boolean;
             is_archived: boolean;
@@ -36,15 +36,15 @@ export declare class TopicsController {
         totalPages: number;
     }>;
     getAvailableTopics(): Promise<{
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
     }[]>;
     getTopic(topicId: string): Promise<{
         documents: {
-            description: string;
             id: string;
+            description: string;
             created_at: Date;
             name: string;
             tags: string[];
@@ -56,8 +56,8 @@ export declare class TopicsController {
             size: import("@prisma/client/runtime/library").Decimal;
         }[];
     } & {
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
         is_active: boolean;
@@ -67,8 +67,8 @@ export declare class TopicsController {
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
     updateTopic(session: IUserSession, topicId: string, updateTopicDto: UpdateTopicDto): Promise<{
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
         is_active: boolean;
@@ -77,8 +77,8 @@ export declare class TopicsController {
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
     removeTopic(session: IUserSession, topicId: string): Promise<{
-        description: string | null;
         id: string;
+        description: string | null;
         created_at: Date;
         name: string;
         is_active: boolean;

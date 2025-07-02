@@ -18,18 +18,25 @@ let LoggerService = class LoggerService {
     constructor(db) {
         this.db = db;
     }
-    async getAll({ page, page_size }) {
+    async getAll({ page, page_size, logAction }) {
         const pages = page || 1;
         const skip = (pages - 1) * page_size;
         const [logs, total] = await Promise.all([
             this.db.log.findMany({
+                where: {
+                    action: logAction,
+                },
                 skip,
                 take: page_size,
                 orderBy: {
                     id: 'desc',
                 },
             }),
-            this.db.log.count(),
+            this.db.log.count({
+                where: {
+                    action: logAction,
+                },
+            }),
         ]);
         const totalPages = Math.ceil(total / page_size);
         const data = logs.map((l) => {

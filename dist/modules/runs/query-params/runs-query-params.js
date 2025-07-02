@@ -52,4 +52,10 @@ __decorate([
     }),
     __metadata("design:type", Boolean)
 ], RunQueryParams.prototype, "error", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)({ description: 'Texto de búsqueda', example: '' }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], RunQueryParams.prototype, "query", void 0);
 //# sourceMappingURL=runs-query-params.js.map

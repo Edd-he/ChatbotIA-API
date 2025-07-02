@@ -1,9 +1,9 @@
 import { Controller, Get, Param, Patch, Query } from '@nestjs/common'
 import { ValidateUUID } from '@common/pipes/validate-uuid.pipe'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
-import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 
 import { ConversationsService } from './conversations.service'
+import { ConversationsQueryParams } from './query-params/conversations-query-params'
 
 @ApiTags('Conversations')
 @Controller('conversations')
@@ -14,7 +14,7 @@ export class ConversationsController {
   @ApiOperation({
     summary: 'Obtiene todas las conversaciones generadas en el sistema',
   })
-  async getAllConversations(@Query() query: RangeDateQueryParams) {
+  async getAllConversations(@Query() query: ConversationsQueryParams) {
     return await this.conversationsService.getAll(query)
   }
 

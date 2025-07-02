@@ -12,8 +12,8 @@ export declare class DocumentsController {
             number: number;
             created_at: string;
             updated_at: string;
-            description: string;
             id: string;
+            description: string;
             name: string;
             tags: string[];
             is_active: boolean;
@@ -26,8 +26,8 @@ export declare class DocumentsController {
         totalPages: number;
     }>;
     getOneDocument(documentId: string): Promise<{
-        description: string;
         id: string;
+        description: string;
         created_at: Date;
         name: string;
         tags: string[];
@@ -39,8 +39,8 @@ export declare class DocumentsController {
         size: import("@prisma/client/runtime/library").Decimal;
     }>;
     updateDocument(session: IUserSession, id: string, updateDocumentDto: UpdateDocumentDto): Promise<{
-        description: string;
         id: string;
+        description: string;
         created_at: Date;
         name: string;
         tags: string[];
@@ -51,8 +51,8 @@ export declare class DocumentsController {
         size: import("@prisma/client/runtime/library").Decimal;
     }>;
     removeDocument(session: IUserSession, documentId: string): Promise<{
-        description: string;
         id: string;
+        description: string;
         created_at: Date;
         name: string;
         tags: string[];

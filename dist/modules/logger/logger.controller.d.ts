@@ -1,9 +1,9 @@
-import { PaginatedParamsDto } from '@common/query-params/paginated-params';
 import { LoggerService } from './logger.service';
+import { LogsQueryParams } from './query-params/logs-query-params';
 export declare class LoggerController {
     private readonly logger;
     constructor(logger: LoggerService);
-    findAll(query: PaginatedParamsDto): Promise<{
+    findAll(query: LogsQueryParams): Promise<{
         data: {
             created_at: string;
             id: number;

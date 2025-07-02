@@ -1,11 +1,11 @@
 import { PrismaService } from '@providers/prisma/prisma.service';
 import { IUserSession } from '@auth/interfaces/user-session.interface';
 import { Entity } from '@prisma/client';
-import { PaginatedParamsDto } from '@common/query-params/paginated-params';
+import { LogsQueryParams } from './query-params/logs-query-params';
 export declare class LoggerService {
     private readonly db;
     constructor(db: PrismaService);
-    getAll({ page, page_size }: PaginatedParamsDto): Promise<{
+    getAll({ page, page_size, logAction }: LogsQueryParams): Promise<{
         data: {
             created_at: string;
             id: number;

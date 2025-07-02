@@ -40,7 +40,7 @@ let OnRunExecuteHandler = class OnRunExecuteHandler {
         return title;
     }
     async generateTitle(input) {
-        const response = await this.ai.getResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH, generate_tittle_context_1.GENERATE_TITLE_CONTEXT, [input]);
+        const response = await this.ai.getResponse(gemini_ai_models_enum_1.GeminiModels.GEMINI_1_5_FLASH_8B, generate_tittle_context_1.GENERATE_TITLE_CONTEXT, [input]);
         return response;
     }
 };

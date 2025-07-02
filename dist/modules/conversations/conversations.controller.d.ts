@@ -1,16 +1,16 @@
-import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params';
 import { ConversationsService } from './conversations.service';
+import { ConversationsQueryParams } from './query-params/conversations-query-params';
 export declare class ConversationsController {
     private readonly conversationsService;
     constructor(conversationsService: ConversationsService);
-    getAllConversations(query: RangeDateQueryParams): Promise<{
+    getAllConversations(query: ConversationsQueryParams): Promise<{
         data: {
             number: number;
             created_at: string;
             last_run: string;
             completed_at: string;
-            title: string | null;
             id: string;
+            title: string | null;
             total_runs: number;
             total_tokens: number;
             status: import(".prisma/client").$Enums.ConversationStatus;
@@ -32,8 +32,8 @@ export declare class ConversationsController {
             created_at: Date;
         }[];
     } & {
-        title: string | null;
         id: string;
+        title: string | null;
         created_at: Date;
         completed_at: Date | null;
         last_run: Date | null;
@@ -42,8 +42,8 @@ export declare class ConversationsController {
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
     closeConversation(id: string): Promise<{
-        title: string | null;
         id: string;
+        title: string | null;
         created_at: Date;
         completed_at: Date | null;
         last_run: Date | null;
