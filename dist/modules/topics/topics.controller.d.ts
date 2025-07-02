@@ -10,12 +10,12 @@ export declare class TopicsController {
     constructor(topicsService: TopicsService, eventEmitter: EventEmitter2);
     createTopic(session: IUserSession, createTopicDto: CreateTopicDto): Promise<{
         id: string;
-        description: string | null;
         created_at: Date;
+        updated_at: Date;
         name: string;
         is_active: boolean;
         is_archived: boolean;
-        updated_at: Date;
+        description: string | null;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
@@ -25,10 +25,10 @@ export declare class TopicsController {
             created_at: string;
             updated_at: string;
             id: string;
-            description: string | null;
             name: string;
             is_active: boolean;
             is_archived: boolean;
+            description: string | null;
             documents_count: number;
             total_size: import("@prisma/client/runtime/library").Decimal;
         }[];
@@ -37,53 +37,53 @@ export declare class TopicsController {
     }>;
     getAvailableTopics(): Promise<{
         id: string;
-        description: string | null;
         created_at: Date;
         name: string;
+        description: string | null;
     }[]>;
     getTopic(topicId: string): Promise<{
         documents: {
             id: string;
-            description: string;
             created_at: Date;
+            updated_at: Date;
             name: string;
-            tags: string[];
             is_active: boolean;
             is_archived: boolean;
-            updated_at: Date;
             url: string;
+            description: string;
+            tags: string[];
             topic_id: string;
             size: import("@prisma/client/runtime/library").Decimal;
         }[];
     } & {
         id: string;
-        description: string | null;
         created_at: Date;
+        updated_at: Date;
         name: string;
         is_active: boolean;
         is_archived: boolean;
-        updated_at: Date;
+        description: string | null;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
     updateTopic(session: IUserSession, topicId: string, updateTopicDto: UpdateTopicDto): Promise<{
         id: string;
-        description: string | null;
         created_at: Date;
+        updated_at: Date;
         name: string;
         is_active: boolean;
-        updated_at: Date;
+        description: string | null;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;
     removeTopic(session: IUserSession, topicId: string): Promise<{
         id: string;
-        description: string | null;
         created_at: Date;
+        updated_at: Date;
         name: string;
         is_active: boolean;
         is_archived: boolean;
-        updated_at: Date;
+        description: string | null;
         documents_count: number;
         total_size: import("@prisma/client/runtime/library").Decimal;
     }>;

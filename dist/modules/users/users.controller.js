@@ -62,6 +62,17 @@ let UsersController = class UsersController {
         });
         return updatedUser;
     }
+    async changePassword(userId, session, newPassword) {
+        const { actualUser, updatedUser } = await this.usersService.updatePassword(userId, newPassword);
+        this.eventEmitter.emit(logger_events_interfaces_1.LoggerEvents.ENTITY_UPDATED_EVENT, {
+            session,
+            entity: client_1.Entity.User,
+            entityId: actualUser.id,
+            after: updatedUser,
+            before: actualUser,
+        });
+        return updatedUser;
+    }
     async removeUser(userId, session) {
         const admin = await this.usersService.remove(userId);
         this.eventEmitter.emit(logger_events_interfaces_1.LoggerEvents.ENTITY_ARCHIVED_EVENT, {
@@ -132,6 +143,19 @@ __decorate([
     __metadata("design:paramtypes", [String, Object, update_user_dto_1.UpdateUserDto]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "updateUser", null);
+__decorate([
+    (0, common_1.Patch)(':userId/change-password'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Actualiza la contraseña de un usuario',
+    }),
+    openapi.ApiResponse({ status: 200 }),
+    __param(0, (0, common_1.Param)('userId', validate_uuid_pipe_1.ValidateUUID)),
+    __param(1, (0, user_session_decorator_1.UserSession)()),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object, String]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "changePassword", null);
 __decorate([
     (0, common_1.Delete)(':userId/remove-user'),
     (0, swagger_1.ApiOperation)({

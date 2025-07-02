@@ -98,6 +98,29 @@ export class UsersController {
     return updatedUser
   }
 
+  @Patch(':userId/change-password')
+  @ApiOperation({
+    summary: 'Actualiza la contraseña de un usuario',
+  })
+  async changePassword(
+    @Param('userId', ValidateUUID) userId: string,
+    @UserSession() session: IUserSession,
+    @Body() newPassword: string,
+  ) {
+    const { actualUser, updatedUser } = await this.usersService.updatePassword(
+      userId,
+      newPassword,
+    )
+    this.eventEmitter.emit(LoggerEvents.ENTITY_UPDATED_EVENT, {
+      session,
+      entity: Entity.User,
+      entityId: actualUser.id,
+      after: updatedUser,
+      before: actualUser,
+    })
+    return updatedUser
+  }
+
   @Delete(':userId/remove-user')
   @ApiOperation({
     summary: 'Archiva un usuario',

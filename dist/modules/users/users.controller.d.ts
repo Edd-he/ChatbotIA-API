@@ -11,14 +11,14 @@ export declare class UsersController {
     createUser(session: IUserSession, createUserDto: CreateUserDto): Promise<{
         id: string;
         created_at: Date;
-        name: string;
-        is_active: boolean;
         updated_at: Date;
         dni: string;
+        name: string;
+        last_name: string;
         email: string;
         role: import(".prisma/client").$Enums.Role;
         modules_access: string[];
-        last_name: string;
+        is_active: boolean;
     }>;
     getAllUsers(query: SearchStatusQueryParamsDto): Promise<{
         data: {
@@ -26,13 +26,13 @@ export declare class UsersController {
             created_at: string;
             updated_at: string;
             id: string;
-            name: string;
-            is_active: boolean;
             dni: string;
+            name: string;
+            last_name: string;
             email: string;
             role: import(".prisma/client").$Enums.Role;
             modules_access: string[];
-            last_name: string;
+            is_active: boolean;
         }[];
         total: number;
         totalPages: number;
@@ -41,39 +41,51 @@ export declare class UsersController {
     getOneUser(userId: string): Promise<{
         id: string;
         created_at: Date;
-        name: string;
-        is_active: boolean;
         updated_at: Date;
         dni: string;
+        name: string;
+        last_name: string;
         email: string;
         role: import(".prisma/client").$Enums.Role;
         modules_access: string[];
-        last_name: string;
+        is_active: boolean;
     }>;
     updateUser(userId: string, session: IUserSession, updateUserDto: UpdateUserDto): Promise<{
         id: string;
         created_at: Date;
-        name: string;
-        is_active: boolean;
         updated_at: Date;
         dni: string;
+        name: string;
+        last_name: string;
         email: string;
         role: import(".prisma/client").$Enums.Role;
         modules_access: string[];
+        is_active: boolean;
+    }>;
+    changePassword(userId: string, session: IUserSession, newPassword: string): Promise<{
+        id: string;
+        created_at: Date;
+        updated_at: Date;
+        dni: string;
+        name: string;
         last_name: string;
+        email: string;
+        role: import(".prisma/client").$Enums.Role;
+        modules_access: string[];
+        is_active: boolean;
     }>;
     removeUser(userId: string, session: IUserSession): Promise<{
         id: string;
         created_at: Date;
-        name: string;
-        is_active: boolean;
-        is_archived: boolean;
         updated_at: Date;
         dni: string;
+        name: string;
+        last_name: string;
         email: string;
         password: string;
         role: import(".prisma/client").$Enums.Role;
         modules_access: string[];
-        last_name: string;
+        is_active: boolean;
+        is_archived: boolean;
     }>;
 }
