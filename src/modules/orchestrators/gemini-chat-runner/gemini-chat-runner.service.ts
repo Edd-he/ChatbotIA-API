@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@nestjs/common'
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service'
 import { Observable } from 'rxjs'
 import { EventEmitter2 } from '@nestjs/event-emitter'
@@ -15,6 +15,7 @@ import {
 } from '@modules/events/run-events/run-events.interfaces'
 import { DocumentsService } from '@modules/documents/documents.service'
 import { PusherService } from '@providers/pusher/pusher.service'
+import { ConversationsService } from '@modules/conversations/conversations.service'
 
 import { ASSISTANT_INSTRUCTION } from './prompts/instructions.const'
 
@@ -26,6 +27,7 @@ export class GeminiChatRunnerService {
     private readonly runService: RunsService,
     private readonly documentService: DocumentsService,
     private readonly pusherService: PusherService,
+    private readonly conversationService: ConversationsService,
   ) {}
 
   streamChatResponse(
@@ -38,7 +40,7 @@ export class GeminiChatRunnerService {
         .getConversationContext(conversation_id)
         .then(async (result) => {
           const historial = this.mapRunsToHistory(result)
-
+          await this.conversationService.validateActive(conversation_id)
           if (topic_id) {
             const documents =
               await this.documentService.getAvailablesByTopic(topic_id)
@@ -78,7 +80,8 @@ export class GeminiChatRunnerService {
             },
           })
         })
-        .catch((e) => {
+        .catch(async (e) => {
+          await this.reportError(e.message)
           subscriber.error(e)
         })
     })
@@ -144,8 +147,11 @@ export class GeminiChatRunnerService {
             },
           ],
         })
-      } catch (err) {
-        console.error(`Error al procesar PDF: ${doc.url}`, err)
+      } catch (e) {
+        console.error(`Error al procesar PDF: ${doc.url}`, e)
+        throw new InternalServerErrorException(
+          `Error en el procesamiento de documentos: ${doc.name}`,
+        )
       }
     }
 

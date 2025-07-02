@@ -74,4 +74,15 @@ export declare class ConversationsService {
         total_tokens: number;
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
+    close(conversationId: string): Promise<{
+        title: string | null;
+        id: string;
+        created_at: Date;
+        completed_at: Date | null;
+        last_run: Date | null;
+        total_runs: number;
+        total_tokens: number;
+        status: import(".prisma/client").$Enums.ConversationStatus;
+    }>;
+    validateActive(conversationId: string): Promise<void>;
 }

@@ -15,6 +15,7 @@ const prisma_service_1 = require("../../providers/prisma/prisma.service");
 const prisma_exception_1 = require("../../providers/prisma/exceptions/prisma.exception");
 const format_date_1 = require("../../common/utils/format-date");
 const gemini_ai_service_1 = require("../../providers/gemini-ai/gemini-ai.service");
+const client_1 = require("@prisma/client");
 let ConversationsService = class ConversationsService {
     constructor(db, ai) {
         this.db = db;
@@ -110,6 +111,35 @@ let ConversationsService = class ConversationsService {
                 throw new prisma_exception_1.PrismaException(e);
             throw new common_1.InternalServerErrorException('Hubo un error al actualizar los tokens');
         }
+    }
+    async close(conversationId) {
+        try {
+            const conversationUpdated = await this.db.conversation.update({
+                where: {
+                    id: conversationId,
+                },
+                data: {
+                    status: client_1.ConversationStatus.CLOSED,
+                    completed_at: new Date(),
+                },
+            });
+            return conversationUpdated;
+        }
+        catch (e) {
+            if (e.code)
+                throw new prisma_exception_1.PrismaException(e);
+            throw new common_1.InternalServerErrorException('Hubo un error al cerrar la conversación');
+        }
+    }
+    async validateActive(conversationId) {
+        const conv = await this.db.conversation.findFirst({
+            where: {
+                id: conversationId,
+                status: client_1.ConversationStatus.ACTIVE,
+            },
+        });
+        if (!conv)
+            throw new common_1.ConflictException('La Conversación ya fue cerrada');
     }
 };
 exports.ConversationsService = ConversationsService;

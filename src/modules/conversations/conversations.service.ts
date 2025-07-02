@@ -1,9 +1,14 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { PrismaService } from 'src/providers/prisma/prisma.service'
 import { PrismaException } from 'src/providers/prisma/exceptions/prisma.exception'
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
 import { formatDate } from '@common/utils/format-date'
 import { GeminiAIService } from '@providers/gemini-ai/gemini-ai.service'
+import { ConversationStatus } from '@prisma/client'
 
 import { CreateConversationDto } from './dto/create-conversation.dto'
 @Injectable()
@@ -115,5 +120,36 @@ export class ConversationsService {
         'Hubo un error al actualizar los tokens',
       )
     }
+  }
+
+  async close(conversationId: string) {
+    try {
+      const conversationUpdated = await this.db.conversation.update({
+        where: {
+          id: conversationId,
+        },
+        data: {
+          status: ConversationStatus.CLOSED,
+          completed_at: new Date(),
+        },
+      })
+      return conversationUpdated
+    } catch (e) {
+      if (e.code) throw new PrismaException(e)
+
+      throw new InternalServerErrorException(
+        'Hubo un error al cerrar la conversación',
+      )
+    }
+  }
+
+  async validateActive(conversationId: string) {
+    const conv = await this.db.conversation.findFirst({
+      where: {
+        id: conversationId,
+        status: ConversationStatus.ACTIVE,
+      },
+    })
+    if (!conv) throw new ConflictException('La Conversación ya fue cerrada')
   }
 }

@@ -8,7 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatModule = void 0;
 const common_1 = require("@nestjs/common");
-const gemini_chat_runner_module_1 = require("../gemini-chat-runner/gemini-chat-runner.module");
+const gemini_chat_runner_module_1 = require("../orchestrators/gemini-chat-runner/gemini-chat-runner.module");
 const runs_module_1 = require("../runs/runs.module");
 const chat_service_1 = require("./chat.service");
 const chat_controller_1 = require("./chat.controller");

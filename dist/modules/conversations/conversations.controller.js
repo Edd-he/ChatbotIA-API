@@ -29,6 +29,9 @@ let ConversationsController = class ConversationsController {
     async getConversation(id) {
         return await this.conversationsService.getOneWithRuns(id);
     }
+    async closeConversation(id) {
+        return await this.conversationsService.close(id);
+    }
 };
 exports.ConversationsController = ConversationsController;
 __decorate([
@@ -53,6 +56,17 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], ConversationsController.prototype, "getConversation", null);
+__decorate([
+    (0, common_1.Patch)(':conversationId/close-conversation'),
+    (0, swagger_1.ApiOperation)({
+        summary: 'Obtiene una conversación junto a sus ejecuciones generadas',
+    }),
+    openapi.ApiResponse({ status: 200 }),
+    __param(0, (0, common_1.Param)('conversationId', validate_uuid_pipe_1.ValidateUUID)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ConversationsController.prototype, "closeConversation", null);
 exports.ConversationsController = ConversationsController = __decorate([
     (0, swagger_1.ApiTags)('Conversations'),
     (0, common_1.Controller)('conversations'),

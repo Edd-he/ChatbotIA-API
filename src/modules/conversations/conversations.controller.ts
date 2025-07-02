@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common'
+import { Controller, Get, Param, Patch, Query } from '@nestjs/common'
 import { ValidateUUID } from '@common/pipes/validate-uuid.pipe'
 import { ApiOperation, ApiTags } from '@nestjs/swagger'
 import { RangeDateQueryParams } from '@common/query-params/rangeDate-query-params'
@@ -24,5 +24,13 @@ export class ConversationsController {
   })
   async getConversation(@Param('conversationId', ValidateUUID) id: string) {
     return await this.conversationsService.getOneWithRuns(id)
+  }
+
+  @Patch(':conversationId/close-conversation')
+  @ApiOperation({
+    summary: 'Obtiene una conversación junto a sus ejecuciones generadas',
+  })
+  async closeConversation(@Param('conversationId', ValidateUUID) id: string) {
+    return await this.conversationsService.close(id)
   }
 }

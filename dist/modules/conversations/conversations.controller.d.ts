@@ -41,4 +41,14 @@ export declare class ConversationsController {
         total_tokens: number;
         status: import(".prisma/client").$Enums.ConversationStatus;
     }>;
+    closeConversation(id: string): Promise<{
+        title: string | null;
+        id: string;
+        created_at: Date;
+        completed_at: Date | null;
+        last_run: Date | null;
+        total_runs: number;
+        total_tokens: number;
+        status: import(".prisma/client").$Enums.ConversationStatus;
+    }>;
 }

@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatService = void 0;
 const common_1 = require("@nestjs/common");
-const gemini_chat_runner_service_1 = require("../gemini-chat-runner/gemini-chat-runner.service");
+const gemini_chat_runner_service_1 = require("../orchestrators/gemini-chat-runner/gemini-chat-runner.service");
 const runs_service_1 = require("../runs/runs.service");
 let ChatService = class ChatService {
     constructor(geminiRunner, runsService) {

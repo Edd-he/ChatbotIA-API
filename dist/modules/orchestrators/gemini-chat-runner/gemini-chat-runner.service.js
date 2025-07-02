@@ -11,23 +11,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GeminiChatRunnerService = void 0;
 const common_1 = require("@nestjs/common");
-const gemini_ai_service_1 = require("../../providers/gemini-ai/gemini-ai.service");
+const gemini_ai_service_1 = require("../../../providers/gemini-ai/gemini-ai.service");
 const rxjs_1 = require("rxjs");
 const event_emitter_1 = require("@nestjs/event-emitter");
-const gemini_ai_run_entity_1 = require("../../providers/gemini-ai/entities/gemini-ai-run.entity");
-const gemini_ai_models_enum_1 = require("../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
-const runs_service_1 = require("../runs/runs.service");
-const run_events_interfaces_1 = require("../events/run-events/run-events.interfaces");
-const documents_service_1 = require("../documents/documents.service");
-const pusher_service_1 = require("../../providers/pusher/pusher.service");
+const gemini_ai_run_entity_1 = require("../../../providers/gemini-ai/entities/gemini-ai-run.entity");
+const gemini_ai_models_enum_1 = require("../../../providers/gemini-ai/interfaces/gemini-ai-models.enum");
+const runs_service_1 = require("../../runs/runs.service");
+const run_events_interfaces_1 = require("../../events/run-events/run-events.interfaces");
+const documents_service_1 = require("../../documents/documents.service");
+const pusher_service_1 = require("../../../providers/pusher/pusher.service");
+const conversations_service_1 = require("../../conversations/conversations.service");
 const instructions_const_1 = require("./prompts/instructions.const");
 let GeminiChatRunnerService = class GeminiChatRunnerService {
-    constructor(ai, eventEmitter, runService, documentService, pusherService) {
+    constructor(ai, eventEmitter, runService, documentService, pusherService, conversationService) {
         this.ai = ai;
         this.eventEmitter = eventEmitter;
         this.runService = runService;
         this.documentService = documentService;
         this.pusherService = pusherService;
+        this.conversationService = conversationService;
     }
     streamChatResponse(conversation_id, message, topic_id) {
         return new rxjs_1.Observable((subscriber) => {
@@ -35,6 +37,7 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
                 .getConversationContext(conversation_id)
                 .then(async (result) => {
                 const historial = this.mapRunsToHistory(result);
+                await this.conversationService.validateActive(conversation_id);
                 if (topic_id) {
                     const documents = await this.documentService.getAvailablesByTopic(topic_id);
                     const documentParts = await this.extractDocumentsContext(documents);
@@ -64,7 +67,8 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
                     },
                 });
             })
-                .catch((e) => {
+                .catch(async (e) => {
+                await this.reportError(e.message);
                 subscriber.error(e);
             });
         });
@@ -111,8 +115,9 @@ let GeminiChatRunnerService = class GeminiChatRunnerService {
                     ],
                 });
             }
-            catch (err) {
-                console.error(`Error al procesar PDF: ${doc.url}`, err);
+            catch (e) {
+                console.error(`Error al procesar PDF: ${doc.url}`, e);
+                throw new common_1.InternalServerErrorException(`Error en el procesamiento de documentos: ${doc.name}`);
             }
         }
         return contextParts;
@@ -131,6 +136,7 @@ exports.GeminiChatRunnerService = GeminiChatRunnerService = __decorate([
         event_emitter_1.EventEmitter2,
         runs_service_1.RunsService,
         documents_service_1.DocumentsService,
-        pusher_service_1.PusherService])
+        pusher_service_1.PusherService,
+        conversations_service_1.ConversationsService])
 ], GeminiChatRunnerService);
 //# sourceMappingURL=gemini-chat-runner.service.js.map
